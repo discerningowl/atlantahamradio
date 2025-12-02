@@ -7,12 +7,55 @@
     <title>404 - Page Not Found | Atlanta Ham Radio</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .radio-wave {
+            width: 150px;
+            height: 150px;
+            margin: 1.5rem auto;
+            position: relative;
+        }
+
+        .radio-wave::before,
+        .radio-wave::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid #60a5fa;
+            border-radius: 50%;
+            animation: pulse 2s ease-out infinite;
+        }
+
+        .radio-wave::before {
+            width: 80px;
+            height: 80px;
+        }
+
+        .radio-wave::after {
+            width: 120px;
+            height: 120px;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+    </style>
 </head>
 <body>
     <script src="js/header.js"></script>
 
     <section class="hero">
         <h2>404 - Signal Not Found</h2>
+        <div class="radio-wave"></div>
         <p>Looks like you've tuned to the wrong frequency! The page you're looking for doesn't exist or has been moved.</p>
         <div class="hero-buttons">
             <a href="index.html" class="btn btn-primary">
