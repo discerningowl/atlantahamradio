@@ -19,6 +19,9 @@
 ```
 atlantahamradio/
 ├── index.html                    # Main landing page with event calendar
+├── 404.html                      # Custom 404 error page
+├── sitemap.xml                   # XML sitemap for search engines
+├── robots.txt                    # Robots.txt for crawler guidance
 ├── pages/                        # Content pages
 │   ├── clubs.html               # Club directory with search
 │   ├── getstarted.html          # Getting started guide
@@ -48,7 +51,8 @@ atlantahamradio/
 │   └── deploy.template.yaml     # Deployment template
 ├── .github/
 │   └── dependabot.yaml          # Dependency updates config
-└── README.md                    # General readme (DigitalOcean template)
+├── CLAUDE.md                    # AI assistant documentation
+└── README.md                    # General readme
 ```
 
 ---
@@ -278,6 +282,142 @@ function downloadAllEventsICS()
 - Exports all events as single calendar file
 - Downloads as `atlanta-ham-radio-events.ics`
 - Can be imported to Google Calendar, Outlook, Apple Calendar, etc.
+
+---
+
+## SEO Optimization
+
+The site implements comprehensive SEO optimization to improve discoverability and search engine rankings.
+
+### Meta Tags
+
+All pages include:
+
+**Primary Meta Tags**:
+- `<title>` - Unique, descriptive title for each page (50-60 characters)
+- `<meta name="description">` - Concise page description (150-160 characters)
+- `<meta name="keywords">` - Relevant keywords for the page content
+- `<meta name="author">` - Content author (KQ4JP)
+- `<link rel="canonical">` - Canonical URL to prevent duplicate content
+
+**Open Graph Tags** (for social media sharing):
+- `og:type` - Content type (website)
+- `og:url` - Canonical URL
+- `og:title` - Page title
+- `og:description` - Page description
+- `og:image` - Social sharing image (logo.png)
+- `og:locale` - Language/locale (en_US)
+- `og:site_name` - Site name
+
+**Twitter Card Tags** (for Twitter sharing):
+- `twitter:card` - Card type (summary or summary_large_image)
+- `twitter:url` - Page URL
+- `twitter:title` - Page title
+- `twitter:description` - Page description
+- `twitter:image` - Sharing image
+
+### Structured Data (JSON-LD)
+
+**Organization Schema** (index.html):
+```json
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Atlanta Ham Radio",
+    "alternateName": "Atlanta Amateur Radio Public Service",
+    "url": "https://atlantahamradio.com",
+    "logo": "https://atlantahamradio.com/images/logo.png",
+    "description": "Atlanta metro amateur radio public service event calendar and community resources",
+    "sameAs": ["https://www.youtube.com/@AtlantaHamRadio"],
+    "areaServed": {"@type": "State", "name": "Georgia"},
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "General Inquiries",
+        "name": "KQ4JP"
+    }
+}
+```
+
+### Sitemap & Robots
+
+**sitemap.xml**:
+- XML sitemap listing all pages
+- Includes priority and change frequency
+- Updated: 2025-12-02
+- Location: `https://atlantahamradio.com/sitemap.xml`
+
+**robots.txt**:
+- Allows all search engines to crawl the site
+- Disallows crawling of `/data/`, `/.do/`, `/.github/`
+- References sitemap.xml location
+
+### SEO Best Practices
+
+**Implemented**:
+- ✅ Unique, descriptive titles for each page
+- ✅ Meta descriptions under 160 characters
+- ✅ Canonical URLs to prevent duplicate content
+- ✅ Semantic HTML5 structure (headers, sections, articles)
+- ✅ Open Graph and Twitter Card tags for social sharing
+- ✅ JSON-LD structured data for organization
+- ✅ XML sitemap for search engine crawling
+- ✅ robots.txt to guide crawler behavior
+- ✅ Content Security Policy headers
+- ✅ HTTPS (via DigitalOcean)
+- ✅ Mobile responsive design
+- ✅ Fast page load times (no heavy frameworks)
+
+**Future Enhancements** (optional):
+- Event-specific structured data (Event schema)
+- Dynamic sitemap generation from events.json
+- Additional social media platform tags
+- Breadcrumb structured data
+- FAQ structured data for resource pages
+
+### Adding SEO to New Pages
+
+When creating a new page, include this SEO template in the `<head>`:
+
+```html
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
+
+<!-- Primary Meta Tags -->
+<title>Page Title - Atlanta Ham Radio</title>
+<meta name="title" content="Page Title - Atlanta Ham Radio">
+<meta name="description" content="Concise description of the page content (150-160 characters).">
+<meta name="keywords" content="relevant, keywords, for, this, page">
+<meta name="author" content="KQ4JP">
+<link rel="canonical" href="https://atlantahamradio.com/pages/pagename.html">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://atlantahamradio.com/pages/pagename.html">
+<meta property="og:title" content="Page Title">
+<meta property="og:description" content="Concise description of the page content.">
+<meta property="og:image" content="https://atlantahamradio.com/images/logo.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Atlanta Ham Radio">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:url" content="https://atlantahamradio.com/pages/pagename.html">
+<meta name="twitter:title" content="Page Title">
+<meta name="twitter:description" content="Concise description of the page content.">
+<meta name="twitter:image" content="https://atlantahamradio.com/images/logo.png">
+
+<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+<link rel="stylesheet" href="../css/style.css">
+```
+
+**Guidelines**:
+- **Title**: 50-60 characters, include "Atlanta Ham Radio" for brand consistency
+- **Description**: 150-160 characters, compelling and accurate
+- **Keywords**: 5-10 relevant keywords, comma-separated
+- **Canonical URL**: Use full https://atlantahamradio.com URL
+- **Twitter Card**: Use "summary" for most pages, "summary_large_image" for homepage
+- **Image**: Use logo.png or page-specific image if available
 
 ---
 

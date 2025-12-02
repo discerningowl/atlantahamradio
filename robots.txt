@@ -1,0 +1,16 @@
+# Atlanta Ham Radio - robots.txt
+# https://atlantahamradio.com
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow crawling of data files (JSON)
+Disallow: /data/
+
+# Disallow crawling of internal directories
+Disallow: /.do/
+Disallow: /.github/
+
+# Sitemap location
+Sitemap: https://atlantahamradio.com/sitemap.xml
