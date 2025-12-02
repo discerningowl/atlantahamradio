@@ -1,133 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>#000000</title>
-    <link type="image/x-icon" rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAHklEQVQ4T2NkYGD4z0ABYBw1gGE0DBhGw4BhWIQBAE5OEAELnjVHAAAAAElFTkSuQmCC">
-    <style>
-        :root {
-            --color: #000000;
-            --color-transparent: #00000022;
-        }
-
-        ::selection {
-            background: var(--color-transparent);
-        }
-
-        html,
-        body {
-            background: var(--color);
-            height: 100%;
-            margin: 0;
-        }
-
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        #color {
-            background: white;
-            color: var(--color);
-            font-size: 2.5rem;
-            font-weight: 300;
-            padding: 2.25rem 3rem;
-            font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
-            cursor: text;
-        }
-    </style>
+    <title>Atlanta Ham Radio - Community Events Calendar</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-    <p id="color">#000000</p>
+    <script src="js/header.js"></script>
+
+    <section class="hero">
+        <h2>Atlanta Metro Public Service Event Calendar</h2>
+        <p>Support your Atlanta metro community through amateur radio. From marathons to parades, your communication skills make events safer and more successful.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary" onclick="setView('list')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                View Upcoming Events
+            </button>
+            <a href="https://www.youtube.com/@AtlantaHamRadio" target="_blank" class="btn btn-youtube">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                Atlanta Ham Radio YouTube
+            </a>
+            <a href="pages/contact.html" class="btn btn-contact">Contact KQ4JP</a>
+        </div>
+    </section>
+
+    <section id="calendar" class="calendar-section">
+        <div class="calendar-card">
+            <div class="calendar-controls">
+                <div class="month-nav">
+                    <button onclick="changeMonth(-1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <h3 id="monthYear"></h3>
+                    <button onclick="changeMonth(1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+                <div class="view-buttons">
+                    <button class="view-btn active" id="monthViewBtn" onclick="setView('month')">Month</button>
+                    <button class="view-btn" id="listViewBtn" onclick="setView('list')">List</button>
+                    <button class="view-btn" id="subscribeBtn" onclick="downloadAllEventsICS()" style="background: #3b82f6; color: white; margin-left: 0.5rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+
+            <div class="search-box" style="margin-bottom: 1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search events by name..." onkeyup="handleSearch()">
+            </div>
+
+            <div class="filters" id="filters"></div>
+
+            <div id="calendarContainer"></div>
+        </div>
+    </section>
+
+    <section id="resources" class="quick-links">
+        <div class="link-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <h3>Local Clubs</h3>
+            <p>Connect with ham radio clubs in the Atlanta metro area</p>
+            <a href="pages/clubs.html">View Clubs →</a>
+        </div>
+
+        <div class="link-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16v2"/><path d="M19 16v2"/><rect width="20" height="8" x="2" y="8" rx="2"/><path d="M18 12h0"/></svg>
+            <h3>Get Started</h3>
+            <p>Resources for new and experienced operators</p>
+            <a href="pages/getstarted.html">Learn More →</a>
+        </div>
+
+        <div class="link-card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <h3>Get Involved</h3>
+            <p>Start volunteering for public service events today</p>
+            <a href="#calendar" target="_blank">View Events →</a>
+        </div>
+    </section>
+
+    <div class="modal" id="eventModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="event-type-badge" id="modalTypeBadge"></div>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modalTitle"></h3>
+                <div class="modal-details" id="modalDetails"></div>
+                <p class="modal-description" id="modalDescription"></p>
+                <div class="contact-box">
+                    <p><strong>Contact:</strong> <span id="modalContact"></span></p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="addToCalendarBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        Add to Calendar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function randomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1) + min);
-        }
+        let events = [];
+        let currentDate = new Date();
+        let currentView = 'month';
+        let filterCategory = 'all';
+        let searchQuery = '';
 
-        function hslToHex(h, s, l) {
-            h /= 360;
-            s /= 100;
-            l /= 100;
-            var r = void 0,
-                g = void 0,
-                b = void 0;
-            if (s === 0) {
-                r = g = b = l; // achromatic
-            } else {
-                var hue2rgb = function hue2rgb(p, q, t) {
-                    if (t < 0) t += 1;
-                    if (t > 1) t -= 1;
-                    if (t < 1 / 6) return p + (q - p) * 6 * t;
-                    if (t < 1 / 2) return q;
-                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-                    return p;
-                };
-                var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-                var p = 2 * l - q;
-                r = hue2rgb(p, q, h + 1 / 3);
-                g = hue2rgb(p, q, h);
-                b = hue2rgb(p, q, h - 1 / 3);
-            }
-            var toHex = function toHex(x) {
-                var hex = Math.round(x * 255).toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-            };
-            return '#' + toHex(r) + toHex(g) + toHex(b);
-        }
-
-        window.onload = function () {
-            let stopProp = function (ev) {
-                ev.stopPropagation();
-            }
-
-            var colorElement = document.getElementById("color");
-            colorElement.addEventListener("click", stopProp, false);
-            colorElement.addEventListener("mousedown", stopProp, false);
-
-            var setFavicon = function (hex) {
-                var canvas = document.createElement('canvas');
-                canvas.width = 16;
-                canvas.height = 16;
-                var ctx = canvas.getContext('2d');
-                ctx.fillStyle = hex;
-                ctx.fillRect(0, 0, 16, 16);
-                document.getElementsByTagName('link')[0].href = canvas.toDataURL("image/x-icon");
-            }
-
-            var setRandomColor = function setRandomColor() {
-                var h = void 0,
-                    s = void 0,
-                    l = void 0;
-
-                h = randomInt(0, 359);
-                s = randomInt(55, 75);
-                l = randomInt(40, 60);
-
-                document.documentElement.style.setProperty('--color', 'hsl(' + h + ', ' + s + '%, ' + l + '%)');
-                var hex = hslToHex(h, s, l);
-                document.title = hex;
-                colorElement.innerHTML = hex;
-                document.documentElement.style.setProperty('--color-transparent', hex + '22');
-
-                setFavicon(hex);
-            };
-            setRandomColor();
-
-            var body = document.getElementsByTagName("body")[0];
-            body.addEventListener("mousedown", function (ev) {
-                ev.preventDefault();
-            });
-            body.addEventListener("click", function () {
-                setRandomColor();
-            }, false);
+        const eventTypes = {
+            race: { color: '#3b82f6', label: 'Race/Run' },
+            event: { color: '#a855f7', label: 'Event' },
+            training: { color: '#22c55e', label: 'Training/Net' },
+            meeting: { color: '#f97316', label: 'Meeting/Hamfest' },
+            emergency: { color: '#ef4444', label: 'Emergency Drill' }
         };
-    </script>
-</body>
 
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+
+        async function loadEvents() {
+            try {
+                const response = await fetch('data/events.json');
+                const data = await response.json();
+                events = data.events.map(e => {
+                    // Parse date as local time to avoid timezone offset issues
+                    const [year, month, day] = e.date.split('-').map(Number);
+                    const eventData = {
+                        ...e,
+                        date: new Date(year, month - 1, day)
+                    };
+
+                    // Parse end date if it exists
+                    if (e.endDate) {
+                        const [endYear, endMonth, endDay] = e.endDate.split('-').map(Number);
+                        eventData.endDate = new Date(endYear, endMonth - 1, endDay);
+                    }
+
+                    return eventData;
+                });
+                renderCalendar();
+            } catch (error) {
+                console.error('Error loading events:', error);
+                // Use sample data if file not found
+                events = [];
+                renderCalendar();
+            }
+        }
+
+        function renderFilters() {
+            const filtersContainer = document.getElementById('filters');
+            filtersContainer.innerHTML = `
+                <span class="filter-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                    Filter:
+                </span>
+                <button class="filter-btn ${filterCategory === 'all' ? 'active' : ''}" onclick="setFilter('all')">
+                    All Events
+                </button>
+                ${Object.entries(eventTypes).map(([key, type]) => `
+                    <button class="filter-btn ${filterCategory === key ? 'active' : ''}" onclick="setFilter('${key}')">
+                        <span class="event-dot" style="background: ${type.color}"></span>
+                        ${type.label}
+                    </button>
+                `).join('')}
+            `;
+        }
+
+        function setFilter(category) {
+            filterCategory = category;
+            renderCalendar();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+
+            // Auto-switch to list view when searching
+            if (searchQuery && currentView === 'month') {
+                setView('list');
+            }
+
+            renderCalendar();
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.getElementById('monthViewBtn').classList.toggle('active', view === 'month');
+            document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
+
+            // Clear search when switching to month view
+            if (view === 'month' && searchQuery) {
+                searchQuery = '';
+                document.getElementById('searchInput').value = '';
+            }
+
+            renderCalendar();
+        }
+
+        function changeMonth(direction) {
+            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1);
+            renderCalendar();
+        }
+
+        function getEventsForDay(day) {
+            const checkDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+
+            return events.filter(event => {
+                if (filterCategory !== 'all' && event.type !== filterCategory) return false;
+
+                // Check if the day falls within the event's date range
+                const startDate = new Date(event.date);
+                startDate.setHours(0, 0, 0, 0);
+
+                const endDate = event.endDate ? new Date(event.endDate) : new Date(event.date);
+                endDate.setHours(23, 59, 59, 999);
+
+                checkDate.setHours(12, 0, 0, 0);
+
+                return checkDate >= startDate && checkDate <= endDate;
+            });
+        }
+
+        function renderCalendar() {
+            document.getElementById('monthYear').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            renderFilters();
+
+            const container = document.getElementById('calendarContainer');
+            
+            if (currentView === 'month') {
+                container.innerHTML = renderMonthView();
+            } else {
+                container.innerHTML = renderListView();
+            }
+        }
+
+        function renderMonthView() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+
+            let html = '<div class="calendar-grid">';
+            
+            // Day headers
+            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+                html += `<div class="day-header">${day}</div>`;
+            });
+
+            // Empty cells
+            for (let i = 0; i < firstDay; i++) {
+                html += '<div></div>';
+            }
+
+            // Days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEvents = getEventsForDay(day);
+                const isToday = isCurrentMonth && today.getDate() === day;
+                
+                html += `
+                    <div class="calendar-day ${isToday ? 'today' : ''}">
+                        <div class="date">${day}</div>
+                        <div class="events">
+                            ${dayEvents.slice(0, 2).map(event => `
+                                <div class="mini-event event-type-${event.type}" onclick='showEventModal(${event.id})'>
+                                    ${event.title}
+                                </div>
+                            `).join('')}
+                            ${dayEvents.length > 2 ? `<div class="more-events">+${dayEvents.length - 2} more</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function renderListView() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const filteredEvents = events
+                .filter(e => {
+                    // Filter by category
+                    if (filterCategory !== 'all' && e.type !== filterCategory) return false;
+
+                    // Filter by search query
+                    if (searchQuery && !e.title.toLowerCase().includes(searchQuery)) return false;
+
+                    // Filter out past events (only show today and future)
+                    const eventEndDate = e.endDate || e.date;
+                    if (eventEndDate < today) return false;
+
+                    return true;
+                })
+                .sort((a, b) => a.date - b.date);
+
+            if (filteredEvents.length === 0) {
+                const message = searchQuery
+                    ? `No events found matching "${document.getElementById('searchInput').value}".`
+                    : 'No events found for the selected filter.';
+                return `<div style="text-align: center; padding: 2rem; color: #94a3b8;">${message}</div>`;
+            }
+
+            return `
+                <div class="list-view">
+                    ${filteredEvents.map(event => `
+                        <div class="event-card" onclick='showEventModal(${event.id})'>
+                            <div class="event-card-header">
+                                <div class="event-card-info">
+                                    <div class="event-type-badge">
+                                        <span class="event-dot" style="background: ${eventTypes[event.type].color}"></span>
+                                        <span>${eventTypes[event.type].label}</span>
+                                    </div>
+                                    <h4>${event.title}</h4>
+                                    <div class="event-details">
+                                        <div class="event-detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                            ${event.endDate && event.endDate.getTime() !== event.date.getTime()
+                                                ? `${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${event.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                                                : event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                                            }
+                                        </div>
+                                        ${event.time ? `
+                                        <div class="event-detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                            ${event.time}
+                                        </div>
+                                        ` : ''}
+                                        <div class="event-detail">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                            ${event.location}
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary">Details</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showEventModal(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) return;
+
+            const modal = document.getElementById('eventModal');
+            const typeBadge = document.getElementById('modalTypeBadge');
+            const title = document.getElementById('modalTitle');
+            const details = document.getElementById('modalDetails');
+            const description = document.getElementById('modalDescription');
+            const contact = document.getElementById('modalContact');
+
+            typeBadge.innerHTML = `
+                <span class="event-dot" style="background: ${eventTypes[event.type].color}"></span>
+                <span>${eventTypes[event.type].label}</span>
+            `;
+
+            title.textContent = event.title;
+
+            details.innerHTML = `
+                <div class="modal-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    ${event.endDate && event.endDate.getTime() !== event.date.getTime()
+                        ? `${event.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} - ${event.endDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}`
+                        : event.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+                    }
+                </div>
+                ${event.time ? `
+                <div class="modal-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    ${event.time}
+                </div>
+                ` : ''}
+                <div class="modal-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    ${event.location}
+                </div>
+            `;
+
+            description.textContent = event.description;
+            contact.textContent = event.contact;
+
+            // Setup Add to Calendar button
+            const addToCalendarBtn = document.getElementById('addToCalendarBtn');
+            addToCalendarBtn.onclick = (e) => {
+                e.stopPropagation();
+                downloadICS(event);
+            };
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'eventModal') {
+                document.getElementById('eventModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ICS file generation utilities
+        function formatICSDate(date) {
+            // Format date as YYYYMMDD for all-day events
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}${month}${day}`;
+        }
+
+        function escapeICSText(text) {
+            if (!text) return '';
+            return text.replace(/\\/g, '\\\\')
+                      .replace(/;/g, '\\;')
+                      .replace(/,/g, '\\,')
+                      .replace(/\n/g, '\\n');
+        }
+
+        function generateICS(event) {
+            const startDate = formatICSDate(event.date);
+            // For all-day events, end date should be the day AFTER the last day
+            const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
+            endDateObj.setDate(endDateObj.getDate() + 1);
+            const endDate = formatICSDate(endDateObj);
+
+            const now = new Date();
+            const timestamp = formatICSDate(now) + 'T' +
+                now.getHours().toString().padStart(2, '0') +
+                now.getMinutes().toString().padStart(2, '0') +
+                now.getSeconds().toString().padStart(2, '0') + 'Z';
+
+            const description = escapeICSText(event.description || '');
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Atlanta Ham Radio//Events//EN',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'BEGIN:VEVENT',
+                `UID:event-${event.id}@atlantahamradio.com`,
+                `DTSTAMP:${timestamp}`,
+                `DTSTART;VALUE=DATE:${startDate}`,
+                `DTEND;VALUE=DATE:${endDate}`,
+                `SUMMARY:${escapeICSText(event.title)}`,
+                `LOCATION:${escapeICSText(event.location)}`,
+                description ? `DESCRIPTION:${description}` : '',
+                event.contact ? `URL:${event.contact}` : '',
+                `CATEGORIES:${eventTypes[event.type]?.label || 'Event'}`,
+                'STATUS:CONFIRMED',
+                'TRANSP:TRANSPARENT',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].filter(line => line).join('\r\n');
+
+            return icsContent;
+        }
+
+        function generateAllEventsICS() {
+            const now = new Date();
+            const timestamp = formatICSDate(now) + 'T' +
+                now.getHours().toString().padStart(2, '0') +
+                now.getMinutes().toString().padStart(2, '0') +
+                now.getSeconds().toString().padStart(2, '0') + 'Z';
+
+            let icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Atlanta Ham Radio//Events//EN',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'X-WR-CALNAME:Atlanta Ham Radio Events',
+                'X-WR-CALDESC:Amateur radio events in the Atlanta metro area'
+            ].join('\r\n') + '\r\n';
+
+            events.forEach(event => {
+                const startDate = formatICSDate(event.date);
+                const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
+                endDateObj.setDate(endDateObj.getDate() + 1);
+                const endDate = formatICSDate(endDateObj);
+
+                const description = escapeICSText(event.description || '');
+
+                icsContent += [
+                    'BEGIN:VEVENT',
+                    `UID:event-${event.id}@atlantahamradio.com`,
+                    `DTSTAMP:${timestamp}`,
+                    `DTSTART;VALUE=DATE:${startDate}`,
+                    `DTEND;VALUE=DATE:${endDate}`,
+                    `SUMMARY:${escapeICSText(event.title)}`,
+                    `LOCATION:${escapeICSText(event.location)}`,
+                    description ? `DESCRIPTION:${description}` : '',
+                    event.contact ? `URL:${event.contact}` : '',
+                    `CATEGORIES:${eventTypes[event.type]?.label || 'Event'}`,
+                    'STATUS:CONFIRMED',
+                    'TRANSP:TRANSPARENT',
+                    'END:VEVENT'
+                ].filter(line => line).join('\r\n') + '\r\n';
+            });
+
+            icsContent += 'END:VCALENDAR';
+            return icsContent;
+        }
+
+        function downloadICS(event) {
+            const icsContent = generateICS(event);
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${event.title.replace(/[^a-z0-9]/gi, '_')}.ics`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        function downloadAllEventsICS() {
+            const icsContent = generateAllEventsICS();
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'atlanta-ham-radio-events.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            loadEvents();
+        });
+    </script>
+    <script src="js/footer.js"></script>
+</body>
 </html>

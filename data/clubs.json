@@ -1,0 +1,362 @@
+{
+  "counties": [
+    {
+      "name": "Butts County",
+      "clubs": [
+        {
+          "name": "Amateur Radio Club of Butts County",
+          "location": "Butts County",
+          "website": "http://www.bcgaares.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/BC-ARES"
+            },
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/groups/BCECA/"
+            }
+      	  ]
+      	}
+      ]
+    },
+    {
+      "name": "Clarke County",
+      "clubs": [
+        {
+          "name": "Athens Radio Club",
+          "location": "Athens, GA",
+          "website": "https://www.athensradioclub.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://athensradioclub.groups.io/g/main"
+            },
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/groups/athensradioclub/"
+            }
+          ]
+        },
+        {
+          "name": "Clarke County ARES",
+          "location": "Clarke County",
+          "website": "https://www.athensradioclub.org/ccares",
+          "links": []
+        }
+      ]
+    },
+    {
+      "name": "Cobb County",
+      "clubs": [
+        {
+          "name": "Kennehoochee Amateur Radio Club",
+          "location": "Mableton, GA",
+          "website": "https://w4bti.club/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/karc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "College Campuses",
+      "clubs": [
+        {
+          "name": "Georgia Tech Amateur Radio Club",
+          "location": "Georgia Tech",
+          "website": "https://w4aql.gtorg.gatech.edu/",
+          "links": []
+        },
+        {
+          "name": "UGA Student Radio Club",
+          "location": "University of Georgia",
+          "website": "https://www.athensradioclub.org/ugarc-club-page",
+          "links": []
+        }
+      ]
+    },
+    {
+      "name": "Coweta County",
+      "clubs": [
+      {
+          "name": "Newnan Regional Amateur Radio Club",
+          "location": "Newnan, GA",
+          "website": "https://bgmrc.org/",
+          "links": [
+            {
+              "name": "Member Day",
+              "url": "https://app.memberday.com/"
+            }
+          ]
+        },
+        {
+          "name": "North Georgia Amateur Radio Association - Memebr Only Club - North Georgia Coverage",
+          "location": "Coweta County - Atl Metro",
+          "website": "https://nggmrs.org/pages/north-georgia-amateur-radio-association",
+          "links": []
+        }
+      ]
+    },
+    {
+      "name": "DeKalb County",
+      "clubs": [
+        {
+          "name": "Alford Memorial Radio Club",
+          "location": "Stone Mountain, GA",
+          "website": "http://www.totr-radio.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://alfordmemorialradioclub.groups.io/g/main"
+            }
+          ]
+        },
+        {
+          "name": "DeKalb ARES ",
+          "location": "Dekalb County",
+          "website": "https://dekalbares.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/DeKalbARES"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Douglas County",
+      "clubs": [
+        {
+          "name": "West Georgia Amateur Radio Society",
+          "location": "Douglas and Carroll Counties",
+          "website": "hhttps://wgars.com/",
+          "links": [
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/WGARS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fayette County",
+      "clubs": [
+        {
+          "name": "Fayette County Amateur Radio Club",
+          "location": "Fayette County",
+          "website": "https://kk4gq.org",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/kk4gq"
+            }, 
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/groups/KK4GQ"
+            }
+          ]
+        },
+        {
+          "name": "Fayette County ARES",
+          "location": "Fayette County",
+          "website": "https://sites.google.com/w8byh.org/fayettegaares",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/fayetteares"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Floyd County",
+      "clubs": [
+        {
+          "name": "Northwest Georgia Amateur Radio Club",
+          "location": "Rome, GA",
+          "website": "https://www.w4vo.com/",
+          "links": []
+        }
+      ]
+    },
+    {
+      "name": "Forsyth County",
+      "clubs": [
+        {
+          "name": "Sawnee Amateur Radio Association",
+          "location": "Forsyth County",
+          "website": "https://sawneeradio.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/SawneeAmateurRadioAssociation"
+            }
+          ]
+        },
+        {
+          "name": "Forsyth County Georgia ARES",
+          "location": "Forsyth County",
+          "website": "https://sawneeradio.org/forsyth-county-ares/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/Forsyth-ARES"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fulton County",
+      "clubs": [
+        {
+          "name": "Atlanta Radio Club",
+          "location": "Atlanta, GA",
+          "website": "https://www.atlantaradioclub.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/arc/"
+            }
+          ]
+        },
+        {
+          "name": "Atlanta ARES",
+          "location": "Atlanta, GA",
+          "website": "https://www.atlantaradioclub.org/atlanta-ares.html",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/arc/"
+            }
+          ]
+        },
+        {
+          "name": "North Fulton Amateur Radio League",
+          "location": "North Fulton County",
+          "website": "https://nfarl.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://nfarl.groups.io/g/main"
+            },
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/groups/NFARL/"
+            }
+          ]
+        },
+        {
+          "name": "North Fulton ARES",
+          "location": "North Fulton County",
+          "website": "https://nfares.org/wrdp/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://nfarl.groups.io/g/main"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gwinnett County",
+      "clubs": [
+        {
+          "name": "Gwinnette Amateur Radio Society",
+          "location": "Lawrenceville, GA",
+          "website": "https://www.gars.org/gars/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/GARS"
+            }
+          ]
+        },
+        {
+          "name": "Gwinnett County ARES",
+          "location": "Lawrenceville, GA",
+          "website": "http://www.gwinnettares.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/GwinnettARES"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Henry County",
+      "clubs": [
+        {
+          "name": "Henry County Amateur Radio Society",
+          "location": "McDonough, GA",
+          "website": "https://www.henrycountyars.org/",
+          "links": [
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/groups/1599063946991982/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Paulding County",
+      "clubs": [
+        {
+          "name": "Paulding Amateur Radio Club",
+          "location": "Paulding County",
+          "website": "http://www.pauldingarc.club/",
+          "links": []
+        },
+        {
+          "name": "Paulding County ARES",
+          "location": "Paulding County",
+          "website": "http://pauldingares.com/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "http://pauldingares.groups.io/"
+            }
+          ]
+        },
+        {
+          "name": "Silver Comet Amateur Radio Society",
+          "location": "Dallas. GA",
+          "website": "https://www.silvercometars.com/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "http://silvercometars.groups.io/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Troup County",
+      "clubs": [
+        {
+          "name": "LaGrange Amateur Radio Club",
+          "location": "LaGrange, GA",
+          "website": "http://lagrangeradioclub.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/LaGrangeAmateurRadioClub"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

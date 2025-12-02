@@ -1,0 +1,261 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Stone Mountain Hamfest",
+      "date": "2025-11-01",
+      "endDate": "2025-11-02",
+      "time": null,
+      "type": "meeting",
+      "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
+      "description": null,
+      "contact": "https://stonemountainhamfest.com/"
+    },
+    {
+      "id": 2,
+      "title": "Invesco QQQ Thanksgiving Day Half Marathon, 5K, Mile & Dash",
+      "date": "2025-11-27",
+      "time": "5:00am-11:00am",
+      "type": "race",
+      "location": "Atlanta, GA",
+      "description": null,
+      "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565 (password: HAM2025)"
+    },
+    {
+      "id": 3,
+      "title": "The Polar Opposite Peachtree 2026",
+      "date": "2026-01-03",
+      "time": null,
+      "type": "race",
+      "location": "Downtown Atlanta",
+      "description": "Register through the provided Link. Ham radio opertors will be cooridinated by Atlanta ARES",
+      "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071 (password: HAMPOP26)"
+    },
+    {
+      "id": 4,
+      "title": "Peachtree City 5K & Half Marathon",
+      "date": "2026-01-17",
+      "time": null,
+      "type": "race",
+      "location": "Peachtree City, GA",
+      "description": null,
+      "contact": "https://fayetteares.org/"
+    },
+    {
+      "id": 5,
+      "title": "Winter Field Day",
+      "date": "2026-01-24",
+      "endDate": "2026-01-25",
+      "time": "Start: 1600 UTC on Saturday (11 am EST) End: 21:59 UTC on Sunday(4:59 pm EST)",
+      "type": "event",
+      "location": "See website",
+      "description": "Winter Field Day is an annual amateur‑radio event held on the last full weekend in January that challenges operators to set up portable stations in cold, remote conditions to practice emergency communications.",
+      "contact": "https://winterfieldday.org"
+    },
+    {
+      "id": 6,
+      "title": "Classic City Marathon",
+      "date": "2026-01-24",
+      "time": "7:00a-1:00p",
+      "type": "race",
+      "location": "Athens, GA",
+      "description": "Athen Radio Club will be coordinating ham radio operators for this event.",
+      "contact": "Claude Ray - AC4SH"
+    },
+    {
+      "id": 7,
+      "title": "Gwinnett ARS Techfest",
+      "date": "2026-01-31",
+      "time": "8:30a - 3:15p",
+      "type": "meeting",
+      "location": "Gwinnett County, GA",
+      "description": null,
+      "contact": "http://www.techfest.info/"
+    },
+    {
+      "id": 8,
+      "title": "Orlando Hamcation",
+      "date": "2026-02-13",
+      "endDate": "2026-02-15",
+      "time": null,
+      "type": "meeting",
+      "location": "Orlando, FL",
+      "description": "Orlando HamCation is a three‑day annual ham‑radio convention in Orlando, Florida that combines vendor exhibits, technical talks, awards and social events for amateur‑radio enthusiasts.",
+      "contact": "https://www.hamcation.com/"
+    },
+    {
+      "id": 9,
+      "title": "Run the Ridge 5K/10K",
+      "date": "2026-02-15",
+      "time": null,
+      "type": "race",
+      "location": "Fayetteville, GA",
+      "description": null,
+      "contact": "KK4GQ"
+    },
+    {
+      "id": 10,
+      "title": "Dalton Hamfest",
+      "date": "2026-02-28",
+      "time": null,
+      "type": "meeting",
+      "location": "Dalton, GA",
+      "description": null,
+      "contact": "https://www.qrz.com/db/W4DRC"
+    },
+    {
+      "id": 11,
+      "title": "Publix Atlanta Marathon",
+      "date": "2026-03-01",
+      "time": null,
+      "type": "race",
+      "location": "Atlanta, GA",
+      "description": null,
+      "contact": "https://www.atlantaradioclub.org/atlanta-ares.html"
+    },
+    {
+      "id": 12,
+      "title": "GA ARES Annual Training (ARES100)",
+      "date": "2026-03-14",
+      "time": "8:00am-4:00pm",
+      "type": "training",
+      "location": "Forsyth, GA",
+      "description": null,
+      "contact": "https://gaares.org/ga-ares-state-meeting-2026/"
+    },
+    {
+      "id": 13,
+      "title": "Georgia Parks on the Air",
+      "date": "2026-04-18",
+      "endDate": "2026-04-19",
+      "time": "Start: April 18, 2026 @ 8:00am EDT (1200UTC) End: April 19, 2025 @ 7:59pm EDT (2359UTC)",
+      "type": "event",
+      "location": "See website",
+      "description": "Georgia Parks on the Air is a weekend‑long contest that mobilizes ham operators to activate (or “hunt” from) every Georgia state park—about 50 parks—in a single 36‑hour window, rewarding contacts made from those park sites.",
+      "contact": "https://gaparks.org/"
+    },
+    {
+      "id": 14,
+      "title": "Peachtree International and Aquabike",
+      "date": "2026-04-26",
+      "time": null,
+      "type": "race",
+      "location": "Peachtree City, GA",
+      "description": null,
+      "contact": "https://groups.io/g/fayetteares/topic/111758529"
+    },
+    {
+      "id": 15,
+      "title": "Dayton Hamvention",
+      "date": "2026-05-15",
+      "endDate": "2026-05-17",
+      "time": null,
+      "type": "meeting",
+      "location": "Dayton, OH",
+      "description": "Dayton Hamvention is one of the world’s largest amateur‑radio conventions, held each May in the Dayton, Ohio area where thousands of hams gather for exhibits, vendors, workshops and community networking.",
+      "contact": "https://hamvention.org/"
+    },
+    {
+      "id": 16,
+      "title": "Atlanta Hamfest",
+      "date": "2026-06-07",
+      "time": null,
+      "type": "meeting",
+      "location": "Jim R. Miller Park",
+      "description": null,
+      "contact": "https://www.atlantaradioclub.org/atlanta-hamfestival.html"
+    },
+    {
+      "id": 17,
+      "title": "ARRL Field Day",
+      "date": "2026-06-27",
+      "endDate": "2026-06-28",
+      "time": null,
+      "type": "event",
+      "location": "See website",
+      "description": null,
+      "contact": "http://www.arrl.org/field-day"
+    },
+    {
+      "id": 18,
+      "title": "Peachtree Road Race",
+      "date": "2026-07-04",
+      "time": null,
+      "type": "race",
+      "location": "Atlanta, GA",
+      "description": null,
+      "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=98060 (password: PRR25HAM)"
+    },
+    {
+      "id": 19,
+      "title": "Huntsville Hamfest",
+      "date": "2026-08-22",
+      "endDate": "2026-08-23",
+      "time": null,
+      "type": "event",
+      "location": "Huntsville, AL",
+      "description": "Huntsville Hamfest is a two‑day ARRL‑sanctioned gathering held each August at the Von Braun Center in Huntsville, Alabama, featuring a flea market, vendor displays and family‑friendly activities for amateur‑radio enthusiasts.",
+      "contact": "https://hamfest.org/"
+    },
+    {
+      "id": 20,
+      "title": "No One Walks Alone – NRARC",
+      "date": "2026-09-06",
+      "time": null,
+      "type": "race",
+      "location": "CJ Smith Park, Newnan, GA",
+      "description": null,
+      "contact": "Newnan Regional Amateur Radio Club"
+    },
+    {
+      "id": 21,
+      "title": "PTC Sprint Tri",
+      "date": "2026-09-13",
+      "time": null,
+      "type": "race",
+      "location": "Peachtree City, GA",
+      "description": null,
+      "contact": "Fayette ARES"
+    },
+    {
+      "id": 22,
+      "title": "Bike MS: Georgia Peach Ride 2026",
+      "date": "2026-09-13",
+      "time": null,
+      "type": "race",
+      "location": "Wild Leap Brewery, LaGrange, GA 30240",
+      "description": null,
+      "contact": "http://www.lagrangeradioclub.org/"
+    },
+    {
+      "id": 23,
+      "title": "Ferst Lewis Grizzard and Catfish Bike Ride",
+      "date": "2026-10-05",
+      "time": null,
+      "type": "race",
+      "location": "The Morland Mill, Moreland, GA",
+      "description": null,
+      "contact": "Newnan Regional Amateur Radio Club"
+    },
+    {
+      "id": 24,
+      "title": "Spin for Kids Group Bike Ride",
+      "date": "2026-10-05",
+      "time": null,
+      "type": "race",
+      "location": "Camp Twin Lakes, Rutledge, GA",
+      "description": null,
+      "contact": "Baldwin County ARES"
+    },
+    {
+      "id": 25,
+      "title": "PNC Atlanta 10 Mile and 5K",
+      "date": "2026-10-19",
+      "time": null,
+      "type": "race",
+      "location": "Atlanta, GA",
+      "description": null,
+      "contact": "https://www.atlantaradioclub.org/atlanta-ares.html"
+    }
+  ]
+}

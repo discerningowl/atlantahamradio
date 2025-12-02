@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Directory - Atlanta Ham Radio</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <script src="../js/header.js"></script>
+
+    <section class="hero">
+        <h2>Atlanta Metro Ham Radio Clubs</h2>
+        <p>Connect with amateur radio clubs across the Atlanta metropolitan area. Find your local club, join ARES groups, and get involved in the ham radio community.</p>
+        <div class="contact-notice">
+            📢 Club representatives: Reach out to <a href="contact.html">KQ4JP</a> to add or update your club information
+        </div>
+    </section>
+
+    <section class="search-container">
+        <div class="search-box">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+	            <input type="text" id="searchInput" placeholder="Search clubs or counties..." onkeyup="filterClubs()">
+        </div>
+    </section>
+
+    <section class="clubs-container" id="clubsContainer">
+        <!-- Clubs will be loaded here -->
+    </section>
+
+    <script>
+        let clubsData = [];
+
+        async function loadClubs() {
+            try {
+                const response = await fetch('../data/clubs.json');
+                const data = await response.json();
+                clubsData = data.counties;
+                renderClubs();
+            } catch (error) {
+                console.error('Error loading clubs:', error);
+                document.getElementById('clubsContainer').innerHTML = `
+                    <div class="no-results">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <h3>Unable to load clubs data</h3>
+                        <p>Please make sure clubs.json is in the same directory as this file.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderClubs(filteredData = null) {
+            const container = document.getElementById('clubsContainer');
+            const dataToRender = filteredData || clubsData;
+
+            if (dataToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <h3>No clubs found</h3>
+                        <p>Try adjusting your search terms</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            dataToRender.forEach(county => {
+                const clubCount = county.clubs.length;
+                const countyId = `county-${county.name.toLowerCase().replace(/\s+/g, '-')}`;
+
+                html += `
+                    <div class="county-section">
+                        <div class="county-header" onclick="toggleCounty('${countyId}')">
+                            <h3>
+                                ${county.name}
+                                ${clubCount > 0 ? `<span class="club-count">${clubCount}</span>` : ''}
+                            </h3>
+                            <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        </div>
+                        <div class="clubs-list" id="${countyId}">
+                `;
+
+                if (clubCount === 0) {
+                    html += `<div class="empty-county">No clubs listed yet. Know of a club in ${county.name} County? Contact KQ4JP to add it!</div>`;
+                } else {
+                    county.clubs.forEach(club => {
+                        html += `
+                            <div class="club-card">
+                                <div class="club-name">${club.name}</div>
+                                <div class="club-location">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    ${club.location}
+                                </div>
+                                <div class="club-links">
+                                    <a href="${club.website}" target="_blank" class="club-link">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                                        Website
+                                    </a>
+                                    ${club.links.map(link => `
+                                        <a href="${link.url}" target="_blank" class="club-link secondary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                            ${link.name}
+                                        </a>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleCounty(countyId) {
+            const clubsList = document.getElementById(countyId);
+            const header = clubsList.previousElementSibling;
+            
+            clubsList.classList.toggle('hidden');
+            header.classList.toggle('collapsed');
+        }
+
+        function filterClubs() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                renderClubs();
+                return;
+            }
+
+            const filtered = clubsData
+                .map(county => {
+                    const matchesCountyName = county.name.toLowerCase().includes(searchTerm);
+                    const filteredClubs = county.clubs.filter(club => 
+                        club.name.toLowerCase().includes(searchTerm) ||
+                        club.location.toLowerCase().includes(searchTerm)
+                    );
+
+                    if (matchesCountyName || filteredClubs.length > 0) {
+                        return {
+                            ...county,
+                            clubs: matchesCountyName ? county.clubs : filteredClubs
+                        };
+                    }
+                    return null;
+                })
+                .filter(county => county !== null);
+
+            renderClubs(filtered);
+        }
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            loadClubs();
+        });
+    </script>
+    <script src="../js/footer.js"></script>
+</body>
+</html>
