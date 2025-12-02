@@ -68,12 +68,6 @@ atlantahamradio/
   - Module pattern for components
   - Event delegation
 
-### External Dependencies
-- **Lucide Icons**: Loaded via CDN (SVG icons)
-  ```html
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/umd/lucide.min.js"></script>
-  ```
-
 ### No Build Process
 - No npm/package.json
 - No transpilation or bundling
