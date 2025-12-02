@@ -1,8 +1,8 @@
-name: sample-html
+name: atlantahamradio
 static_sites:
 - environment_slug: html
   github:
     branch: main
     deploy_on_push: true
-    repo: digitalocean/sample-html
-  name: sample-html
+    repo: discerningowl/atlantahamradio
+  name: atlantahamradio
