@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
     <title>Club Directory - Atlanta Ham Radio</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../css/style.css">
@@ -33,6 +34,14 @@
 
     <script>
         let clubsData = [];
+
+        // HTML escaping function to prevent XSS attacks
+        function escapeHTML(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
 
         async function loadClubs() {
             try {
@@ -90,20 +99,20 @@
                     county.clubs.forEach(club => {
                         html += `
                             <div class="club-card">
-                                <div class="club-name">${club.name}</div>
+                                <div class="club-name">${escapeHTML(club.name)}</div>
                                 <div class="club-location">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    ${club.location}
+                                    ${escapeHTML(club.location)}
                                 </div>
                                 <div class="club-links">
-                                    <a href="${club.website}" target="_blank" class="club-link">
+                                    <a href="${escapeHTML(club.website)}" target="_blank" rel="noopener noreferrer" class="club-link">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                                         Website
                                     </a>
                                     ${club.links.map(link => `
-                                        <a href="${link.url}" target="_blank" class="club-link secondary">
+                                        <a href="${escapeHTML(link.url)}" target="_blank" rel="noopener noreferrer" class="club-link secondary">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                                            ${link.name}
+                                            ${escapeHTML(link.name)}
                                         </a>
                                     `).join('')}
                                 </div>
