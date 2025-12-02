@@ -1,56 +1,227 @@
-## Getting Started
+# Atlanta Ham Radio
 
-We provide a sample app using HTML that you can deploy on App Platform. These steps will get this sample application running for you using App Platform.
+A community website connecting amateur radio operators to public service events, clubs, and resources across the Atlanta metropolitan area.
 
-**Note: Following these steps may result in charges for the use of DigitalOcean services.**
+[![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps)
 
-### Requirements
+## 🎯 Purpose
 
-* You need a DigitalOcean account. If you don't already have one, you can sign up at https://cloud.digitalocean.com/registrations/new.
+This website serves the Atlanta ham radio community by providing:
 
-## Deploying the App
+- **Event Calendar**: Searchable, filterable calendar of public service events (races, training, meetings, emergency drills)
+- **Club Directory**: Comprehensive directory of amateur radio clubs organized by county
+- **Educational Resources**: Guides for new and experienced operators
+- **Community Engagement**: Connect volunteers with public service opportunities
 
-Click this button to deploy the app to the DigitalOcean App Platform. If you are not logged in, you will be prompted to log in with your DigitalOcean account.
+## ✨ Features
 
-[![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/digitalocean/sample-html/tree/main)
+### 📅 Event Calendar
+- Month and list view options
+- Filter by event type (race, event, training, meeting, emergency)
+- Search events by name
+- ICS calendar export (individual events or bulk subscription)
+- Multi-day event support
+- Responsive mobile-friendly design
 
-Using this button disables the ability to automatically re-deploy your app when pushing to a branch or tag in your repository as you are using this repo directly.
+### 📡 Club Directory
+- Organized by county
+- Searchable by club name, location, or county
+- Direct links to club websites and Groups.io pages
+- Collapsible county sections
+- Club count badges
 
-If you want to automatically re-deploy your app, [fork](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo) the GitHub repository to your account so that you have a copy of it stored to the cloud. Click the **Fork** button in the GitHub repository and follow the on-screen instructions.
+### 📚 Resources
+- Getting started guides
+- ARES task book
+- Licensing tips
+- Equipment guides (handhelds, hotspots, etc.)
+- Callsign change procedures
 
-After forking the repo, you should now be viewing this README in your own GitHub org (e.g. `https://github.com/<your-org>/sample-html`). To deploy the new repo, visit https://cloud.digitalocean.com/apps and click **Create App**. Then, click **GitHub**, select the repository you created and select the `main` branch. App Platform will inspect the code, automatically detect the kind of component to create, and use the correct buildpack to create and deploy a container.
+## 🛠️ Technology Stack
 
-After clicking the **Deploy to DigitalOcean** button or completing the instructions above to fork the repo, follow these steps:
+**Pure Static Website** - No build process required!
 
-1. Configure the app such as specifying HTTP routes, environment variables or adding a database.
-1. Provide a name for your app and select which region you want to deploy your app to and click **Next**. The closest region to you should be selected by default. All App Platform apps are routed through a global CDN. So this will not affect your app performance, unless it needs to talk to external services.
-1. On the following screen, leave all the fields as they are and click **Next**.
-1. Confirm your **Plan** settings and how many containers you want to launch and click **Launch Basic/Pro App**.
-1. You should see a "Building..." progress indicator. You can click **View Logs** to see more details of the build.
-1. It can take a few minutes for the build to finish, but you can follow the progress in the **Deployments** tab.
-1. Once the build completes successfully, click the **Live App** link in the header and you should see your running application in a new tab, displaying the home page.
+- **HTML5**: Semantic markup
+- **CSS3**: Modern responsive design with grid/flexbox
+- **Vanilla JavaScript**: ES6+ features, no frameworks
+- **External Dependencies**: Lucide Icons (CDN)
 
-### Making Changes to Your App
+### Why No Framework?
 
-If you followed the steps to fork the repo and used your own copy when deploying the app, you can push changes to your fork and see App Platform automatically re-deploy the update to your app. During these automatic deployments, your application will never pause or stop serving request because App Platform offers zero-downtime deployments.
+This project intentionally uses vanilla HTML/CSS/JS to:
+- Minimize complexity and dependencies
+- Ensure fast load times
+- Make the codebase accessible to all skill levels
+- Avoid build tools and compilation steps
+- Enable direct deployment without configuration
 
-Here's an example code change you can make for this app:
+## 🚀 Quick Start
 
-1. Edit code within the repository
-1. Commit the change to the `main` branch. Normally it's a better practice to create a new branch for your change and then merge that branch to `main` after review, but for this demo you can commit to the `main` branch directly.
-1. Visit https://cloud.digitalocean.com/apps and navigate to your sample app.
-1. You should see a "Building..." progress indicator, just like when you first created the app.
-1. Once the build completes successfully, click the **Live App** link in the header and you should see your updated application running. You may need to force refresh the page in your browser (e.g. using **Shift+Reload**).
+### Local Development
 
-### Learn More
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/discerningowl/atlantahamradio.git
+   cd atlantahamradio
+   ```
 
-You can learn more about the App Platform and how to manage and update your application at https://www.digitalocean.com/docs/app-platform/.
+2. **Open in browser**
 
-## Deleting the App
+   Simply open `index.html` in your web browser, or use a local server:
 
-When you no longer need this sample application running live, you can delete it by following these steps:
-1. Visit the Apps control panel at https://cloud.digitalocean.com/apps.
-2. Navigate to the sample app.
-3. In the **Settings** tab, click **Destroy**.
+   ```bash
+   # Python 3
+   python -m http.server 8000
 
-**Note: If you do not delete your app, charges for using DigitalOcean services will continue to accrue.**
+   # Python 2
+   python -m SimpleHTTPServer 8000
+
+   # Node.js (if you have npx)
+   npx serve
+   ```
+
+3. **Visit**: `http://localhost:8000`
+
+That's it! No npm install, no build steps. 🎉
+
+## 📁 Project Structure
+
+```
+atlantahamradio/
+├── index.html              # Homepage with event calendar
+├── pages/                  # Content pages
+│   ├── clubs.html         # Club directory
+│   ├── getstarted.html    # Getting started guide
+│   ├── resources.html     # Resources page
+│   └── ...                # Other content pages
+├── data/                   # JSON data files
+│   ├── events.json        # Event calendar data
+│   └── clubs.json         # Club directory data
+├── js/                     # JavaScript components
+│   ├── header.js          # Header/navigation
+│   └── footer.js          # Footer
+├── css/
+│   └── style.css          # All styles (single file)
+├── images/                 # Images and assets
+└── .do/                    # DigitalOcean deployment config
+```
+
+## 📝 Contributing
+
+### Adding Events
+
+Edit `data/events.json` and add a new event object:
+
+```json
+{
+  "id": 26,
+  "title": "Event Name",
+  "date": "2026-12-01",
+  "endDate": null,
+  "time": "10:00am-2:00pm",
+  "type": "race",
+  "location": "Atlanta, GA",
+  "description": "Event details here",
+  "contact": "https://example.com"
+}
+```
+
+**Event Types**: `race`, `event`, `training`, `meeting`, `emergency`
+
+### Adding Clubs
+
+Edit `data/clubs.json` and add a new club to the appropriate county:
+
+```json
+{
+  "name": "Club Name",
+  "location": "City, GA",
+  "website": "https://clubwebsite.com",
+  "links": [
+    {
+      "name": "Groups.io",
+      "url": "https://groups.io/g/clubname"
+    }
+  ]
+}
+```
+
+### Making Changes
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Test locally in a browser
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 🌐 Deployment
+
+This site is deployed on **DigitalOcean App Platform** with automatic deployments enabled.
+
+- **Branch**: `main`
+- **Deployment**: Automatic on push
+- **Build**: None required (static files)
+- **CDN**: Global distribution via DigitalOcean CDN
+
+### Deploy Your Own
+
+1. Fork this repository
+2. Visit [DigitalOcean App Platform](https://cloud.digitalocean.com/apps)
+3. Click "Create App"
+4. Select your forked repository
+5. Choose `main` branch
+6. Deploy!
+
+Configuration is stored in `.do/app.yaml`.
+
+## 📖 Documentation
+
+For detailed technical documentation, architecture details, and AI assistant guidelines, see [`CLAUDE.md`](./CLAUDE.md).
+
+This includes:
+- Complete architecture patterns
+- Data schemas and examples
+- CSS class reference
+- Development guidelines
+- Common modification tasks
+
+## 🎨 Design System
+
+- **Colors**: Dark blue gradient theme with color-coded event types
+- **Typography**: System font stack for optimal performance
+- **Responsive**: Mobile-first design with 3 breakpoints (480px, 768px, 1024px)
+- **Accessibility**: Semantic HTML, ARIA labels, 44px touch targets
+
+## 📱 Browser Support
+
+- ✅ Chrome/Edge (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Mobile browsers (iOS Safari, Chrome Android)
+
+## 📞 Contact
+
+**Maintainer**: KQ4JP
+
+For questions, club additions, or event submissions:
+- Visit the [Contact Page](pages/contact.html)
+- YouTube: [@AtlantaHamRadio](https://www.youtube.com/@AtlantaHamRadio)
+
+## 📄 License
+
+This project is maintained for the Atlanta amateur radio community. Feel free to use this codebase as a template for your own regional ham radio community site.
+
+## 🙏 Acknowledgments
+
+- Atlanta area amateur radio clubs
+- ARES volunteers
+- Amateur radio operators supporting public service events
+- DigitalOcean for hosting
+
+---
+
+**73!** 📻
+
+Built with ❤️ for the Atlanta ham radio community
