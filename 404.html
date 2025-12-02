@@ -8,36 +8,44 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
         .error-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 4rem 1rem;
+            padding: 3rem 1rem 5rem;
             text-align: center;
+            flex: 1;
         }
 
         .error-code {
-            font-size: 8rem;
+            font-size: 10rem;
             font-weight: bold;
-            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #60a5fa;
+            text-shadow: 0 0 30px rgba(96, 165, 250, 0.5);
             line-height: 1;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .error-title {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            color: white;
-            margin-bottom: 1rem;
+            color: #e2e8f0;
+            margin-bottom: 1.5rem;
         }
 
         .error-message {
-            font-size: 1.125rem;
-            color: #cbd5e1;
+            font-size: 1.25rem;
+            color: #e2e8f0;
             margin-bottom: 2rem;
-            line-height: 1.6;
+            line-height: 1.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .error-links {
@@ -62,7 +70,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 2px solid #3b82f6;
+            border: 3px solid #60a5fa;
             border-radius: 50%;
             animation: pulse 2s ease-out infinite;
         }
@@ -89,13 +97,33 @@
             }
         }
 
+        .help-box {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.75rem;
+            border: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .help-box h3 {
+            color: #93c5fd;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .help-box p {
+            color: #e2e8f0;
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+        }
+
         @media (max-width: 768px) {
             .error-code {
-                font-size: 5rem;
+                font-size: 6rem;
             }
 
             .error-title {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
             }
 
             .error-message {
@@ -105,6 +133,14 @@
             .error-links {
                 flex-direction: column;
                 align-items: stretch;
+            }
+
+            .help-box {
+                padding: 1.5rem;
+            }
+
+            .help-box h3 {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -136,11 +172,9 @@
             </a>
         </div>
 
-        <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.5); border-radius: 0.75rem; border: 1px solid rgba(59, 130, 246, 0.2);">
-            <h3 style="color: #60a5fa; margin-bottom: 1rem; font-size: 1.25rem;">Need Help?</h3>
-            <p style="color: #cbd5e1; margin-bottom: 1rem;">
-                If you think this page should exist, please contact us and let us know what you were looking for.
-            </p>
+        <div class="help-box">
+            <h3>Need Help?</h3>
+            <p>If you think this page should exist, please contact us and let us know what you were looking for.</p>
             <a href="pages/contact.html" class="btn btn-contact">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 Contact KQ4JP
