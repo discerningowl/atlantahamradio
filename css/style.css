@@ -229,7 +229,7 @@ ul.themed-list ul li:before {
     width: 48px;
     height: 48px;
     object-fit: contain;
-    background: var(--bg-tertiary);
+    background: #f3f4f6;
     border-radius: 0.5rem;
     padding: 0.25rem;
     box-shadow: 0 2px 8px var(--shadow-md);
