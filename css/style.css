@@ -143,6 +143,15 @@
     --link-hover: #2563eb;
 }
 
+/* Light mode specific overrides for better contrast */
+[data-theme="light"] .club-link {
+    background: #2563eb;
+}
+
+[data-theme="light"] .club-link:hover {
+    background: #1d4ed8;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: var(--bg-primary);

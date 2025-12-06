@@ -38,7 +38,14 @@
     <section class="hero">
         <h2>Amateur Radio Resources</h2>
         <p>Comprehensive guides, tutorials, and information for amateur radio operators in the Atlanta metro area.</p>
-        <script>document.write(loadYouTubeButton());</script>
+        <div id="youtube-button-container"></div>
+        <script>
+            // Safely insert YouTube button
+            const container = document.getElementById('youtube-button-container');
+            if (container && typeof loadYouTubeButton === 'function') {
+                container.innerHTML = loadYouTubeButton();
+            }
+        </script>
     </section>
 
     <section class="quick-links">
