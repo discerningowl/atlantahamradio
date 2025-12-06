@@ -29,6 +29,12 @@
     <meta name="twitter:description" content="Learn about Jack Parks (KQ4JP), coordinator of Atlanta Ham Radio public service events.">
     <meta name="twitter:image" content="https://atlantahamradio.com/images/logo.png">
 
+    <!-- Performance: Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://api.emailjs.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://api.emailjs.com">
+
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -94,35 +100,37 @@
 
     <script src="../js/footer.js"></script>
 
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">
-        emailjs.init('cGSubiPKThbrRVBtV');
+    <!-- EmailJS SDK - async for better performance -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
+    <script>
+        // Initialize EmailJS when SDK loads
+        window.addEventListener('load', function() {
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init('cGSubiPKThbrRVBtV');
 
-        const form = document.getElementById('contact-form');
-        const submitBtn = document.getElementById('submit-btn');
+                const form = document.getElementById('contact-form');
+                const submitBtn = document.getElementById('submit-btn');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
 
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
+                    submitBtn.textContent = 'Sending...';
+                    submitBtn.disabled = true;
 
-            const serviceID = 'default_service';
-            const templateID = 'template_pjb4rds';
-
-            emailjs.sendForm(serviceID, templateID, this)
-                .then(() => {
-                    submitBtn.textContent = 'Send Message';
-                    submitBtn.disabled = false;
-                    alert('Message sent successfully!');
-                    form.reset();
-                }, (err) => {
-                    submitBtn.textContent = 'Send Message';
-                    submitBtn.disabled = false;
-                    alert('Failed to send message. Please try again or contact via QRZ.');
-                    console.error('EmailJS error:', err);
+                    emailjs.sendForm('default_service', 'template_pjb4rds', this)
+                        .then(() => {
+                            submitBtn.textContent = 'Send Message';
+                            submitBtn.disabled = false;
+                            alert('Message sent successfully!');
+                            form.reset();
+                        }, (err) => {
+                            submitBtn.textContent = 'Send Message';
+                            submitBtn.disabled = false;
+                            alert('Failed to send message. Please try again or contact via QRZ.');
+                            console.error('EmailJS error:', err);
+                        });
                 });
+            }
         });
     </script>
 </body>
