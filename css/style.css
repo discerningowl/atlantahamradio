@@ -37,8 +37,8 @@
     /* Button colors */
     --btn-primary: #64748b;
     --btn-primary-hover: #475569;
-    --btn-secondary: #94a3b8;
-    --btn-secondary-hover: #64748b;
+    --btn-secondary: #cbd5e1;
+    --btn-secondary-hover: #94a3b8;
 }
 
 /* Dark Mode - Automatic (system preference) */
@@ -126,8 +126,8 @@
 
     --btn-primary: #64748b;
     --btn-primary-hover: #475569;
-    --btn-secondary: #94a3b8;
-    --btn-secondary-hover: #64748b;
+    --btn-secondary: #cbd5e1;
+    --btn-secondary-hover: #94a3b8;
 }
 
 body {
@@ -507,8 +507,8 @@ nav a:hover {
 }
 
 .event-dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     display: inline-block;
 }
