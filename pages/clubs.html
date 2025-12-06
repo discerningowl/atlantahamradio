@@ -109,7 +109,7 @@
                     <div class="county-section">
                         <div class="county-header" onclick="toggleCounty('${countyId}')">
                             <h3>
-                                ${county.name}
+                                ${escapeHTML(county.name)}
                                 ${clubCount > 0 ? `<span class="club-count">${clubCount}</span>` : ''}
                             </h3>
                             <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -118,7 +118,7 @@
                 `;
 
                 if (clubCount === 0) {
-                    html += `<div class="empty-county">No clubs listed yet. Know of a club in ${county.name} County? Contact KQ4JP to add it!</div>`;
+                    html += `<div class="empty-county">No clubs listed yet. Know of a club in ${escapeHTML(county.name)} County? Contact KQ4JP to add it!</div>`;
                 } else {
                     county.clubs.forEach(club => {
                         html += `

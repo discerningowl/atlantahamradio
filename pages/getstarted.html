@@ -38,7 +38,14 @@
     <section class="hero">
         <h2>Getting Started</h2>
         <p>Essential information amateur radio operators wanting to participate in public service.</p>
-        <script>document.write(loadYouTubeButton());</script>
+        <div id="youtube-button-container"></div>
+        <script>
+            // Safely insert YouTube button
+            const container = document.getElementById('youtube-button-container');
+            if (container && typeof loadYouTubeButton === 'function') {
+                container.innerHTML = loadYouTubeButton();
+            }
+        </script>
     </section>
 
     <nav class="anchor-nav">

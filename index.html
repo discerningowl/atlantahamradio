@@ -333,7 +333,7 @@
                         <div class="events">
                             ${dayEvents.slice(0, 2).map(event => `
                                 <div class="mini-event event-type-${event.type}" onclick='showEventModal(${event.id})'>
-                                    ${event.title}
+                                    ${escapeHTML(event.title)}
                                 </div>
                             `).join('')}
                             ${dayEvents.length > 2 ? `<div class="more-events">+${dayEvents.length - 2} more</div>` : ''}
@@ -383,7 +383,7 @@
                                         <span class="event-dot" style="background: ${eventTypes[event.type].color}"></span>
                                         <span>${eventTypes[event.type].label}</span>
                                     </div>
-                                    <h4>${event.title}</h4>
+                                    <h4>${escapeHTML(event.title)}</h4>
                                     <div class="event-details">
                                         <div class="event-detail">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
