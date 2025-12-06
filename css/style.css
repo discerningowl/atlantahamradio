@@ -1594,8 +1594,8 @@ footer {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: #b6d1fc;
-    color: #1a1a1a;
+    background: #2563eb;
+    color: white;
     text-decoration: none;
     border-radius: 0.5rem;
     font-size: 0.875rem;
@@ -1604,7 +1604,7 @@ footer {
 }
 
 .club-link:hover {
-    background: #b9cdf8;
+    background: #1d4ed8;
     transform: translateY(-2px);
 }
 
@@ -1614,11 +1614,17 @@ footer {
 }
 
 .club-link.secondary {
-    background: var(--btn-secondary);
+    background: #b6d1fc;
+    color: white;
 }
 
 .club-link.secondary:hover {
-    background: var(--btn-secondary-hover);
+    background: #b9cdf8;
+}
+
+/* Light mode: secondary links with dark text */
+[data-theme="light"] .club-link.secondary {
+    color: #1a1a1a;
 }
 
 .empty-county {
