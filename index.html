@@ -91,10 +91,10 @@
                 <div class="view-buttons">
                     <button class="view-btn active" id="monthViewBtn" onclick="setView('month')">Month</button>
                     <button class="view-btn" id="listViewBtn" onclick="setView('list')">List</button>
-                    <button class="view-btn" id="subscribeBtn" onclick="downloadAllEventsICS()" style="background: #3b82f6; color: white; margin-left: 0.5rem;">
+                    <a href="webcal://atlantahamradio.com/events.ics" class="view-btn" id="subscribeBtn" style="background: #3b82f6; color: white; margin-left: 0.5rem; text-decoration: none; display: inline-flex; align-items: center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                         Subscribe
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -528,70 +528,12 @@
             return icsContent;
         }
 
-        function generateAllEventsICS() {
-            const now = new Date();
-            const timestamp = formatICSDate(now) + 'T' +
-                now.getHours().toString().padStart(2, '0') +
-                now.getMinutes().toString().padStart(2, '0') +
-                now.getSeconds().toString().padStart(2, '0') + 'Z';
-
-            let icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//Atlanta Ham Radio//Events//EN',
-                'CALSCALE:GREGORIAN',
-                'METHOD:PUBLISH',
-                'X-WR-CALNAME:Atlanta Ham Radio Events',
-                'X-WR-CALDESC:Amateur radio events in the Atlanta metro area'
-            ].join('\r\n') + '\r\n';
-
-            events.forEach(event => {
-                const startDate = formatICSDate(event.date);
-                const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
-                endDateObj.setDate(endDateObj.getDate() + 1);
-                const endDate = formatICSDate(endDateObj);
-
-                const description = escapeICSText(event.description || '');
-
-                icsContent += [
-                    'BEGIN:VEVENT',
-                    `UID:event-${event.id}@atlantahamradio.com`,
-                    `DTSTAMP:${timestamp}`,
-                    `DTSTART;VALUE=DATE:${startDate}`,
-                    `DTEND;VALUE=DATE:${endDate}`,
-                    `SUMMARY:${escapeICSText(event.title)}`,
-                    `LOCATION:${escapeICSText(event.location)}`,
-                    description ? `DESCRIPTION:${description}` : '',
-                    event.contact ? `URL:${event.contact}` : '',
-                    `CATEGORIES:${eventTypes[event.type]?.label || 'Event'}`,
-                    'STATUS:CONFIRMED',
-                    'TRANSP:TRANSPARENT',
-                    'END:VEVENT'
-                ].filter(line => line).join('\r\n') + '\r\n';
-            });
-
-            icsContent += 'END:VCALENDAR';
-            return icsContent;
-        }
-
         function downloadICS(event) {
             const icsContent = generateICS(event);
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = `${event.title.replace(/[^a-z0-9]/gi, '_')}.ics`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-        }
-
-        function downloadAllEventsICS() {
-            const icsContent = generateAllEventsICS();
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'atlanta-ham-radio-events.ics';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

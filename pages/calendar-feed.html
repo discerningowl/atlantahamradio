@@ -3,147 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atlanta Ham Radio - Calendar Feed</title>
-    <script>
-        // This page auto-generates an ICS feed when accessed
-        async function generateAndServeFeed() {
-            try {
-                const response = await fetch('../data/events.json');
-                const data = await response.json();
-
-                const events = data.events.map(e => {
-                    const [year, month, day] = e.date.split('-').map(Number);
-                    const eventData = {
-                        ...e,
-                        date: new Date(year, month - 1, day)
-                    };
-
-                    if (e.endDate) {
-                        const [endYear, endMonth, endDay] = e.endDate.split('-').map(Number);
-                        eventData.endDate = new Date(endYear, endMonth - 1, endDay);
-                    }
-
-                    return eventData;
-                });
-
-                const icsContent = generateICS(events);
-
-                // Set proper headers and serve the ICS content
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-
-                // Automatically trigger download
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'atlanta-ham-radio-events.ics';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-
-                // Show message
-                document.body.innerHTML = `
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center;">
-                        <h1>Calendar Feed Downloaded</h1>
-                        <p>The Atlanta Ham Radio Events calendar has been downloaded.</p>
-                        <p>Import this file into your calendar application:</p>
-                        <ul style="text-align: left;">
-                            <li><strong>Google Calendar:</strong> Settings → Import & Export → Import</li>
-                            <li><strong>Apple Calendar:</strong> File → Import</li>
-                            <li><strong>Outlook:</strong> File → Open & Export → Import/Export</li>
-                        </ul>
-                        <p><a href="index.html" style="color: #3b82f6;">← Back to Events</a></p>
-                    </div>
-                `;
-            } catch (error) {
-                console.error('Error generating feed:', error);
-                document.body.innerHTML = `
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center;">
-                        <h1>Error</h1>
-                        <p>Failed to generate calendar feed.</p>
-                        <p><a href="index.html" style="color: #3b82f6;">← Back to Events</a></p>
-                    </div>
-                `;
-            }
-        }
-
-        function formatICSDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}${month}${day}`;
-        }
-
-        function escapeICSText(text) {
-            if (!text) return '';
-            return text.replace(/\\/g, '\\\\')
-                      .replace(/;/g, '\\;')
-                      .replace(/,/g, '\\,')
-                      .replace(/\n/g, '\\n');
-        }
-
-        function generateICS(events) {
-            const now = new Date();
-            const timestamp = formatICSDate(now) + 'T' +
-                now.getHours().toString().padStart(2, '0') +
-                now.getMinutes().toString().padStart(2, '0') +
-                now.getSeconds().toString().padStart(2, '0') + 'Z';
-
-            let icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//Atlanta Ham Radio//Events//EN',
-                'CALSCALE:GREGORIAN',
-                'METHOD:PUBLISH',
-                'X-WR-CALNAME:Atlanta Ham Radio Events',
-                'X-WR-CALDESC:Amateur radio events in the Atlanta metro area',
-                'X-WR-TIMEZONE:America/New_York'
-            ].join('\r\n') + '\r\n';
-
-            const eventTypes = {
-                race: 'Race/Run',
-                event: 'Event',
-                training: 'Training/Net',
-                meeting: 'Meeting/Hamfest',
-                emergency: 'Emergency Drill'
-            };
-
-            events.forEach(event => {
-                const startDate = formatICSDate(event.date);
-                const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
-                endDateObj.setDate(endDateObj.getDate() + 1);
-                const endDate = formatICSDate(endDateObj);
-
-                const description = escapeICSText(event.description || '');
-
-                icsContent += [
-                    'BEGIN:VEVENT',
-                    `UID:event-${event.id}@atlantahamradio.com`,
-                    `DTSTAMP:${timestamp}`,
-                    `DTSTART;VALUE=DATE:${startDate}`,
-                    `DTEND;VALUE=DATE:${endDate}`,
-                    `SUMMARY:${escapeICSText(event.title)}`,
-                    `LOCATION:${escapeICSText(event.location)}`,
-                    description ? `DESCRIPTION:${description}` : '',
-                    event.contact ? `URL:${event.contact}` : '',
-                    `CATEGORIES:${eventTypes[event.type] || 'Event'}`,
-                    'STATUS:CONFIRMED',
-                    'TRANSP:TRANSPARENT',
-                    'END:VEVENT'
-                ].filter(line => line).join('\r\n') + '\r\n';
-            });
-
-            icsContent += 'END:VCALENDAR';
-            return icsContent;
-        }
-
-        window.addEventListener('DOMContentLoaded', generateAndServeFeed);
-    </script>
+    <title>Calendar Subscription - Atlanta Ham Radio</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div style="font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; text-align: center;">
-        <h1>Generating Calendar Feed...</h1>
-        <p>Please wait while we generate your calendar feed.</p>
-    </div>
+    <script src="../js/header.js"></script>
+
+    <section class="hero">
+        <h2>Calendar Subscription</h2>
+        <p>Subscribe to the Atlanta Ham Radio Events calendar and get automatic updates</p>
+    </section>
+
+    <section class="article-container">
+        <h2>How to Subscribe</h2>
+
+        <p>Subscribing to the Atlanta Ham Radio Events calendar ensures you always have the latest event information. When we add, update, or remove events, your calendar will automatically sync (typically every 12-24 hours).</p>
+
+        <div class="callout info">
+            <p><strong>Calendar URL:</strong></p>
+            <p><code>webcal://atlantahamradio.com/events.ics</code></p>
+            <p>Or use HTTPS:</p>
+            <p><code>https://atlantahamradio.com/events.ics</code></p>
+        </div>
+
+        <h3>Subscribe with Google Calendar</h3>
+        <ol>
+            <li>Open <a href="https://calendar.google.com" target="_blank" rel="noopener">Google Calendar</a></li>
+            <li>On the left side, find "Other calendars" and click the <strong>+</strong> button</li>
+            <li>Select <strong>"From URL"</strong></li>
+            <li>Paste this URL: <code>https://atlantahamradio.com/events.ics</code></li>
+            <li>Click <strong>"Add calendar"</strong></li>
+        </ol>
+
+        <h3>Subscribe with Apple Calendar (Mac/iPhone/iPad)</h3>
+        <ol>
+            <li>Click this link: <a href="webcal://atlantahamradio.com/events.ics">Subscribe to Atlanta Ham Radio Events</a></li>
+            <li>Or manually: Open Calendar app → File → New Calendar Subscription</li>
+            <li>Paste the URL: <code>webcal://atlantahamradio.com/events.ics</code></li>
+            <li>Choose a refresh frequency (recommended: Daily)</li>
+            <li>Click <strong>"Subscribe"</strong></li>
+        </ol>
+
+        <h3>Subscribe with Outlook</h3>
+        <ol>
+            <li>Open Outlook Calendar</li>
+            <li>Click <strong>"Add calendar"</strong> → <strong>"Subscribe from web"</strong></li>
+            <li>Paste the URL: <code>https://atlantahamradio.com/events.ics</code></li>
+            <li>Name the calendar: "Atlanta Ham Radio Events"</li>
+            <li>Click <strong>"Import"</strong></li>
+        </ol>
+
+        <h3>Other Calendar Apps</h3>
+        <p>Most modern calendar applications support ICS subscriptions. Look for options like:</p>
+        <ul>
+            <li>"Subscribe to calendar"</li>
+            <li>"Add calendar from URL"</li>
+            <li>"Internet calendar"</li>
+            <li>"iCal subscription"</li>
+        </ul>
+        <p>Then paste the calendar URL: <code>https://atlantahamradio.com/events.ics</code></p>
+
+        <div class="callout tip">
+            <p><strong>Tip:</strong> Subscribed calendars update automatically, so you'll always have the latest events without needing to re-import the calendar.</p>
+        </div>
+
+        <h3>Troubleshooting</h3>
+        <p><strong>Events not showing up?</strong></p>
+        <ul>
+            <li>Check that the subscribed calendar is enabled/visible in your calendar app</li>
+            <li>Try manually refreshing the calendar subscription</li>
+            <li>Some calendar apps take a few hours to sync initially</li>
+        </ul>
+
+        <p><strong>Want to unsubscribe?</strong></p>
+        <ul>
+            <li><strong>Google Calendar:</strong> Find "Atlanta Ham Radio Events" under "Other calendars", click the 3 dots → Unsubscribe</li>
+            <li><strong>Apple Calendar:</strong> Right-click the calendar → Delete</li>
+            <li><strong>Outlook:</strong> Right-click the calendar → Remove calendar</li>
+        </ul>
+    </section>
+
+    <script src="../js/footer.js"></script>
 </body>
 </html>
