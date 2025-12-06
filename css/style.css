@@ -344,8 +344,8 @@ nav a:hover {
 }
 
 .hero-description {
-    margin-top: 1rem;
-    font-size: 0.95rem;
+    margin-top: 2rem;
+    font-size: 0.80rem;
     color: var(--text-secondary);
 }
 
