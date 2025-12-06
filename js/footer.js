@@ -26,7 +26,7 @@ function loadFooter() {
                     <div class="footer-section">
                         <h4>Connect</h4>
                         <ul class="footer-nav">
-                            <li><a href="${pathPrefix}pages/contact.html">Contact KQ4JP</a></li>
+                            <li><a href="${pathPrefix}pages/about.html">About KQ4JP</a></li>
                             <li><a href="https://www.youtube.com/@AtlantaHamRadio" target="_blank" rel="noopener noreferrer">YouTube Channel</a></li>
                         </ul>
                     </div>

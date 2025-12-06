@@ -988,6 +988,70 @@ footer {
     height: 20px;
 }
 
+/* Contact Form Styles */
+.contact-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--bg-card);
+    border-radius: 1rem;
+    border: 1px solid var(--border-primary);
+    backdrop-filter: blur(10px);
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: capitalize;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-field button[type="submit"] {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+.form-field button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 /* Tablet styles */
 @media (max-width: 1024px) {
     .hero h2 {
@@ -1232,6 +1296,22 @@ footer {
 
     .footer-section h4 {
         font-size: 1.125rem;
+    }
+
+    .contact-form {
+        padding: 1.5rem;
+        margin: 1.5rem 1rem;
+    }
+
+    .form-field input,
+    .form-field textarea {
+        padding: 0.875rem;
+        font-size: 1rem;
+    }
+
+    .form-field button[type="submit"] {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
     }
 }
 

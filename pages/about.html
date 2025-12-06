@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.emailjs.com;">
+
+    <!-- Primary Meta Tags -->
+    <title>About KQ4JP - Atlanta Ham Radio</title>
+    <meta name="title" content="About KQ4JP - Atlanta Ham Radio">
+    <meta name="description" content="Learn about Jack Parks (KQ4JP), coordinator of Atlanta Ham Radio public service events. Contact for event information, club listings, and volunteer opportunities.">
+    <meta name="keywords" content="KQ4JP, Jack Parks, atlanta ham radio, ARES coordinator atlanta, amateur radio, about">
+    <meta name="author" content="KQ4JP">
+    <link rel="canonical" href="https://atlantahamradio.com/pages/about.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://atlantahamradio.com/pages/about.html">
+    <meta property="og:title" content="About KQ4JP - Atlanta Ham Radio">
+    <meta property="og:description" content="Learn about Jack Parks (KQ4JP), coordinator of Atlanta Ham Radio public service events.">
+    <meta property="og:image" content="https://atlantahamradio.com/images/logo.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Atlanta Ham Radio">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://atlantahamradio.com/pages/about.html">
+    <meta name="twitter:title" content="About KQ4JP - Atlanta Ham Radio">
+    <meta name="twitter:description" content="Learn about Jack Parks (KQ4JP), coordinator of Atlanta Ham Radio public service events.">
+    <meta name="twitter:image" content="https://atlantahamradio.com/images/logo.png">
+
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <script src="../js/header.js"></script>
+
+    <section class="hero">
+        <h2>About Jack Parks (KQ4JP)</h2>
+    </section>
+
+    <section class="article-container">
+		<section class="clearfix">
+        	<img src="../images/kq4jp.jpeg" alt="Jack Parks - KQ4JP" class="image-left">
+
+			<p>Licensed amateur radio operator serving the Atlanta metro area. Active in public service communications, ARES/AUXCOMM operations, and community emergency preparedness.</p>
+	
+			<p>I’m Jack Parks, a licensed amateur radio operator specializing in public‑service communications, portable operations, 
+			and community outreach. With solid technical expertise and hands‑on experience in emergency communications, I focus on ensuring 
+			safety and situational awareness during events and activations. I’m dedicated to mentoring both new and seasoned hams, organizing 
+			training sessions, and coordinating public‑service activities that strengthen local networks and improve overall readiness.</p>
+			
+			<p>You'll often see me working out in the field along side my wife, Jaime - KQ4KZV</p>
+			
+		</section>
+		
+		<p>
+		I’ll gladly present to your club on topics related to Public Service and Amateur Radio. I’ve previously presented at Stone Mountain Hamfest 
+		and was featured on <a href="https://youtu.be/lSn85binTEI" target="_blank">Ham Nation</a> in 2024, where I discussed Personal Cybersecurity.
+		</p>
+		
+        <h2>Get in Touch</h2>
+        <p>Have a question or want to get in touch? Fill out the form below and I'll get back to you as soon as possible.</p>
+
+        <form id="contact-form" class="contact-form">
+            <div class="form-field">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="form-field">
+                <label for="title">Subject</label>
+                <input type="text" name="title" id="title" required>
+            </div>
+            <div class="form-field">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" rows="6" required></textarea>
+            </div>
+            <div class="form-field">
+                <button type="submit" id="submit-btn" class="btn btn-primary">Send Message</button>
+            </div>
+        </form>
+
+        <h2>Find Me On</h2>
+        <ul>
+            <li><a href="https://www.qrz.com/db/kq4jp" target="_blank" rel="noopener">QRZ.com</a> – My amateur radio profile</li>
+            <li><a href="https://www.youtube.com/@AtlantaHamRadio" target="_blank" rel="noopener">YouTube</a> – Atlanta Ham Radio channel</li>
+            <li>At local community events throughout the Atlanta metro area</li>
+        </ul>
+    </section>
+
+    <script src="../js/footer.js"></script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        emailjs.init('cGSubiPKThbrRVBtV');
+
+        const form = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const serviceID = 'default_service';
+            const templateID = 'template_pjb4rds';
+
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                    alert('Message sent successfully!');
+                    form.reset();
+                }, (err) => {
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                    alert('Failed to send message. Please try again or contact via QRZ.');
+                    console.error('EmailJS error:', err);
+                });
+        });
+    </script>
+</body>
+</html>
