@@ -364,6 +364,10 @@ nav a:hover {
     max-width: 900px;
     margin: 0 auto;
     padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px var(--shadow-sm);
 }
 
 .youtube-container .youtube-text {
