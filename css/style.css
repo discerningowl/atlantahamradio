@@ -929,6 +929,44 @@ footer {
 .event-type-meeting { background: var(--event-meeting); }
 .event-type-emergency { background: var(--event-emergency); }
 
+/* Back to top button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    background: var(--btn-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px var(--shadow-lg);
+}
+
+.back-to-top svg {
+    width: 20px;
+    height: 20px;
+}
+
 /* Tablet styles */
 @media (max-width: 1024px) {
     .hero h2 {
@@ -1585,9 +1623,9 @@ footer {
 }
 
 .resource-links a {
-    color: var(--accent-light);
+    color: var(--link-color);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1602,7 +1640,7 @@ footer {
 }
 
 .resource-links a:hover {
-    color: var(--link-color);
+    color: var(--link-hover);
     padding-left: 0.5rem;
 }
 
