@@ -366,9 +366,9 @@ nav a:hover {
     padding: 1.5rem;
 }
 
-.youtube-text {
+.youtube-container .youtube-text {
     flex: 1;
-    font-size: 1rem;
+    font-size: 0.6rem;
     line-height: 1.6;
     color: var(--text-secondary);
 }
@@ -1046,9 +1046,9 @@ footer {
         padding: 1rem;
     }
 
-    .youtube-text {
+    .youtube-container .youtube-text {
         text-align: center;
-        font-size: 0.9375rem;
+        font-size: 0.55rem;
     }
 
     .btn {
