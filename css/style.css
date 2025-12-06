@@ -1704,6 +1704,7 @@ footer {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    font-size: 1.5rem;
 }
 
 .resource-icon svg {
