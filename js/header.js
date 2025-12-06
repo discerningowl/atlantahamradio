@@ -20,6 +20,10 @@ function loadHeader() {
                     <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                     <a href="${pathPrefix}pages/resources.html">Resources</a>
                     <a href="${pathPrefix}pages/contact.html">Contact</a>
+                    <button id="themeToggle" aria-label="Toggle theme" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0.5rem; display: flex; align-items: center;">
+                        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+                        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    </button>
                 </nav>
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
                     <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
@@ -32,14 +36,20 @@ function loadHeader() {
                 <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                 <a href="${pathPrefix}pages/resources.html">Resources</a>
                 <a href="${pathPrefix}pages/contact.html">Contact</a>
+                <button id="themeToggleMobile" aria-label="Toggle theme" style="background: var(--bg-card); border: 1px solid var(--border-primary); border-bottom: 1px solid var(--border-primary); color: inherit; cursor: pointer; padding: 1.25rem 2rem; width: 100%; text-align: center; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 600;">
+                    <svg id="sunIconMobile" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+                    <svg id="moonIconMobile" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    <span id="themeToggleText">Light Mode</span>
+                </button>
             </nav>
         </header>
     `;
 
     document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
-    // Initialize mobile menu after DOM insertion
+    // Initialize mobile menu and theme toggle after DOM insertion
     initMobileMenu();
+    initThemeToggle();
 }
 
 // Mobile menu functionality
@@ -91,6 +101,93 @@ function initMobileMenu() {
         }
     });
 }
+
+// Theme toggle functionality
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIconMobile = document.getElementById('sunIconMobile');
+    const moonIconMobile = document.getElementById('moonIconMobile');
+    const themeToggleText = document.getElementById('themeToggleText');
+
+    // Function to update theme icons and text
+    function updateThemeUI(theme) {
+        if (theme === 'dark') {
+            // Show moon icon (dark mode active)
+            if (sunIcon) sunIcon.style.display = 'none';
+            if (moonIcon) moonIcon.style.display = 'block';
+            if (sunIconMobile) sunIconMobile.style.display = 'none';
+            if (moonIconMobile) moonIconMobile.style.display = 'block';
+            if (themeToggleText) themeToggleText.textContent = 'Dark Mode';
+        } else {
+            // Show sun icon (light mode active)
+            if (sunIcon) sunIcon.style.display = 'block';
+            if (moonIcon) moonIcon.style.display = 'none';
+            if (sunIconMobile) sunIconMobile.style.display = 'block';
+            if (moonIconMobile) moonIconMobile.style.display = 'none';
+            if (themeToggleText) themeToggleText.textContent = 'Light Mode';
+        }
+    }
+
+    // Function to set theme
+    function setTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+        updateThemeUI(theme);
+    }
+
+    // Function to toggle theme
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+    }
+
+    // Add click listeners to both toggle buttons
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    if (themeToggleMobile) {
+        themeToggleMobile.addEventListener('click', toggleTheme);
+    }
+
+    // Set initial UI state based on current theme
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    updateThemeUI(currentTheme);
+}
+
+// Initialize theme on page load (before header loads)
+function initializeTheme() {
+    // Check for saved theme preference or default to system preference
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme) {
+        // Use saved preference
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+        // Check system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    }
+}
+
+// Initialize theme immediately (before DOM loads to prevent flash)
+initializeTheme();
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Only update if user hasn't set a manual preference
+    if (!localStorage.getItem('theme')) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+});
 
 // Load header when DOM is ready
 if (document.readyState === 'loading') {
