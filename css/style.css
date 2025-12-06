@@ -1614,17 +1614,12 @@ footer {
 }
 
 .club-link.secondary {
-    background: #b6d1fc;
+    background: #85b2fa;
     color: white;
 }
 
 .club-link.secondary:hover {
-    background: #b9cdf8;
-}
-
-/* Light mode: secondary links with dark text */
-[data-theme="light"] .club-link.secondary {
-    color: #1a1a1a;
+    background: #739bf2;
 }
 
 .empty-county {
