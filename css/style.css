@@ -356,6 +356,23 @@ nav a:hover {
     flex-wrap: wrap;
 }
 
+/* YouTube button container - horizontal layout */
+.youtube-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.youtube-text {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
 /* Anchor navigation for in-page links */
 .anchor-nav {
     position: sticky;
@@ -1020,6 +1037,18 @@ footer {
 
     .hero-buttons {
         gap: 0.75rem;
+    }
+
+    /* YouTube container - stack vertically on mobile */
+    .youtube-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .youtube-text {
+        text-align: center;
+        font-size: 0.9375rem;
     }
 
     .btn {
