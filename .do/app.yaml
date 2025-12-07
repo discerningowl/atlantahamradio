@@ -1,6 +1,6 @@
 name: atlantahamradio
 static_sites:
-- environment_slug: html
+- environment_slug: static-site
   github:
     branch: main
     deploy_on_push: true
