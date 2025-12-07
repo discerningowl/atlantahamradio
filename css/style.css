@@ -382,13 +382,13 @@ nav a:hover {
     position: sticky;
     top: 60px;
     z-index: 100;
-    margin: 0 0 2rem 0;
+    margin: 0 0 1rem 0;
 }
 
 .anchor-nav-container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -396,7 +396,7 @@ nav a:hover {
 }
 
 .anchor-nav-btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.625rem 1.25rem;
     background: var(--bg-card);
     border: 1px solid var(--border-primary);
     border-radius: 0.5rem;
@@ -1080,11 +1080,11 @@ footer {
 
     /* Anchor navigation for resource pages */
     .anchor-nav-container {
-        padding: 0.875rem 1rem;
+        padding: 0.5rem 0.75rem;
     }
 
     .anchor-nav-btn {
-        padding: 0.75rem 1.25rem;
+        padding: 0.625rem 1.25rem;
     }
 }
 
@@ -1327,18 +1327,18 @@ footer {
     .anchor-nav {
         position: relative;
         top: auto;
-        margin: 1rem 0 1.5rem 0;
+        margin: 0.5rem 0 1rem 0;
         z-index: 200;
     }
 
     .anchor-nav-container {
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 0.75rem;
         background: var(--bg-primary);
     }
 
     .anchor-nav-btn {
         min-height: 48px;
-        padding: 0.875rem 1.5rem;
+        padding: 0.75rem 1.25rem;
         font-size: 0.9375rem;
         display: inline-flex;
         align-items: center;
@@ -2243,16 +2243,16 @@ footer {
     .anchor-nav {
         position: relative;
         top: auto;
-        margin: 0.75rem 0 1rem 0;
+        margin: 0.5rem 0 0.75rem 0;
     }
 
     .anchor-nav-container {
-        padding: 0.5rem 0.75rem;
+        padding: 0.375rem 0.5rem;
     }
 
     .anchor-nav-btn {
         min-height: 44px;
-        padding: 0.75rem 1.25rem;
+        padding: 0.625rem 1rem;
         font-size: 0.875rem;
     }
 }
