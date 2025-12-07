@@ -1325,13 +1325,15 @@ footer {
 
     /* Anchor navigation for resource pages */
     .anchor-nav {
-        position: sticky;
-        top: 80px;
-        margin: 0 0 1.5rem 0;
+        position: relative;
+        top: auto;
+        margin: 1rem 0 1.5rem 0;
+        z-index: 200;
     }
 
     .anchor-nav-container {
         padding: 0.75rem 1rem;
+        background: var(--bg-primary);
     }
 
     .anchor-nav-btn {
@@ -1341,6 +1343,8 @@ footer {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
+        max-width: 300px;
     }
 }
 
@@ -2239,8 +2243,9 @@ footer {
 
     /* Anchor navigation for resource pages */
     .anchor-nav {
-        top: 75px;
-        margin: 0 0 1rem 0;
+        position: relative;
+        top: auto;
+        margin: 0.75rem 0 1rem 0;
     }
 
     .anchor-nav-container {
@@ -2251,5 +2256,7 @@ footer {
         min-height: 44px;
         padding: 0.75rem 1rem;
         font-size: 0.875rem;
+        width: 100%;
+        max-width: 280px;
     }
 }
