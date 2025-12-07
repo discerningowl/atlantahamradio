@@ -1326,7 +1326,7 @@ footer {
     /* Anchor navigation for resource pages */
     .anchor-nav {
         position: sticky;
-        top: 70px;
+        top: 80px;
         margin: 0 0 1.5rem 0;
     }
 
@@ -2239,7 +2239,7 @@ footer {
 
     /* Anchor navigation for resource pages */
     .anchor-nav {
-        top: 65px;
+        top: 75px;
         margin: 0 0 1rem 0;
     }
 
