@@ -11,6 +11,7 @@ function loadFooter() {
                     <div class="footer-section">
                         <h4>Atlanta Ham Radio</h4>
                         <p>Connecting amateur radio operators to public service opportunities across the Atlanta metro area.</p>
+                        <p>Curated and maintained by Jack Parks (KQ4JP)</p>
                     </div>
 
                     <div class="footer-section">

@@ -21,6 +21,33 @@
       ]
     },
     {
+      "name": "Cherokee County",
+      "clubs": [
+        {
+          "name": "Cherokee Amateur Radio Society (CARS)",
+          "location": "Woodstock, GA",
+          "website": "http://www.wx4car.org",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://cherokee-hams.groups.io/g/main"
+            }
+          ]
+      	},
+      	{
+          "name": "Cherokee County ARES",
+          "location": "Cherokee County",
+          "website": "http://www.cherokee-ares.org/",
+          "links": [
+            {
+              "name": "Facebook (Private)",
+              "url": "https://www.facebook.com/groups/Cherokee.ARES"
+            }
+          ]
+      	}
+      ]
+    },
+    {
       "name": "Clarke County",
       "clubs": [
         {
