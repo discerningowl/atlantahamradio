@@ -1,9 +1,11 @@
 name: atlantahamradio
+region: atl  # Matches your dashboard
+
 static_sites:
-- environment_slug: static-site
-  github:
-    branch: main
-    deploy_on_push: true
-    repo: discerningowl/atlantahamradio
-  name: atlantahamradio
-  error_document: 404.html
+  - environment_slug: html  # Correct for plain static HTML/CSS/JS
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: discerningowl/atlantahamradio
+    name: atlantahamradio
+    error_document: 404.html
