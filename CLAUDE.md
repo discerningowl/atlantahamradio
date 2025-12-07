@@ -20,13 +20,15 @@
 atlantahamradio/
 ├── index.html                    # Main landing page with event calendar
 ├── 404.html                      # Custom 404 error page
+├── events.ics                    # Static ICS calendar file (auto-generated)
 ├── sitemap.xml                   # XML sitemap for search engines
 ├── robots.txt                    # Robots.txt for crawler guidance
+├── .gitignore                    # Git ignore file (.DS_Store)
 ├── pages/                        # Content pages
 │   ├── clubs.html               # Club directory with search
 │   ├── getstarted.html          # Getting started guide
 │   ├── resources.html           # Resources and links
-│   ├── contact.html             # Contact information
+│   ├── about.html               # About page with contact form
 │   ├── arestaskbook.html        # ARES task book
 │   ├── calendar-feed.html       # Calendar feed info
 │   ├── changecall.html          # Callsign change guide
@@ -38,19 +40,23 @@ atlantahamradio/
 │   ├── events.json              # Event calendar data
 │   └── clubs.json               # Club directory data
 ├── js/                          # JavaScript modules
-│   ├── header.js                # Header component (navigation)
+│   ├── header.js                # Header component (navigation, theme toggle)
 │   └── footer.js                # Footer component
 ├── css/
 │   └── style.css                # Single stylesheet (all styles)
 ├── images/                      # Images and assets
 │   ├── favicon.ico
 │   ├── logo.png
-│   └── *.jpeg                   # Various images
+│   ├── kq4jp.jpeg              # Profile photo
+│   └── *.jpeg                   # Various images (HT guides, etc.)
+├── scripts/                     # Build scripts (GitHub Actions only)
+│   └── generate-calendar.js     # Generates events.ics from events.json
 ├── .do/                         # DigitalOcean deployment
-│   ├── app.yaml                 # App Platform configuration
-│   └── deploy.template.yaml     # Deployment template
+│   └── app.yaml                 # App Platform configuration
 ├── .github/
-│   └── dependabot.yaml          # Dependency updates config
+│   ├── dependabot.yaml          # Dependency updates config
+│   └── workflows/
+│       └── generate-calendar.yml # Auto-generate events.ics workflow
 ├── CLAUDE.md                    # AI assistant documentation
 └── README.md                    # General readme
 ```
@@ -72,11 +78,17 @@ atlantahamradio/
   - Module pattern for components
   - Event delegation
 
-### No Build Process
-- No npm/package.json
+### No Build Process (For Frontend)
+- No npm/package.json (not required for local development)
 - No transpilation or bundling
 - Direct browser execution
 - CDN for external resources
+
+### Automated Calendar Generation
+- **Node.js Script** (`scripts/generate-calendar.js`): Generates static `events.ics` file from `events.json`
+- **GitHub Actions Workflow**: Automatically runs script when `events.json` is updated
+- **Deployment**: `events.ics` is committed to repository and deployed with static files
+- **Local Development**: Calendar generation is optional; not required for frontend development
 
 ---
 
@@ -89,7 +101,10 @@ The site uses a lightweight component pattern with shared header/footer:
 - Auto-detects subdirectory location
 - Adjusts paths dynamically (`pathPrefix`)
 - Mobile menu toggle functionality
-- Logo, navigation, and contact links
+- Logo, navigation, and links
+- Dark/Light theme toggle with localStorage persistence
+- System theme preference detection (prefers-color-scheme)
+- Back to top button (shows on scroll)
 
 **Footer Component** (`js/footer.js`):
 - Consistent across all pages
@@ -258,24 +273,96 @@ background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
 - Website link (primary)
 - Additional links (Groups.io, Facebook, etc.)
 
-### 3. Calendar Export (ICS)
+### 3. Theme Toggle (Dark/Light Mode)
 
-**Individual Events**:
+**Features**:
+- Light and dark theme options
+- System preference detection (`prefers-color-scheme`)
+- Persistent theme selection (localStorage)
+- Smooth theme transitions
+- Available on both desktop and mobile navigation
+- Accessible with ARIA labels
+
+**Implementation** (`js/header.js`):
+```javascript
+function initThemeToggle()
+```
+- Detects system theme preference on first visit
+- Saves user preference to localStorage
+- Synchronizes theme across desktop and mobile toggle buttons
+- Updates theme icons (sun/moon) based on current theme
+- Automatically updates if system preference changes (when no manual preference set)
+
+**Theme Attribute**:
+- `data-theme="light"` or `data-theme="dark"` on `<html>` element
+- CSS uses attribute selectors to apply theme-specific styles
+
+### 4. Back to Top Button
+
+**Features**:
+- Appears when scrolling down more than 300px
+- Smooth scroll to top on click
+- Fixed position in bottom-right corner
+- Accessible with ARIA label
+- Responsive design (adjusts on mobile)
+
+**Implementation** (`js/header.js`):
+```javascript
+function initBackToTop()
+```
+
+### 5. About/Contact Page
+
+**Location**: `pages/about.html`
+
+**Features**:
+- Profile information about KQ4JP (site maintainer)
+- Profile photo display
+- Links to QRZ.com profile and YouTube channel
+- **Contact Form** with EmailJS integration
+- Form fields: Name, Email, Subject, Message
+- Form validation and submission status feedback
+- Preconnect to external resources for performance
+
+**Contact Form Implementation**:
+- **EmailJS SDK**: Loaded asynchronously from CDN (`@emailjs/browser@4`)
+- **Service**: EmailJS default service with template `template_pjb4rds`
+- **Form Submission**: JavaScript prevents default, sends via EmailJS, provides user feedback
+- **Error Handling**: Alert on success/failure, form reset on success
+- **CSP**: Content Security Policy allows connection to `https://api.emailjs.com`
+
+**Navigation**:
+- Contact form accessible via:
+  - Header navigation: "About" link
+  - Homepage button: "Contact KQ4JP" (links to `pages/about.html#contactform`)
+  - Direct link with anchor: `#contactform`
+
+### 6. Calendar Export (ICS)
+
+**Individual Events** (Client-side):
 ```javascript
 function downloadICS(event)
 ```
-- Generates RFC 5545 compliant .ics files
+- Generates RFC 5545 compliant .ics files dynamically in browser
 - All-day event format
 - Proper escaping for special characters
 - Downloads as `{event-title}.ics`
 
-**Bulk Subscribe**:
+**Bulk Calendar Subscription** (Static File):
+- **Static ICS File**: `events.ics` (auto-generated via GitHub Actions)
+- **Subscribe Link**: `webcal://atlantahamradio.com/events.ics`
+- **Generation**: Node.js script (`scripts/generate-calendar.js`) runs on push to `main` when `events.json` changes
+- **Format**: RFC 5545 compliant, includes all events with proper formatting
+- **Usage**: Can be subscribed to in Google Calendar, Outlook, Apple Calendar, etc.
+- **Updates**: Calendar apps automatically refresh subscriptions (typically every 12-24 hours)
+
+**Bulk Download** (Client-side fallback):
 ```javascript
 function downloadAllEventsICS()
 ```
-- Exports all events as single calendar file
+- Generates all events as single calendar file dynamically in browser
 - Downloads as `atlanta-ham-radio-events.ics`
-- Can be imported to Google Calendar, Outlook, Apple Calendar, etc.
+- Alternative to webcal:// subscription for one-time imports
 
 ---
 
@@ -412,6 +499,8 @@ When creating a new page, include this SEO template in the `<head>`:
 - **Canonical URL**: Use full https://atlantahamradio.com URL
 - **Twitter Card**: Use "summary" for most pages, "summary_large_image" for homepage
 - **Image**: Use logo.png or page-specific image if available
+- **CSP**: Update `connect-src` if using external APIs (e.g., EmailJS requires `https://api.emailjs.com`)
+- **Preconnect**: Add `<link rel="preconnect">` tags for external CDNs/APIs to improve performance
 
 ---
 
@@ -563,19 +652,44 @@ static_sites:
     deploy_on_push: true
     repo: discerningowl/atlantahamradio
   name: atlantahamradio
+  error_document: 404.html
 ```
 
 **Deployment Process**:
 1. Push changes to `main` branch
-2. DigitalOcean auto-deploys on push
-3. No build step required (static files)
-4. Served via global CDN
+2. **GitHub Actions** (if `events.json` changed):
+   - Workflow `.github/workflows/generate-calendar.yml` triggers
+   - Runs `scripts/generate-calendar.js` to regenerate `events.ics`
+   - Commits updated `events.ics` file (if changed)
+   - Skips CI on auto-commit (`[skip ci]` in message)
+3. **DigitalOcean** auto-deploys on push
+4. No build step required for frontend (static files)
+5. Served via global CDN
 
 **Environment**:
-- Node.js not required
+- Node.js not required for frontend development
+- Node.js 20 used in GitHub Actions for calendar generation
 - No environment variables
 - No backend/API endpoints
 - Pure static file serving
+
+### GitHub Actions Workflow
+
+**File**: `.github/workflows/generate-calendar.yml`
+
+**Trigger**:
+- Push to `main` branch when `data/events.json` changes
+- Manual trigger via `workflow_dispatch`
+
+**Process**:
+1. Checkout repository
+2. Setup Node.js 20
+3. Run `node scripts/generate-calendar.js`
+4. Check if `events.ics` changed
+5. If changed, commit and push to `main` branch
+6. Auto-commit uses `[skip ci]` to prevent infinite loop
+
+**Purpose**: Keeps static `events.ics` file in sync with `events.json` for calendar subscriptions
 
 ---
 
@@ -598,6 +712,7 @@ static_sites:
 - [ ] Event modal opens/closes
 - [ ] ICS download (single event)
 - [ ] ICS download (all events)
+- [ ] ICS subscription link works (webcal://)
 - [ ] Multi-day events display correctly
 
 **Clubs Directory**:
@@ -607,9 +722,29 @@ static_sites:
 - [ ] Website links work
 - [ ] Additional links work
 
+**UI/UX Features**:
+- [ ] Theme toggle works (desktop)
+- [ ] Theme toggle works (mobile)
+- [ ] Theme persists on page reload
+- [ ] System theme preference detected
+- [ ] Back to top button appears on scroll
+- [ ] Back to top button scrolls smoothly
+- [ ] Back to top button hidden at top of page
+
+**Contact Form** (`pages/about.html`):
+- [ ] Form loads correctly
+- [ ] All fields validate (required fields)
+- [ ] Email field validates email format
+- [ ] Form submission works
+- [ ] Success message displays
+- [ ] Form resets after submission
+- [ ] Error handling displays on failure
+
 **Navigation**:
 - [ ] All header links work
 - [ ] All footer links work
+- [ ] About link goes to about.html
+- [ ] Contact button links to about.html#contactform
 - [ ] Logo links to homepage
 - [ ] Paths work from subdirectories
 - [ ] Mobile menu opens/closes
@@ -765,11 +900,12 @@ static_sites:
 ## AI Assistant Guidelines
 
 ### When Analyzing This Codebase
-1. Recognize this is a **static site with no build process**
+1. Recognize this is a **static site with no build process for frontend**
 2. All JavaScript runs directly in browser (no transpilation)
 3. Components are loaded via script tags, not imports
 4. Data is client-side only (JSON files via fetch)
 5. No backend, API, or server-side logic
+6. GitHub Actions automates `events.ics` generation (not required for local development)
 
 ### When Making Changes
 1. **Never suggest npm/build tools** - this is intentionally simple
@@ -806,21 +942,27 @@ static_sites:
 ## Key Contacts
 
 **Site Maintainer**: KQ4JP
-**Contact Page**: `/pages/contact.html`
+**About/Contact Page**: `/pages/about.html`
 **Repository**: `discerningowl/atlantahamradio`
 
 ---
 
 ## Version History
 
-**Current State** (as of analysis):
-- Static HTML/CSS/JS site
-- Event calendar with ICS export
-- Club directory with search
-- Multiple resource pages
-- DigitalOcean deployment
-- Mobile responsive design
-- No build process or dependencies
+**Current State** (as of December 7, 2025):
+- Static HTML/CSS/JS site (no build process for frontend)
+- Event calendar with month/list views, search, and filtering
+- ICS calendar export (individual events and bulk subscription)
+- Static `events.ics` file auto-generated via GitHub Actions
+- Club directory with search and collapsible county sections
+- Dark/Light theme toggle with localStorage persistence
+- About page with EmailJS contact form integration
+- Back to top button with smooth scrolling
+- Multiple resource pages (getting started, ARES, equipment guides)
+- DigitalOcean deployment with auto-deploy from `main` branch
+- Mobile responsive design with hamburger menu
+- Comprehensive SEO optimization (meta tags, structured data, sitemap)
+- GitHub Actions workflow for automated calendar generation
 
 ---
 
@@ -828,21 +970,41 @@ static_sites:
 
 ### Important Files
 - `index.html` - Homepage with calendar
-- `data/events.json` - Event data
+- `pages/about.html` - About page with contact form
+- `data/events.json` - Event data (source of truth)
 - `data/clubs.json` - Club data
-- `css/style.css` - All styles
-- `js/header.js` - Navigation component
+- `events.ics` - Static calendar file (auto-generated, do not edit manually)
+- `scripts/generate-calendar.js` - Node.js script to generate events.ics
+- `.github/workflows/generate-calendar.yml` - GitHub Actions workflow
+- `css/style.css` - All styles (including theme styles)
+- `js/header.js` - Navigation component (header, theme toggle, back to top)
 - `js/footer.js` - Footer component
 
 ### Key Functions
-- `loadEvents()` - Fetches and parses event data
-- `renderCalendar()` - Renders calendar view
-- `setView('month'|'list')` - Toggles calendar view
-- `setFilter(type)` - Filters by event type
-- `downloadICS(event)` - Exports single event
-- `downloadAllEventsICS()` - Exports all events
-- `loadClubs()` - Fetches club data
-- `filterClubs()` - Searches clubs
+
+**Calendar** (`index.html`):
+- `loadEvents()` - Fetches and parses event data from events.json
+- `renderCalendar()` - Renders calendar view (month grid)
+- `setView('month'|'list')` - Toggles between month and list views
+- `setFilter(type)` - Filters events by type
+- `downloadICS(event)` - Exports single event as .ics file
+- `downloadAllEventsICS()` - Exports all events as single .ics file
+- `changeMonth(delta)` - Navigates between months
+
+**Clubs** (`pages/clubs.html`):
+- `loadClubs()` - Fetches club data from clubs.json
+- `filterClubs()` - Searches clubs by name, location, or county
+
+**Header** (`js/header.js`):
+- `loadHeader()` - Injects header HTML into page
+- `initMobileMenu()` - Sets up mobile navigation functionality
+- `initThemeToggle()` - Initializes theme toggle with localStorage
+- `initBackToTop()` - Sets up back to top button
+- `initializeTheme()` - Detects and sets initial theme preference
+- `loadYouTubeButton()` - Returns YouTube button HTML (helper function)
+
+**Contact Form** (`pages/about.html`):
+- EmailJS integration for form submission (inline script)
 
 ### File Paths Reference
 ```
@@ -861,5 +1023,5 @@ Error:     #ef4444
 
 ---
 
-**Last Updated**: December 2, 2025
-**Format Version**: 1.0
+**Last Updated**: December 7, 2025
+**Format Version**: 1.1
