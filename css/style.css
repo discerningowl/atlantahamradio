@@ -1090,7 +1090,7 @@ footer {
 
 /* Mobile styles */
 @media (max-width: 768px) {
-    nav {
+    #desktopNav {
         display: none;
     }
 
