@@ -1077,6 +1077,15 @@ footer {
     .view-buttons {
         flex-wrap: wrap;
     }
+
+    /* Anchor navigation for resource pages */
+    .anchor-nav-container {
+        padding: 0.875rem 1rem;
+    }
+
+    .anchor-nav-btn {
+        padding: 0.75rem 1.25rem;
+    }
 }
 
 /* Mobile styles */
@@ -1312,6 +1321,26 @@ footer {
     .form-field button[type="submit"] {
         padding: 0.875rem 1.5rem;
         font-size: 1rem;
+    }
+
+    /* Anchor navigation for resource pages */
+    .anchor-nav {
+        position: sticky;
+        top: 70px;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .anchor-nav-container {
+        padding: 0.75rem 1rem;
+    }
+
+    .anchor-nav-btn {
+        min-height: 48px;
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9375rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -2206,5 +2235,21 @@ footer {
         font-size: 0.875rem;
         left: 0.625rem;
         top: 1rem;
+    }
+
+    /* Anchor navigation for resource pages */
+    .anchor-nav {
+        top: 65px;
+        margin: 0 0 1rem 0;
+    }
+
+    .anchor-nav-container {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .anchor-nav-btn {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
     }
 }
