@@ -380,7 +380,7 @@ nav a:hover {
 /* Anchor navigation for in-page links */
 .anchor-nav {
     position: sticky;
-    top: 60px;
+    top: 85px;
     z-index: 100;
     margin: 0 0 0.5rem 0;
 }
