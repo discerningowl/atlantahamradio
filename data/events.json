@@ -257,5 +257,15 @@
       "description": null,
       "contact": "https://www.atlantaradioclub.org/atlanta-ares.html"
     }
+    {
+      "id": 26,
+      "title": "Snowflake 10k",
+      "date": "2026-01-10",
+      "time": "8:00a-12:00p",
+      "type": "race",
+      "location": "Winterville, GA",
+      "description": "The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail, and persons who have disabilities.",
+      "contact": "Bob Herrin - KE4JLL of the Athens Radio Club"
+    }
   ]
 }
