@@ -111,6 +111,12 @@ function setView(view) {
     document.getElementById('monthViewBtn').classList.toggle('active', view === 'month');
     document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
 
+    // Show/hide month selector based on view
+    const monthNav = document.querySelector('.month-nav');
+    if (monthNav) {
+        monthNav.style.display = view === 'month' ? 'flex' : 'none';
+    }
+
     // Clear search when switching to month view
     if (view === 'month' && searchQuery) {
         searchQuery = '';
