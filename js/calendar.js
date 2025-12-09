@@ -79,9 +79,28 @@ function setFilter(category) {
 function handleSearch() {
     searchQuery = document.getElementById('searchInput').value.toLowerCase();
 
+    // Show/hide clear button
+    const clearBtn = document.getElementById('searchClearBtn');
+    if (clearBtn) {
+        clearBtn.style.display = searchQuery ? 'flex' : 'none';
+    }
+
     // Auto-switch to list view when searching
     if (searchQuery && currentView === 'month') {
         setView('list');
+    }
+
+    renderCalendar();
+}
+
+function clearSearch() {
+    searchQuery = '';
+    document.getElementById('searchInput').value = '';
+
+    // Hide clear button
+    const clearBtn = document.getElementById('searchClearBtn');
+    if (clearBtn) {
+        clearBtn.style.display = 'none';
     }
 
     renderCalendar();

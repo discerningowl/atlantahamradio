@@ -1293,8 +1293,13 @@ footer {
 
     .search-box input {
         font-size: 1rem;
-        padding: 0.875rem 1rem 0.875rem 3rem;
+        padding: 0.875rem 3rem 0.875rem 3rem;
         min-height: 48px;
+    }
+
+    .search-clear-btn {
+        min-width: 44px;
+        min-height: 44px;
     }
 
     .footer-grid {
@@ -1484,7 +1489,7 @@ footer {
 
 .search-box input {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 3rem;
+    padding: 0.75rem 3rem 0.75rem 3rem;
     border-radius: 0.5rem;
     border: 1px solid var(--border-primary);
     background: var(--bg-card);
@@ -1508,6 +1513,38 @@ footer {
     color: var(--accent-primary);
     z-index: 10;
     opacity: 1;
+    pointer-events: none;
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.375rem;
+    border-radius: 0.25rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.search-clear-btn:hover {
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+}
+
+.search-clear-btn svg {
+    position: static;
+    transform: none;
+    width: 18px;
+    height: 18px;
     pointer-events: none;
 }
 

@@ -49,6 +49,11 @@
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                 </svg>
 	            <input type="text" id="searchInput" placeholder="Search clubs or counties..." onkeyup="filterClubs()">
+                <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display: none;" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                    </svg>
+                </button>
         </div>
     </section>
 
@@ -164,7 +169,13 @@
 
         function filterClubs() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
+
+            // Show/hide clear button
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (clearBtn) {
+                clearBtn.style.display = searchTerm ? 'flex' : 'none';
+            }
+
             if (searchTerm === '') {
                 renderClubs();
                 return;
@@ -173,7 +184,7 @@
             const filtered = clubsData
                 .map(county => {
                     const matchesCountyName = county.name.toLowerCase().includes(searchTerm);
-                    const filteredClubs = county.clubs.filter(club => 
+                    const filteredClubs = county.clubs.filter(club =>
                         club.name.toLowerCase().includes(searchTerm) ||
                         club.location.toLowerCase().includes(searchTerm)
                     );
@@ -189,6 +200,18 @@
                 .filter(county => county !== null);
 
             renderClubs(filtered);
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+
+            // Hide clear button
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (clearBtn) {
+                clearBtn.style.display = 'none';
+            }
+
+            filterClubs();
         }
 
         // Initialize
