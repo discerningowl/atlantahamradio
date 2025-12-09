@@ -114,7 +114,7 @@ function setView(view) {
     // Show/hide month selector based on view
     const monthNav = document.querySelector('.month-nav');
     if (monthNav) {
-        monthNav.style.display = view === 'month' ? 'flex' : 'none';
+        monthNav.style.visibility = view === 'month' ? 'visible' : 'hidden';
     }
 
     // Clear search when switching to month view
