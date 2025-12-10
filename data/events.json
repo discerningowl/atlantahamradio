@@ -27,21 +27,13 @@
       "id": 3,
       "title": "The Polar Opposite Peachtree 2026",
       "date": "2026-01-03",
-      "time": null,
+      "time": "7:00am-1:00pm",
+      "startTime": "07:00",
+      "endTime": "13:00",
       "type": "race",
       "location": "Downtown Atlanta",
       "description": "Register through the provided Link. Ham radio opertors will be cooridinated by Atlanta ARES",
       "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071 (password: HAMPOP26)"
-    },
-    {
-      "id": 4,
-      "title": "Peachtree City 5K & Half Marathon",
-      "date": "2026-01-17",
-      "time": null,
-      "type": "race",
-      "location": "Peachtree City, GA",
-      "description": null,
-      "contact": "https://fayetteares.org/"
     },
     {
       "id": 5,
@@ -241,7 +233,7 @@
       "date": "2026-10-05",
       "time": null,
       "type": "race",
-      "location": "The Morland Mill, Moreland, GA",
+      "location": "The Moreland Mill, Moreland, GA",
       "description": null,
       "contact": "Newnan Regional Amateur Radio Club"
     },
