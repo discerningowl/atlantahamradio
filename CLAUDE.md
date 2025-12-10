@@ -638,7 +638,8 @@ When creating a new page, include this SEO template in the `<head>`:
 - `.calendar-card` - Calendar wrapper
 - `.event-card` - List view event card
 - `.club-card` - Individual club card
-- `.link-card` - Quick link cards on homepage
+- `.link-card` - Quick link cards on homepage and resources page
+- `.card-header-row` - Flexbox container for icon and heading (used in .link-card)
 - `.resource-card` - Resource item card
 
 **Navigation**:

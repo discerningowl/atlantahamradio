@@ -206,7 +206,7 @@ This includes:
 **Maintainer**: KQ4JP
 
 For questions, club additions, or event submissions:
-- Visit the [Contact Page](pages/contact.html)
+- Visit the [Contact Page](pages/about.html)
 - YouTube: [@AtlantaHamRadio](https://www.youtube.com/@AtlantaHamRadio)
 
 ## 📄 License
