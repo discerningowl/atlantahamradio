@@ -373,7 +373,7 @@ function generateICS(event) {
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
         'BEGIN:VEVENT',
-        `UID:event-${event.id}@atlantahamradio.com`,
+        `UID:event-${event.id}@atlantahamradio.org`,
         `DTSTAMP:${timestamp}`,
         `DTSTART;VALUE=DATE:${startDate}`,
         `DTEND;VALUE=DATE:${endDate}`,

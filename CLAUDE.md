@@ -350,7 +350,7 @@ function downloadICS(event)
 
 **Bulk Calendar Subscription** (Static File):
 - **Static ICS File**: `events.ics` (auto-generated via GitHub Actions)
-- **Subscribe Link**: `webcal://atlantahamradio.com/events.ics`
+- **Subscribe Link**: `webcal://atlantahamradio.org/events.ics`
 - **Generation**: Node.js script (`scripts/generate-calendar.js`) runs on push to `main` when `events.json` changes
 - **Format**: RFC 5545 compliant, includes all events with proper formatting
 - **Usage**: Can be subscribed to in Google Calendar, Outlook, Apple Calendar, etc.
@@ -406,8 +406,8 @@ All pages include:
     "@type": "Organization",
     "name": "Atlanta Ham Radio",
     "alternateName": "Atlanta Amateur Radio Public Service",
-    "url": "https://atlantahamradio.com",
-    "logo": "https://atlantahamradio.com/images/logo.png",
+    "url": "https://atlantahamradio.org",
+    "logo": "https://atlantahamradio.org/images/logo.png",
     "description": "Atlanta metro amateur radio public service event calendar and community resources",
     "sameAs": ["https://www.youtube.com/@AtlantaHamRadio"],
     "areaServed": {"@type": "State", "name": "Georgia"},
@@ -425,7 +425,7 @@ All pages include:
 - XML sitemap listing all pages
 - Includes priority and change frequency
 - Updated: 2025-12-02
-- Location: `https://atlantahamradio.com/sitemap.xml`
+- Location: `https://atlantahamradio.org/sitemap.xml`
 
 **robots.txt**:
 - Allows all search engines to crawl the site
@@ -470,23 +470,23 @@ When creating a new page, include this SEO template in the `<head>`:
 <meta name="description" content="Concise description of the page content (150-160 characters).">
 <meta name="keywords" content="relevant, keywords, for, this, page">
 <meta name="author" content="KQ4JP">
-<link rel="canonical" href="https://atlantahamradio.com/pages/pagename.html">
+<link rel="canonical" href="https://atlantahamradio.org/pages/pagename.html">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://atlantahamradio.com/pages/pagename.html">
+<meta property="og:url" content="https://atlantahamradio.org/pages/pagename.html">
 <meta property="og:title" content="Page Title">
 <meta property="og:description" content="Concise description of the page content.">
-<meta property="og:image" content="https://atlantahamradio.com/images/logo.png">
+<meta property="og:image" content="https://atlantahamradio.org/images/logo.png">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Atlanta Ham Radio">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:url" content="https://atlantahamradio.com/pages/pagename.html">
+<meta name="twitter:url" content="https://atlantahamradio.org/pages/pagename.html">
 <meta name="twitter:title" content="Page Title">
 <meta name="twitter:description" content="Concise description of the page content.">
-<meta name="twitter:image" content="https://atlantahamradio.com/images/logo.png">
+<meta name="twitter:image" content="https://atlantahamradio.org/images/logo.png">
 
 <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 <link rel="stylesheet" href="../css/style.css">
@@ -496,7 +496,7 @@ When creating a new page, include this SEO template in the `<head>`:
 - **Title**: 50-60 characters, include "Atlanta Ham Radio" for brand consistency
 - **Description**: 150-160 characters, compelling and accurate
 - **Keywords**: 5-10 relevant keywords, comma-separated
-- **Canonical URL**: Use full https://atlantahamradio.com URL
+- **Canonical URL**: Use full https://atlantahamradio.org URL
 - **Twitter Card**: Use "summary" for most pages, "summary_large_image" for homepage
 - **Image**: Use logo.png or page-specific image if available
 - **CSP**: Update `connect-src` if using external APIs (e.g., EmailJS requires `https://api.emailjs.com`)

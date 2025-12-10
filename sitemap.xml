@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Homepage -->
     <url>
-        <loc>https://atlantahamradio.com/</loc>
+        <loc>https://atlantahamradio.org/</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
@@ -10,25 +10,25 @@
 
     <!-- Main Pages -->
     <url>
-        <loc>https://atlantahamradio.com/pages/clubs.html</loc>
+        <loc>https://atlantahamradio.org/pages/clubs.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/getstarted.html</loc>
+        <loc>https://atlantahamradio.org/pages/getstarted.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/resources.html</loc>
+        <loc>https://atlantahamradio.org/pages/resources.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/about.html</loc>
+        <loc>https://atlantahamradio.org/pages/about.html</loc>
         <lastmod>2025-12-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -36,43 +36,43 @@
 
     <!-- Resource Pages -->
     <url>
-        <loc>https://atlantahamradio.com/pages/arestaskbook.html</loc>
+        <loc>https://atlantahamradio.org/pages/arestaskbook.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/calendar-feed.html</loc>
+        <loc>https://atlantahamradio.org/pages/calendar-feed.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/changecall.html</loc>
+        <loc>https://atlantahamradio.org/pages/changecall.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/everydayht.html</loc>
+        <loc>https://atlantahamradio.org/pages/everydayht.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/hotspot-crossband.html</loc>
+        <loc>https://atlantahamradio.org/pages/hotspot-crossband.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/licensingtips.html</loc>
+        <loc>https://atlantahamradio.org/pages/licensingtips.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://atlantahamradio.com/pages/marsmods.html</loc>
+        <loc>https://atlantahamradio.org/pages/marsmods.html</loc>
         <lastmod>2025-12-02</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
