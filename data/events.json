@@ -82,16 +82,6 @@
       "contact": "https://www.hamcation.com/"
     },
     {
-      "id": 9,
-      "title": "Run the Ridge 5K/10K",
-      "date": "2026-02-07",
-      "time": null,
-      "type": "race",
-      "location": "Fayetteville, GA",
-      "description": null,
-      "contact": "KK4GQ"
-    },
-    {
       "id": 10,
       "title": "Dalton Hamfest",
       "date": "2026-02-28",
@@ -138,11 +128,13 @@
       "id": 14,
       "title": "Peachtree International and Aquabike",
       "date": "2026-04-26",
-      "time": null,
+      "time": "6:30a-10:30a",
+      "startTime": "06:30",
+      "endTime": "10:30",
       "type": "race",
       "location": "Peachtree City, GA",
-      "description": null,
-      "contact": "https://groups.io/g/fayetteares/topic/111758529"
+      "description": "Super-Sprint & Aquabike Race",
+      "contact": "Details coming soon"
     },
     {
       "id": 15,
@@ -154,16 +146,6 @@
       "location": "Dayton, OH",
       "description": "Dayton Hamvention is one of the world’s largest amateur‑radio conventions, held each May in the Dayton, Ohio area where thousands of hams gather for exhibits, vendors, workshops and community networking.",
       "contact": "https://hamvention.org/"
-    },
-    {
-      "id": 16,
-      "title": "Atlanta Hamfest",
-      "date": "2026-06-07",
-      "time": null,
-      "type": "meeting",
-      "location": "Jim R. Miller Park",
-      "description": null,
-      "contact": "https://www.atlantaradioclub.org/atlanta-hamfestival.html"
     },
     {
       "id": 17,
@@ -180,11 +162,13 @@
       "id": 18,
       "title": "Peachtree Road Race",
       "date": "2026-07-04",
-      "time": null,
+      "time": "05:00am-12:30p",
+      "startTime": "05:00",
+      "endTime": "12:30",
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=98060 (password: PRR25HAM)"
+      "contact": "Signup comming"
     },
     {
       "id": 19,
