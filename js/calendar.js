@@ -41,6 +41,10 @@ async function loadEvents() {
                 eventData.endDate = new Date(endYear, endMonth - 1, endDay);
             }
 
+            // Keep startTime and endTime as strings (HH:MM format)
+            if (e.startTime) eventData.startTime = e.startTime;
+            if (e.endTime) eventData.endTime = e.endTime;
+
             return eventData;
         });
         renderCalendar();
@@ -343,6 +347,15 @@ function formatICSDate(date) {
     return `${year}${month}${day}`;
 }
 
+function formatICSDateTime(date, timeString) {
+    // Format date and time as YYYYMMDDTHHMMSS for timed events
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const [hours, minutes] = timeString.split(':');
+    return `${year}${month}${day}T${hours}${minutes}00`;
+}
+
 function escapeICSText(text) {
     if (!text) return '';
     return text.replace(/\\/g, '\\\\')
@@ -352,12 +365,6 @@ function escapeICSText(text) {
 }
 
 function generateICS(event) {
-    const startDate = formatICSDate(event.date);
-    // For all-day events, end date should be the day AFTER the last day
-    const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
-    endDateObj.setDate(endDateObj.getDate() + 1);
-    const endDate = formatICSDate(endDateObj);
-
     const now = new Date();
     const timestamp = formatICSDate(now) + 'T' +
         now.getHours().toString().padStart(2, '0') +
@@ -366,17 +373,61 @@ function generateICS(event) {
 
     const description = escapeICSText(event.description || '');
 
+    // Determine if this is a timed event or all-day event
+    // Multi-day events are ALWAYS all-day, regardless of time fields
+    const isMultiDay = !!event.endDate;
+    const hasTime = event.startTime && event.endTime && !isMultiDay;
+
+    let dtstart, dtend;
+    let timezoneBlock = '';
+
+    if (hasTime) {
+        // Timed event (single-day only)
+        dtstart = `DTSTART;TZID=America/New_York:${formatICSDateTime(event.date, event.startTime)}`;
+        dtend = `DTEND;TZID=America/New_York:${formatICSDateTime(event.date, event.endTime)}`;
+
+        // Add timezone definition for timed events
+        timezoneBlock = [
+            'BEGIN:VTIMEZONE',
+            'TZID:America/New_York',
+            'BEGIN:DAYLIGHT',
+            'TZOFFSETFROM:-0500',
+            'TZOFFSETTO:-0400',
+            'TZNAME:EDT',
+            'DTSTART:19700308T020000',
+            'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+            'END:DAYLIGHT',
+            'BEGIN:STANDARD',
+            'TZOFFSETFROM:-0400',
+            'TZOFFSETTO:-0500',
+            'TZNAME:EST',
+            'DTSTART:19701101T020000',
+            'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+            'END:STANDARD',
+            'END:VTIMEZONE'
+        ].join('\r\n');
+    } else {
+        // All-day event (multi-day or no time specified)
+        const startDate = formatICSDate(event.date);
+        const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
+        endDateObj.setDate(endDateObj.getDate() + 1);
+        const endDate = formatICSDate(endDateObj);
+        dtstart = `DTSTART;VALUE=DATE:${startDate}`;
+        dtend = `DTEND;VALUE=DATE:${endDate}`;
+    }
+
     const icsContent = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
         'PRODID:-//Atlanta Ham Radio//Events//EN',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
+        timezoneBlock,
         'BEGIN:VEVENT',
         `UID:event-${event.id}@atlantahamradio.org`,
         `DTSTAMP:${timestamp}`,
-        `DTSTART;VALUE=DATE:${startDate}`,
-        `DTEND;VALUE=DATE:${endDate}`,
+        dtstart,
+        dtend,
         `SUMMARY:${escapeICSText(event.title)}`,
         `LOCATION:${escapeICSText(event.location)}`,
         description ? `DESCRIPTION:${description}` : '',

@@ -137,7 +137,9 @@ const pathPrefix = isInSubdir ? '../' : '';
       "title": "Event Name",
       "date": "2025-11-01",        // Required: YYYY-MM-DD
       "endDate": "2025-11-02",      // Optional: multi-day events
-      "time": "5:00am-11:00am",     // Optional: null if not specified
+      "time": "5:00am-11:00am",     // Optional: display format (for UI)
+      "startTime": "05:00",         // Optional: HH:MM format (24-hour)
+      "endTime": "11:00",           // Optional: HH:MM format (24-hour)
       "type": "race",               // race|event|training|meeting|emergency
       "location": "Atlanta, GA",
       "description": "...",         // Optional
@@ -146,6 +148,13 @@ const pathPrefix = isInSubdir ? '../' : '';
   ]
 }
 ```
+
+**Time Handling**:
+- **`startTime`** and **`endTime`**: Structured time data in 24-hour format (HH:MM) for ICS generation
+- **`time`**: Human-readable display format (e.g., "5:00am-11:00am") shown in UI
+- **Single-day events** with `startTime`/`endTime`: Generate timed calendar events (DATETIME format)
+- **Multi-day events** (with `endDate`): Always generate all-day events, even if times are present
+- **Events without times**: Generate all-day events (DATE format)
 
 **Clubs** (`data/clubs.json`):
 ```json
@@ -573,9 +582,10 @@ When creating a new page, include this SEO template in the `<head>`:
 1. Edit `/data/events.json`
 2. Add new event object to `events` array
 3. Required fields: `id`, `title`, `date`, `type`, `location`, `contact`
-4. Optional fields: `endDate`, `time`, `description`
+4. Optional fields: `endDate`, `time`, `startTime`, `endTime`, `description`
 5. Date format: `YYYY-MM-DD` (ISO 8601)
-6. Increment `id` from highest existing ID
+6. Time format: `HH:MM` (24-hour, e.g., "08:00", "16:30")
+7. Increment `id` from highest existing ID
 
 **Event Type Values**:
 - `race` - Races, runs, marathons
@@ -583,6 +593,27 @@ When creating a new page, include this SEO template in the `<head>`:
 - `training` - Training sessions, nets, drills
 - `meeting` - Club meetings, hamfests, conventions
 - `emergency` - Emergency preparedness drills
+
+**Adding Timed Events**:
+- For single-day events with specific times, add `startTime` and `endTime` fields
+- Format times in 24-hour notation: "08:00" for 8:00am, "16:00" for 4:00pm
+- The `time` field can be formatted for display (e.g., "8:00am-4:00pm")
+- Multi-day events will always appear as all-day events, regardless of time fields
+- Example timed event:
+  ```json
+  {
+    "id": 99,
+    "title": "ARES Training",
+    "date": "2026-03-14",
+    "time": "8:00am-4:00pm",
+    "startTime": "08:00",
+    "endTime": "16:00",
+    "type": "training",
+    "location": "Forsyth, GA",
+    "description": null,
+    "contact": "https://gaares.org/"
+  }
+  ```
 
 ### Adding Clubs
 
