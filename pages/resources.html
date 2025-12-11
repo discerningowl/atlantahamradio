@@ -38,19 +38,19 @@
     <section class="hero">
         <h2>Amateur Radio Resources</h2>
         <p>Comprehensive guides, tutorials, and information for amateur radio operators in the Atlanta metro area.</p>
-        <div id="youtube-button-container"></div>
+
+        <div class="resources-grid">
+            <div id="youtube-button-container"></div>
+            <div id="googledrive-button-container"></div>
+        </div>
+
         <script>
             // Safely insert YouTube button
             const container = document.getElementById('youtube-button-container');
             if (container && typeof loadYouTubeButton === 'function') {
                 container.innerHTML = loadYouTubeButton();
             }
-        </script>
-    </section>
 
-    <section class="hero">
-        <div id="googledrive-button-container"></div>
-        <script>
             // Safely insert Google Drive button
             const gdContainer = document.getElementById('googledrive-button-container');
             if (gdContainer && typeof loadGoogleDriveButton === 'function') {
