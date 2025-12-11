@@ -1,5 +1,6 @@
 # Atlanta Ham Radio - robots.txt
 # https://atlantahamradio.org
+# Last updated: 2025-12-10
 
 # Allow all search engines to crawl the site
 User-agent: *
@@ -11,6 +12,7 @@ Disallow: /data/
 # Disallow crawling of internal directories
 Disallow: /.do/
 Disallow: /.github/
+Disallow: /scripts/
 
 # Sitemap location
 Sitemap: https://atlantahamradio.org/sitemap.xml
