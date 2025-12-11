@@ -12,7 +12,7 @@ function loadFooter() {
                         <h4>Atlanta Ham Radio</h4>
                         <p>Connecting amateur radio operators to public service opportunities across the Atlanta metro area.</p>
                         <br>
-                        <p>Curated and maintained by Jack Parks (KQ4JP)</p>
+                        <p>Curated and maintained by <strong>Jack Parks (KQ4JP)</strong></p>
                     </div>
 
                     <div class="footer-section">
@@ -20,6 +20,7 @@ function loadFooter() {
                         <ul class="footer-nav">
                             <li><a href="${pathPrefix}index.html#calendar">Event Calendar</a></li>
                             <li><a href="${pathPrefix}pages/clubs.html">Local Clubs</a></li>
+                            <li><a href="${pathPrefix}pages/organizers.html">For Organizers</a></li>
                             <li><a href="${pathPrefix}pages/getstarted.html">Get Started</a></li>
                             <li><a href="${pathPrefix}pages/resources.html">Resources</a></li>
                         </ul>
