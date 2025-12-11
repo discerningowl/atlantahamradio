@@ -677,14 +677,26 @@ When creating a new page, include this SEO template in the `<head>`:
 **Configuration** (`.do/app.yaml`):
 ```yaml
 name: atlantahamradio
+region: atl
+
 static_sites:
-- environment_slug: html
-  github:
-    branch: main
-    deploy_on_push: true
-    repo: discerningowl/atlantahamradio
-  name: atlantahamradio
-  error_document: 404.html
+  - name: atlantahamradio
+    environment_slug: html
+    source_dir: /
+    error_document: 404.html
+
+    github:                              # ← MUST be "github", not "git"
+      repo: discerningowl/atlantahamradio   # ← short username/repo format
+      branch: main
+      deploy_on_push: true                 # ← this turns auto-deploy on
+
+    routes:
+      - path: /
+
+domains:
+  - domain: atlantahamradio.org
+    type: PRIMARY
+    zone: atlantahamradio.org
 ```
 
 **Deployment Process**:
