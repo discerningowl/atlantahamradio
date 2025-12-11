@@ -26,6 +26,7 @@ atlantahamradio/
 ├── .gitignore                    # Git ignore file (.DS_Store)
 ├── pages/                        # Content pages
 │   ├── clubs.html               # Club directory with search
+│   ├── organizers.html          # Event organizers guide (for non-hams)
 │   ├── getstarted.html          # Getting started guide
 │   ├── resources.html           # Resources and links
 │   ├── about.html               # About page with contact form
@@ -346,7 +347,28 @@ function initBackToTop()
   - Homepage button: "Contact KQ4JP" (links to `pages/about.html#contactform`)
   - Direct link with anchor: `#contactform`
 
-### 6. Calendar Export (ICS)
+### 6. Event Organizers Page
+
+**Location**: `pages/organizers.html`
+
+**Purpose**: Educates event organizers (races, parades, public events) about the benefits of using amateur radio operators for event communications.
+
+**Features**:
+- Card-based layout matching getstarted.html design
+- Anchor navigation for quick section access
+- Three main sections:
+  - **Why Use Ham Radio?** - 4 cards explaining advantages (reliability, deployment, emergency services, FCC licensing)
+  - **Key Benefits** - 6 cards highlighting value propositions (cost, safety, scalability, goodwill, synergy, after-action)
+  - **How to Get Started** - 6 cards with step-by-step guidance (contact clubs, define scope, secure frequencies, integrate ICS, pre-test, connect)
+- Links to club directory and contact form for easy connection
+- SEO optimized for event organizer searches
+
+**Navigation**:
+- Header navigation: "For Organizers" link (between Clubs and Get Started)
+- Mobile navigation: Same position
+- Target audience: Event organizers, municipalities, sponsors (non-ham operators)
+
+### 7. Calendar Export (ICS)
 
 **Individual Events** (Client-side):
 ```javascript
