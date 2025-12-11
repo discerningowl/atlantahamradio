@@ -230,6 +230,23 @@ function loadYouTubeButton() {
     return youTubeButtonHTML;
 }
 
+// Google Drive button component - can be called from pages that need it
+function loadGoogleDriveButton() {
+    const googleDriveButtonHTML = `
+        <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--text-primary);">📁 Event Planning Resources</h3>
+        <div class="youtube-container">
+            <a href="https://drive.google.com/drive/folders/1AIxwT9E0L86JFTE3RXHyKeye2kpDAvPN?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.5rem;">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                View Google Drive Resources
+            </a>
+            <p class="youtube-text">Access helpful documents and templates to get you started in building a communications event plan as a Net Control Station (NCS).</p>
+        </div>
+    `;
+    return googleDriveButtonHTML;
+}
+
 // Initialize theme immediately (before DOM loads to prevent flash)
 initializeTheme();
 
