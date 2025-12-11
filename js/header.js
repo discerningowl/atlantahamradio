@@ -17,6 +17,7 @@ function loadHeader() {
                 <nav id="desktopNav">
                     <a href="${pathPrefix}index.html#calendar">Calendar</a>
                     <a href="${pathPrefix}pages/clubs.html">Clubs</a>
+                    <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
                     <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                     <a href="${pathPrefix}pages/resources.html">Resources</a>
                     <a href="${pathPrefix}pages/about.html">About</a>
@@ -33,6 +34,7 @@ function loadHeader() {
             <nav class="mobile-nav" id="mobileNav">
                 <a href="${pathPrefix}index.html#calendar">Calendar</a>
                 <a href="${pathPrefix}pages/clubs.html">Clubs</a>
+                <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
                 <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                 <a href="${pathPrefix}pages/resources.html">Resources</a>
                 <a href="${pathPrefix}pages/about.html">About</a>
