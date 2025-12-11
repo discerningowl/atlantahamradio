@@ -214,17 +214,17 @@
     {
       "id": 23,
       "title": "Ferst Lewis Grizzard and Catfish Bike Ride",
-      "date": "2026-10-05",
+      "date": "2026-10-04",
       "time": null,
       "type": "race",
       "location": "The Moreland Mill, Moreland, GA",
-      "description": null,
+      "description": "Coweta Ferst Readers, Inc.’s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County",
       "contact": "Newnan Regional Amateur Radio Club"
     },
     {
       "id": 24,
       "title": "Spin for Kids Group Bike Ride",
-      "date": "2026-10-05",
+      "date": "2026-10-04",
       "time": null,
       "type": "race",
       "location": "Camp Twin Lakes, Rutledge, GA",
@@ -234,11 +234,13 @@
     {
       "id": 25,
       "title": "PNC Atlanta 10 Mile and 5K",
-      "date": "2026-10-19",
+      "date": "2026-10-25",
       "time": null,
+      "startTime": "06:00",
+      "endTime": "12:00",
       "type": "race",
       "location": "Atlanta, GA",
-      "description": null,
+      "description": "The Southeast’s largest and most iconic 10 mile race. Scenic course, skyline views.",
       "contact": "https://www.atlantaradioclub.org/atlanta-ares.html"
     },
     {
