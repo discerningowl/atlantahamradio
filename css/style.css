@@ -377,6 +377,19 @@ nav a:hover {
     color: var(--text-secondary);
 }
 
+/* Resources grid for side-by-side layout */
+.resources-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.resources-grid .youtube-container {
+    max-width: 100%;
+}
+
 /* Anchor navigation for in-page links */
 .anchor-nav {
     position: sticky;
@@ -1121,6 +1134,12 @@ footer {
 
     .hero-buttons {
         gap: 0.75rem;
+    }
+
+    /* Resources grid - stack vertically on mobile */
+    .resources-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     /* YouTube container - stack vertically on mobile */

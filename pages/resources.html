@@ -38,6 +38,12 @@
     <section class="hero">
         <h2>Amateur Radio Resources</h2>
         <p>Comprehensive guides, tutorials, and information for amateur radio operators in the Atlanta metro area.</p>
+
+        <div class="resources-grid">
+            <div id="youtube-button-container"></div>
+            <div id="googledrive-button-container"></div>
+        </div>
+
     </section>
 
     <section class="hero">
@@ -48,6 +54,7 @@
             if (container && typeof loadYouTubeButton === 'function') {
                 container.innerHTML = loadYouTubeButton();
             }
+
         </script>
         <div id="googledrive-button-container"></div>
         <script>
