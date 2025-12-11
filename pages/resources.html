@@ -44,6 +44,10 @@
             <div id="googledrive-button-container"></div>
         </div>
 
+    </section>
+
+    <section class="hero">
+        <div id="youtube-button-container"></div>
         <script>
             // Safely insert YouTube button
             const container = document.getElementById('youtube-button-container');
@@ -51,6 +55,9 @@
                 container.innerHTML = loadYouTubeButton();
             }
 
+        </script>
+        <div id="googledrive-button-container"></div>
+        <script>
             // Safely insert Google Drive button
             const gdContainer = document.getElementById('googledrive-button-container');
             if (gdContainer && typeof loadGoogleDriveButton === 'function') {
