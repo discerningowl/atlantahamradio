@@ -239,7 +239,7 @@ function loadGoogleDriveButton() {
                 </svg>
                 View Google Drive Resources
             </a>
-            <p class="youtube-text">Access helpful documents and templates to get you started in building a communications event plan as a Net Control Station (NCS).</p>
+            <p class="youtube-text">Access helpful documents and templates to get you started as an NCS.</p>
         </div>
     `;
     return googleDriveButtonHTML;
