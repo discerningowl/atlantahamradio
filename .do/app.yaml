@@ -41,3 +41,4 @@ domains:
     zone: atlantahamradio.org
   - domain: www.atlantahamradio.org
     type: ALIAS
+    zone: atlantahamradio.org
