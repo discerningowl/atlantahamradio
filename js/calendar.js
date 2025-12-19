@@ -338,6 +338,51 @@ function closeModal(event) {
     }
 }
 
+// Subscribe modal functions
+function openSubscribeModal() {
+    const modal = document.getElementById('subscribeModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSubscribeModal(event) {
+    if (!event || event.target.id === 'subscribeModal') {
+        document.getElementById('subscribeModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+async function copySubscribeUrl() {
+    const calendarUrl = 'https://atlantahamradio.org/events.ics';
+    const input = document.getElementById('calendarUrlInput');
+    const button = document.getElementById('copyUrlBtn');
+
+    try {
+        await navigator.clipboard.writeText(calendarUrl);
+
+        // Visual feedback: Update button
+        button.innerHTML = '✓ Copied!';
+        button.style.background = '#22c55e';
+        input.select();
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = 'Copy';
+            button.style.background = '#3b82f6';
+        }, 2000);
+    } catch (err) {
+        console.error('Failed to copy URL:', err);
+        // Fallback: Select text for manual copy
+        input.select();
+        button.innerHTML = 'Select & Copy';
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = 'Copy';
+        }, 2000);
+    }
+}
+
 // ICS file generation utilities
 function formatICSDate(date) {
     // Format date as YYYYMMDD for all-day events
@@ -453,64 +498,6 @@ function downloadICS(event) {
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
 }
-
-// Subscribe dropdown toggle
-function toggleSubscribeMenu(event) {
-    event.stopPropagation();
-    const menu = document.getElementById('subscribeMenu');
-    menu.classList.toggle('active');
-}
-
-// Copy calendar URL to clipboard for web-based calendars
-async function copyCalendarUrl(event) {
-    const calendarUrl = 'https://atlantahamradio.org/events.ics';
-
-    try {
-        await navigator.clipboard.writeText(calendarUrl);
-
-        // Show a temporary notification
-        const notification = document.createElement('div');
-        notification.textContent = 'Calendar URL copied! Paste it to subscribe to the calendar.';
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #22c55e;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 10000;
-            font-weight: 600;
-            animation: slideDown 0.3s ease;
-        `;
-
-        document.body.appendChild(notification);
-
-        // Remove notification after 3 seconds
-        setTimeout(() => {
-            notification.style.animation = 'slideUp 0.3s ease';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
-    } catch (err) {
-        console.error('Failed to copy URL:', err);
-        // Fallback: show alert with URL
-        alert('Copy this URL to subscribe to the calendar:\n\n' + calendarUrl);
-    }
-}
-
-// Close subscribe menu when clicking outside
-document.addEventListener('click', (event) => {
-    const menu = document.getElementById('subscribeMenu');
-    const dropdown = event.target.closest('.subscribe-dropdown');
-
-    if (!dropdown && menu && menu.classList.contains('active')) {
-        menu.classList.remove('active');
-    }
-});
 
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
