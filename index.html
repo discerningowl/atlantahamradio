@@ -91,10 +91,35 @@
                 <div class="view-buttons">
                     <button class="view-btn active" id="monthViewBtn" onclick="setView('month')">Month View</button>
                     <button class="view-btn" id="listViewBtn" onclick="setView('list')">List View</button>
-                    <a href="webcal://atlantahamradio.org/events.ics" class="view-btn" id="subscribeBtn" style="background: #3b82f6; color: white; margin-left: 0.5rem; text-decoration: none; display: inline-flex; align-items: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                        Subscribe
-                    </a>
+                    <div class="subscribe-dropdown">
+                        <button class="view-btn" id="subscribeBtn" onclick="toggleSubscribeMenu(event)" style="background: #3b82f6; color: white; margin-left: 0.5rem; position: relative;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                            Subscribe
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 4px;"><path d="m6 9 6 6 6-6"/></svg>
+                        </button>
+                        <div class="subscribe-menu" id="subscribeMenu">
+                            <a href="https://calendar.google.com/calendar/r?cid=https://atlantahamradio.org/events.ics" target="_blank" rel="noopener noreferrer" class="subscribe-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                Google Calendar
+                            </a>
+                            <a href="webcal://atlantahamradio.org/events.ics" class="subscribe-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                Apple Calendar
+                            </a>
+                            <a href="https://outlook.live.com/calendar/0/addfromweb?name=Atlanta%20Ham%20Radio&url=https://atlantahamradio.org/events.ics" target="_blank" rel="noopener noreferrer" class="subscribe-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                Outlook.com
+                            </a>
+                            <a href="https://calendar.yahoo.com/?v=60&url=https://atlantahamradio.org/events.ics&title=Atlanta%20Ham%20Radio" target="_blank" rel="noopener noreferrer" class="subscribe-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                                Yahoo Calendar
+                            </a>
+                            <a href="events.ics" download class="subscribe-menu-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                Download ICS File
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 

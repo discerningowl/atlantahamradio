@@ -454,6 +454,23 @@ function downloadICS(event) {
     URL.revokeObjectURL(link.href);
 }
 
+// Subscribe dropdown toggle
+function toggleSubscribeMenu(event) {
+    event.stopPropagation();
+    const menu = document.getElementById('subscribeMenu');
+    menu.classList.toggle('active');
+}
+
+// Close subscribe menu when clicking outside
+document.addEventListener('click', (event) => {
+    const menu = document.getElementById('subscribeMenu');
+    const dropdown = event.target.closest('.subscribe-dropdown');
+
+    if (!dropdown && menu && menu.classList.contains('active')) {
+        menu.classList.remove('active');
+    }
+});
+
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
     loadEvents();
