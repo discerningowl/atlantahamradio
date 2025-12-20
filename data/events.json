@@ -273,8 +273,8 @@
       "time": "2:00pm-midnight",
       "startTime": "14:00",
       "endTime": "23:59",
-      "type": "meeting",
-      "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
+      "type": "event",
+      "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
       "contact": "https://gaqsoparty.com/"
     },
@@ -285,7 +285,7 @@
       "time": "10:00am-7:59pm",
       "startTime": "10:00",
       "endTime": "19:59",
-      "type": "meeting",
+      "type": "event",
       "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
       "contact": "https://gaqsoparty.com/"
