@@ -524,6 +524,8 @@ nav a:hover {
 .month-nav h3 {
     font-size: 1.5rem;
     font-weight: bold;
+    min-width: 250px;
+    text-align: center;
 }
 
 .view-buttons {
@@ -1180,6 +1182,8 @@ footer {
 
     .month-nav h3 {
         font-size: 1.25rem;
+        min-width: 220px;
+        text-align: center;
     }
 
     .month-nav button {
@@ -1411,6 +1415,8 @@ footer {
 
     .month-nav h3 {
         font-size: 1.125rem;
+        min-width: 200px;
+        text-align: center;
     }
 
     .view-btn {
