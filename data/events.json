@@ -27,8 +27,8 @@
       "id": 3,
       "title": "The Polar Opposite Peachtree 2026",
       "date": "2026-01-03",
-      "time": "7:00am-1:00pm",
-      "startTime": "07:00",
+      "time": "5:30am-1:00pm",
+      "startTime": "05:30",
       "endTime": "13:00",
       "type": "race",
       "location": "Downtown Atlanta",
@@ -183,7 +183,7 @@
     },
     {
       "id": 20,
-      "title": "No One Walks Alone – NRARC",
+      "title": "No One Walks Alone",
       "date": "2026-09-12",
       "time": null,
       "type": "race",
@@ -254,6 +254,41 @@
       "location": "Winterville, GA",
       "description": "The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail, and persons who have disabilities.",
       "contact": "Bob Herrin - KE4JLL of the Athens Radio Club"
+    }.
+    {
+      "id": 27,
+      "title": "Stone Mountain Hamfest",
+      "date": "2026-11-07",
+      "endDate": "2026-11-08",
+      "time": null,
+      "type": "meeting",
+      "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
+      "description": "Stone Mountain Hamfest: Annual amateur radio convention and flea market featuring vendors, exhibits, forums, and prizes for ham radio enthusiasts, electronics fans, and tech hobbyists. Hosted by the Alford Memorial Radio Club.",
+      "contact": "https://stonemountainhamfest.com/"
+    },
+    {
+      "id": 27,
+      "title": "Georgia QSO Party",
+      "date": "2026-04-11",
+      "time": "2:00pm-midnight",
+      "startTime": "14:00",
+      "endTime": "23:59",
+      "type": "meeting",
+      "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
+      "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
+      "contact": "https://gaqsoparty.com/"
+    },
+    {
+      "id": 27,
+      "title": "Georgia QSO Party",
+      "date": "2026-04-12",
+      "time": "10:00am-7:59pm",
+      "startTime": "10:00",
+      "endTime": "19:59",
+      "type": "meeting",
+      "location": "See GA QSO Party Website",
+      "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
+      "contact": "https://gaqsoparty.com/"
     }
   ]
 }
