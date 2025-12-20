@@ -3,7 +3,7 @@
     <!-- Homepage -->
     <url>
         <loc>https://atlantahamradio.org/</loc>
-        <lastmod>2025-12-02</lastmod>
+        <lastmod>2025-12-19</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
@@ -49,7 +49,7 @@
     </url>
     <url>
         <loc>https://atlantahamradio.org/pages/calendar-feed.html</loc>
-        <lastmod>2025-12-02</lastmod>
+        <lastmod>2025-12-19</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>

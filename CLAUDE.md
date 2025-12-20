@@ -368,9 +368,31 @@ function initBackToTop()
 - Mobile navigation: Same position
 - Target audience: Event organizers, municipalities, sponsors (non-ham operators)
 
-### 7. Calendar Export (ICS)
+### 7. Calendar Subscription
 
-**Individual Events** (Client-side):
+**Subscribe Button & Modal**:
+- Single "Subscribe" button on calendar (blue, in view controls)
+- Opens modal with subscription instructions
+- Modal contains:
+  - Calendar URL input field with copy button
+  - Platform-specific instructions (Apple, Google, Outlook, Other)
+  - "Need more help?" link to calendar-feed.html
+- Simple, user-friendly interface for non-technical users
+
+**Modal Functions** (`js/calendar.js`):
+- `openSubscribeModal()` - Opens subscribe modal
+- `closeSubscribeModal()` - Closes modal (X button, outside click, ESC key)
+- `copySubscribeUrl()` - Copies URL to clipboard with visual feedback ("✓ Copied!")
+
+**Calendar URL**: `https://atlantahamradio.org/events.ics`
+
+**Subscription Methods**:
+1. **Apple Calendar**: 1-click `webcal://` link (opens Calendar app)
+2. **Google Calendar**: Copy URL → Settings → Add calendar by URL → Paste
+3. **Outlook**: Copy URL → Settings → Subscribe from web → Paste
+4. **Other Calendars**: Copy URL → Look for "Add by URL" or "Subscribe" in settings
+
+**Individual Event Export** (Client-side):
 ```javascript
 function downloadICS(event)
 ```
@@ -378,22 +400,19 @@ function downloadICS(event)
 - All-day event format
 - Proper escaping for special characters
 - Downloads as `{event-title}.ics`
+- Triggered from event detail modal
 
-**Bulk Calendar Subscription** (Static File):
-- **Static ICS File**: `events.ics` (auto-generated via GitHub Actions)
-- **Subscribe Link**: `webcal://atlantahamradio.org/events.ics`
+**Static ICS File** (Auto-generated):
+- **File**: `events.ics` (committed to repository)
 - **Generation**: Node.js script (`scripts/generate-calendar.js`) runs on push to `main` when `events.json` changes
 - **Format**: RFC 5545 compliant, includes all events with proper formatting
-- **Usage**: Can be subscribed to in Google Calendar, Outlook, Apple Calendar, etc.
 - **Updates**: Calendar apps automatically refresh subscriptions (typically every 12-24 hours)
 
-**Bulk Download** (Client-side fallback):
-```javascript
-function downloadAllEventsICS()
-```
-- Generates all events as single calendar file dynamically in browser
-- Downloads as `atlanta-ham-radio-events.ics`
-- Alternative to webcal:// subscription for one-time imports
+**Detailed Tutorial Page** (`pages/calendar-feed.html`):
+- Comprehensive step-by-step instructions for all major calendar platforms
+- Screenshots and troubleshooting tips
+- "Back to Calendar" navigation button
+- Linked from subscribe modal for users needing extra help
 
 ---
 
@@ -1015,16 +1034,18 @@ domains:
 
 ## Version History
 
-**Current State** (as of December 7, 2025):
+**Current State** (as of December 19, 2025):
 - Static HTML/CSS/JS site (no build process for frontend)
 - Event calendar with month/list views, search, and filtering
-- ICS calendar export (individual events and bulk subscription)
+- Simplified calendar subscription modal with platform-specific instructions
 - Static `events.ics` file auto-generated via GitHub Actions
+- Individual event ICS export from event detail modal
 - Club directory with search and collapsible county sections
 - Dark/Light theme toggle with localStorage persistence
 - About page with EmailJS contact form integration
 - Back to top button with smooth scrolling
 - Multiple resource pages (getting started, ARES, equipment guides)
+- Calendar subscription tutorial page (calendar-feed.html) with detailed instructions
 - DigitalOcean deployment with auto-deploy from `main` branch
 - Mobile responsive design with hamburger menu
 - Comprehensive SEO optimization (meta tags, structured data, sitemap)
@@ -1048,14 +1069,16 @@ domains:
 
 ### Key Functions
 
-**Calendar** (`index.html`):
+**Calendar** (`index.html` and `js/calendar.js`):
 - `loadEvents()` - Fetches and parses event data from events.json
 - `renderCalendar()` - Renders calendar view (month grid)
 - `setView('month'|'list')` - Toggles between month and list views
 - `setFilter(type)` - Filters events by type
-- `downloadICS(event)` - Exports single event as .ics file
-- `downloadAllEventsICS()` - Exports all events as single .ics file
 - `changeMonth(delta)` - Navigates between months
+- `openSubscribeModal()` - Opens calendar subscription modal
+- `closeSubscribeModal()` - Closes subscription modal
+- `copySubscribeUrl()` - Copies calendar URL to clipboard with visual feedback
+- `downloadICS(event)` - Exports single event as .ics file
 
 **Clubs** (`pages/clubs.html`):
 - `loadClubs()` - Fetches club data from clubs.json
@@ -1089,5 +1112,5 @@ Error:     #ef4444
 
 ---
 
-**Last Updated**: December 7, 2025
-**Format Version**: 1.1
+**Last Updated**: December 19, 2025
+**Format Version**: 1.2
