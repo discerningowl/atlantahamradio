@@ -254,7 +254,7 @@
       "location": "Winterville, GA",
       "description": "The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail, and persons who have disabilities.",
       "contact": "Bob Herrin - KE4JLL of the Athens Radio Club"
-    }.
+    },
     {
       "id": 27,
       "title": "Stone Mountain Hamfest",
@@ -267,7 +267,7 @@
       "contact": "https://stonemountainhamfest.com/"
     },
     {
-      "id": 27,
+      "id": 28,
       "title": "Georgia QSO Party",
       "date": "2026-04-11",
       "time": "2:00pm-midnight",
@@ -279,7 +279,7 @@
       "contact": "https://gaqsoparty.com/"
     },
     {
-      "id": 27,
+      "id": 29,
       "title": "Georgia QSO Party",
       "date": "2026-04-12",
       "time": "10:00am-7:59pm",
