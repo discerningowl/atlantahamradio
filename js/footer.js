@@ -36,7 +36,7 @@ function loadFooter() {
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; 2025 Atlanta Ham Radio &middot; All Rights Reserved &middot; Focused on public service and community involvement</p>
+                    <p>&copy; 2026 Atlanta Ham Radio &middot; All Rights Reserved &middot; Focused on public service and community involvement</p>
                 </div>
             </div>
         </footer>
