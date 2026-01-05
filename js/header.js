@@ -16,10 +16,10 @@ function loadHeader() {
                 </a>
                 <nav id="desktopNav">
                     <a href="${pathPrefix}index.html#calendar">Calendar</a>
-                    <a href="${pathPrefix}pages/clubs.html">Clubs</a>
-                    <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
                     <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                     <a href="${pathPrefix}pages/resources.html">Resources</a>
+                    <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
+                    <a href="${pathPrefix}pages/clubs.html">Clubs</a>
                     <a href="${pathPrefix}pages/about.html">About</a>
                     <button id="themeToggle" aria-label="Toggle theme" style="background: none; border: none; color: inherit; cursor: pointer; padding: 0.5rem; display: flex; align-items: center;">
                         <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
@@ -33,10 +33,10 @@ function loadHeader() {
             </div>
             <nav class="mobile-nav" id="mobileNav">
                 <a href="${pathPrefix}index.html#calendar">Calendar</a>
-                <a href="${pathPrefix}pages/clubs.html">Clubs</a>
-                <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
                 <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                 <a href="${pathPrefix}pages/resources.html">Resources</a>
+                <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
+                <a href="${pathPrefix}pages/clubs.html">Clubs</a>
                 <a href="${pathPrefix}pages/about.html">About</a>
                 <button id="themeToggleMobile" aria-label="Toggle theme" style="background: var(--bg-card); border: 1px solid var(--border-primary); border-bottom: 1px solid var(--border-primary); color: inherit; cursor: pointer; padding: 1.25rem 2rem; width: 100%; text-align: center; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 600;">
                     <svg id="sunIconMobile" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>

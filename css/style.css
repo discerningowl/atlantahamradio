@@ -1754,6 +1754,7 @@ footer {
 
 .resource-section {
     margin-bottom: 4rem;
+    scroll-margin-top: 100px;
 }
 
 .section-header {
