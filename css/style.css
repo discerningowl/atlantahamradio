@@ -877,6 +877,7 @@ nav a:hover {
     color: var(--text-secondary);
     margin-bottom: 1rem;
     line-height: 1.6;
+    white-space: pre-line;
 }
 
 .contact-box {
@@ -884,6 +885,7 @@ nav a:hover {
     border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1.5rem;
+    white-space: pre-line;
 }
 
 .contact-box strong {
