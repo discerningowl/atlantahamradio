@@ -125,18 +125,6 @@
       "contact": "https://gaparks.org/"
     },
     {
-      "id": 14,
-      "title": "Peachtree International and Aquabike",
-      "date": "2026-04-26",
-      "time": "6:30a-10:30a",
-      "startTime": "06:30",
-      "endTime": "10:30",
-      "type": "race",
-      "location": "Peachtree City, GA",
-      "description": "Super-Sprint & Aquabike Race",
-      "contact": "Details coming soon"
-    },
-    {
       "id": 15,
       "title": "Dayton Hamvention",
       "date": "2026-05-15",
