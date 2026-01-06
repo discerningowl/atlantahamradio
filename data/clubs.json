@@ -341,6 +341,37 @@
       ]
     },
     {
+      "name": "Hall County",
+      "clubs": [
+        {
+          "name": "Lanierland Amatuer Radio Club",
+          "location": "Hall County, GA",
+          "website": "https://www.lanierlandarc.org/p/home.html",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/larcmembers"
+            },
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/LanierlandARC/"
+            }
+          ]
+        },
+        {
+          "name": "Hall County ARES",
+          "location": "Gainesville, GA",
+          "website": "https://www.hallcountyares.com/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://hallcountyares.groups.io/g/main"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Paulding County",
       "clubs": [
         {
