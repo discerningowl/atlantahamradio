@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; worker-src blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com; worker-src blob:; font-src data:;">
 
     <!-- Primary Meta Tags -->
     <title>ICS-205 to CHIRP Converter - Atlanta Ham Radio</title>
@@ -270,8 +270,8 @@
         <div class="callout info">
             <h3>How to Use</h3>
             <ol>
-                <li>Upload your ICS-205 PDF form using the file picker below</li>
-                <li>The tool will extract frequency data from the form fields</li>
+                <li>Upload your ICS-205 PDF (fillable, scanned, or photo)</li>
+                <li>Wait for OCR processing (typically 10-30 seconds per page)</li>
                 <li>Review the extracted channels in the preview table</li>
                 <li>Click "Download CSV" to save the CHIRP-compatible file</li>
                 <li>Import the CSV into CHIRP to program your radio</li>
@@ -281,9 +281,10 @@
         <div class="callout warning">
             <h3>Important Notes</h3>
             <ul>
-                <li><strong>Privacy:</strong> This tool works entirely in your browser - no data is uploaded to a server</li>
-                <li><strong>PDF Requirements:</strong> Only fillable PDF forms are supported (not scanned images)</li>
-                <li><strong>Form Versions:</strong> Compatible with ICS-205 v2, v3, and v3.1</li>
+                <li><strong>Universal Support:</strong> Works with ANY ICS-205 format (fillable PDF, scanned form, or photo)</li>
+                <li><strong>Processing Time:</strong> OCR takes 10-30 seconds per page - please be patient</li>
+                <li><strong>Privacy:</strong> All processing happens in your browser - no data is uploaded to a server</li>
+                <li><strong>Best Results:</strong> Use clear, high-quality scans with legible text</li>
                 <li><strong>Verification:</strong> Always verify frequencies before programming your radio</li>
                 <li><strong>Licensing:</strong> Ensure you have proper amateur radio license for programmed frequencies</li>
             </ul>
@@ -377,6 +378,10 @@
 
     <script src="../js/footer.js"></script>
 
+
+    <!-- Tesseract.js OCR Library -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+
     <!-- PDF.js from CDN -->
     <script type="module">
         // Import PDF.js from CDN
@@ -388,6 +393,7 @@
 
         // Global state
         let convertedChannels = [];
+        let ocrWorker = null;
 
         // DOM Elements
         const uploadZone = document.getElementById('uploadZone');
@@ -454,12 +460,12 @@
             }
 
             showStatus('Reading PDF...', 'info');
-            showProgress(10);
+            showProgress(5);
 
             try {
                 const arrayBuffer = await file.arrayBuffer();
-                showProgress(30);
-                await processPDF(arrayBuffer);
+                showProgress(10);
+                await processPDFWithOCR(arrayBuffer);
             } catch (error) {
                 console.error('PDF processing error:', error);
                 showStatus('Failed to read PDF: ' + error.message, 'error');
@@ -467,47 +473,66 @@
             }
         }
 
-        // Process PDF with PDF.js
-        async function processPDF(arrayBuffer) {
-            showStatus('Parsing PDF form fields...', 'info');
-            showProgress(50);
+        // Process PDF with OCR
+        async function processPDFWithOCR(arrayBuffer) {
+            showStatus('Initializing OCR engine...', 'info');
+            showProgress(15);
 
             try {
+                // Initialize Tesseract worker
+                if (!ocrWorker) {
+                    ocrWorker = await Tesseract.createWorker('eng');
+                }
+                showProgress(20);
+
+                // Load PDF
                 const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
                 const numPages = pdf.numPages;
+                showStatus(`Processing ${numPages} page(s) with OCR...`, 'info');
 
                 let allChannels = [];
+                let allOCRText = '';
 
                 // Process each page
                 for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-                    const page = await pdf.getPage(pageNum);
-                    const annotations = await page.getAnnotations();
+                    showStatus(`OCR processing page ${pageNum} of ${numPages}... (this may take 10-30 seconds)`, 'info');
 
-                    // Extract form field values
-                    const fieldValues = extractFormFields(annotations);
-                    const channels = parseICS205Fields(fieldValues);
+                    // Render page to canvas
+                    const page = await pdf.getPage(pageNum);
+                    const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+
+                    // Convert canvas to image
+                    const imageData = canvas.toDataURL('image/png');
+
+                    // Run OCR
+                    const { data: { text } } = await ocrWorker.recognize(imageData);
+                    allOCRText += text + '\n\n--- PAGE BREAK ---\n\n';
+                    console.log(`OCR Page ${pageNum} text:`, text);
+
+                    // Parse channels from OCR text
+                    const channels = parseICS205FromOCR(text);
                     allChannels = allChannels.concat(channels);
 
-                    showProgress(50 + (pageNum / numPages) * 30);
+                    const progress = 20 + ((pageNum / numPages) * 70);
+                    showProgress(progress);
                 }
 
-                showProgress(90);
+                showProgress(95);
 
                 if (allChannels.length === 0) {
-                    // Debug: Show what fields were found
-                    const allFields = [];
-                    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-                        const page = await pdf.getPage(pageNum);
-                        const annotations = await page.getAnnotations();
-                        const fieldValues = extractFormFields(annotations);
-                        allFields.push(...Object.keys(fieldValues));
-                    }
-
-                    console.log('DEBUG: Found field names:', allFields);
-
-                    // Show debug info to user
-                    showDebugInfo(allFields);
-                    showStatus('No channel data found in PDF. Check the debug information below to see detected field names.', 'error');
+                    // Show OCR text for debugging
+                    showDebugInfo(allOCRText);
+                    showStatus('No frequency data found. Check debug info below.', 'error');
                     hideProgress();
                     return;
                 }
@@ -517,147 +542,107 @@
                 displayResults(allChannels);
 
             } catch (error) {
-                console.error('PDF parsing error:', error);
-                showStatus('Failed to parse PDF. Ensure this is a fillable ICS-205 form.', 'error');
+                console.error('OCR processing error:', error);
+                showStatus('Failed to process PDF with OCR: ' + error.message, 'error');
                 hideProgress();
             }
         }
 
-        // Extract Form Fields from Annotations
-        function extractFormFields(annotations) {
-            const fields = {};
-
-            for (const annotation of annotations) {
-                if (annotation.subtype === 'Widget' && annotation.fieldName) {
-                    // Get field value
-                    let value = '';
-                    if (annotation.fieldValue !== null && annotation.fieldValue !== undefined) {
-                        value = String(annotation.fieldValue).trim();
-                    } else if (annotation.buttonValue !== null && annotation.buttonValue !== undefined) {
-                        value = String(annotation.buttonValue).trim();
-                    }
-
-                    fields[annotation.fieldName] = value;
-                }
-            }
-
-            return fields;
-        }
-
-        // Parse ICS-205 Fields
-        function parseICS205Fields(fields) {
+        // Parse ICS-205 from OCR Text
+        function parseICS205FromOCR(text) {
             const channels = [];
+            const lines = text.split('\n');
 
-            // Try to detect field naming pattern by looking for common patterns
-            const fieldNames = Object.keys(fields);
+            console.log('Parsing OCR text, lines:', lines.length);
 
-            // Common ICS-205 field patterns for channels/rows
-            // Try extracting up to 50 potential rows (most ICS-205 forms have 10-30 channels)
-            for (let i = 1; i <= 50; i++) {
-                const channel = extractChannelRow(fields, i);
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
 
-                if (channel && channel.rxFreq) {
-                    channels.push(channel);
+                // Look for frequency patterns (146.520, 446.000, etc.)
+                const freqMatch = line.match(/\b(1[234]\d\.\d{1,4}|2[2-3]\d\.\d{1,4}|4[2-4]\d\.\d{1,4})\b/g);
+
+                if (freqMatch && freqMatch.length > 0) {
+                    // Found a line with frequency, try to parse the full row
+                    const channel = parseChannelFromLine(line, lines, i);
+                    if (channel) {
+                        channels.push(channel);
+                        console.log('Found channel:', channel);
+                    }
                 }
             }
 
             return channels;
         }
 
-        // Extract Single Channel Row
-        function extractChannelRow(fields, rowNum) {
-            // Helper to find field with multiple naming patterns
-            const getField = (...patterns) => {
-                for (const pattern of patterns) {
-                    // Try direct match
-                    if (fields[pattern]) return fields[pattern];
+        // Parse Channel from OCR Line
+        function parseChannelFromLine(line, allLines, lineIndex) {
+            // Try to extract: Channel Name, RX Freq, TX Freq, RX Tone, TX Tone, Mode
 
-                    // Try with row number
-                    const withRow = pattern.replace('$N', rowNum);
-                    if (fields[withRow]) return fields[withRow];
+            // Extract all frequencies from line
+            const freqs = line.match(/\b(1[234]\d\.\d{1,4}|2[2-3]\d\.\d{1,4}|4[2-4]\d\.\d{1,4})\b/g);
+            if (!freqs || freqs.length === 0) return null;
+
+            const rxFreq = parseFrequency(freqs[0]);
+            if (!rxFreq) return null;
+
+            // TX freq might be same as RX (simplex) or different (repeater)
+            const txFreq = freqs.length > 1 ? parseFrequency(freqs[1]) : rxFreq;
+
+            // Try to extract channel name (usually at start of line or nearby)
+            let name = extractChannelName(line, allLines, lineIndex);
+
+            // Try to extract tones (look for patterns like 141.3, 100.0, CSQ, etc.)
+            const tones = line.match(/\b(\d{2,3}\.\d)\b/g);
+            let rxTone = '';
+            let txTone = '';
+
+            if (tones && tones.length > 0) {
+                // Filter out frequencies (already extracted)
+                const pureTones = tones.filter(t => {
+                    const val = parseFloat(t);
+                    return val >= 67.0 && val <= 254.1; // CTCSS range
+                });
+
+                if (pureTones.length > 0) {
+                    txTone = pureTones[0]; // First tone is usually TX
+                    rxTone = pureTones.length > 1 ? pureTones[1] : pureTones[0];
                 }
-                return null;
-            };
+            }
 
-            // Try multiple field naming patterns
-            const rxFreq = getField(
-                `RX_Freq_${rowNum}`,
-                `RXFreq_${rowNum}`,
-                `Frequency_${rowNum}`,
-                `Row${rowNum}_RXFreq`,
-                `Row${rowNum}_Frequency`,
-                `Ch${rowNum}_RX`,
-                `Channel_${rowNum}_RX`
-            );
-
-            if (!rxFreq) return null; // Skip empty rows
-
-            const txFreq = getField(
-                `TX_Freq_${rowNum}`,
-                `TXFreq_${rowNum}`,
-                `Row${rowNum}_TXFreq`,
-                `Ch${rowNum}_TX`,
-                `Channel_${rowNum}_TX`
-            );
-
-            const name = getField(
-                `Name_${rowNum}`,
-                `Channel_Name_${rowNum}`,
-                `ChannelName_${rowNum}`,
-                `Row${rowNum}_Name`,
-                `Ch${rowNum}_Name`
-            );
-
-            const rxTone = getField(
-                `RX_Tone_${rowNum}`,
-                `RXTone_${rowNum}`,
-                `Row${rowNum}_RXTone`,
-                `Ch${rowNum}_RXTone`
-            );
-
-            const txTone = getField(
-                `TX_Tone_${rowNum}`,
-                `TXTone_${rowNum}`,
-                `Row${rowNum}_TXTone`,
-                `Ch${rowNum}_TXTone`
-            );
-
-            const mode = getField(
-                `Mode_${rowNum}`,
-                `Row${rowNum}_Mode`,
-                `Ch${rowNum}_Mode`
-            );
-
-            const assignment = getField(
-                `Assignment_${rowNum}`,
-                `Row${rowNum}_Assignment`,
-                `Ch${rowNum}_Assignment`
-            );
-
-            const functionField = getField(
-                `Function_${rowNum}`,
-                `Row${rowNum}_Function`,
-                `Ch${rowNum}_Function`
-            );
-
-            const remarks = getField(
-                `Remarks_${rowNum}`,
-                `Row${rowNum}_Remarks`,
-                `Ch${rowNum}_Remarks`
-            );
+            // Try to extract mode (look for A, D, M, FM, NFM, etc.)
+            const modeMatch = line.match(/\b([ADM]|FM|NFM|DMR|DSTAR)\b/i);
+            const mode = modeMatch ? modeMatch[1] : '';
 
             return {
-                channel: rowNum,
-                name: name || `CH-${rowNum}`,
-                function: functionField,
-                assignment: assignment,
-                rxFreq: parseFrequency(rxFreq),
+                name: name || 'CHANNEL',
+                rxFreq: rxFreq,
+                txFreq: txFreq,
                 rxTone: rxTone,
-                txFreq: parseFrequency(txFreq || rxFreq),
                 txTone: txTone,
                 mode: mode,
-                remarks: remarks
+                remarks: ''
             };
+        }
+
+        // Extract Channel Name from OCR
+        function extractChannelName(line, allLines, lineIndex) {
+            // Try to find channel name before the frequency
+            const freqMatch = line.match(/\b(1[234]\d\.\d{1,4}|2[2-3]\d\.\d{1,4}|4[2-4]\d\.\d{1,4})\b/);
+            if (!freqMatch) return '';
+
+            const freqPos = freqMatch.index;
+            let beforeFreq = line.substring(0, freqPos).trim();
+
+            // Clean up common OCR artifacts
+            beforeFreq = beforeFreq.replace(/[|]/g, ' ').trim();
+
+            // Take last 1-3 words before frequency as channel name
+            const words = beforeFreq.split(/\s+/).filter(w => w.length > 0);
+            if (words.length > 0) {
+                return words.slice(-Math.min(3, words.length)).join(' ');
+            }
+
+            return '';
         }
 
         // Parse Frequency String
@@ -667,7 +652,7 @@
             // Remove whitespace and common separators
             freqString = freqString.trim().replace(/[,\s]/g, '');
 
-            // Extract numeric part (handles "146.520 N", "146.520N", "146.520", etc.)
+            // Extract numeric part
             const match = freqString.match(/(\d+\.?\d*)/);
             if (!match) return null;
 
@@ -949,13 +934,19 @@
         }
 
         // Reset Converter
-        function resetConverter() {
+        async function resetConverter() {
             convertedChannels = [];
             fileInput.value = '';
             statusBox.classList.remove('show');
             debugSection.classList.remove('show');
             resultsSection.classList.remove('show');
             hideProgress();
+
+            // Terminate OCR worker to free memory
+            if (ocrWorker) {
+                await ocrWorker.terminate();
+                ocrWorker = null;
+            }
         }
 
         // Show Status
@@ -993,14 +984,14 @@
         }
 
         // Show Debug Info
-        function showDebugInfo(fieldNames) {
+        function showDebugInfo(ocrText) {
             const debugSection = document.getElementById('debugSection');
             const debugContent = document.getElementById('debugContent');
 
-            if (fieldNames.length === 0) {
-                debugContent.textContent = 'No form fields found in PDF. This may be a scanned image or non-fillable PDF.';
+            if (!ocrText || ocrText.trim().length === 0) {
+                debugContent.textContent = 'No text extracted from PDF. This may indicate a blank or corrupted PDF.';
             } else {
-                debugContent.textContent = fieldNames.join('\n');
+                debugContent.textContent = 'OCR Extracted Text:\n\n' + ocrText;
             }
 
             debugSection.classList.add('show');
