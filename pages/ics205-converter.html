@@ -479,9 +479,28 @@
             showProgress(15);
 
             try {
-                // Initialize Tesseract worker
+                // Check if Tesseract is loaded (use window.Tesseract since it's a global script)
+                if (typeof window.Tesseract === 'undefined') {
+                    throw new Error('Tesseract.js library failed to load. Please check your internet connection and refresh the page.');
+                }
+
+                // Initialize Tesseract worker (v5 API)
                 if (!ocrWorker) {
-                    ocrWorker = await Tesseract.createWorker('eng');
+                    console.log('Creating Tesseract worker...');
+                    showStatus('Downloading OCR language data... (first time only)', 'info');
+
+                    ocrWorker = await window.Tesseract.createWorker('eng', 1, {
+                        logger: m => {
+                            console.log('Tesseract:', m);
+                            if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract') {
+                                showStatus(`OCR Engine: ${m.status}...`, 'info');
+                            }
+                            if (m.status === 'loading language traineddata') {
+                                showStatus(`Downloading language data: ${Math.round(m.progress * 100)}%`, 'info');
+                            }
+                        }
+                    });
+                    console.log('Tesseract worker created successfully');
                 }
                 showProgress(20);
 
