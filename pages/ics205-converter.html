@@ -193,6 +193,46 @@
             height: 20px;
         }
 
+        /* Debug Section */
+        .debug-section {
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .debug-section.show {
+            display: block;
+        }
+
+        .debug-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .debug-box pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-secondary);
+        }
+
+        .debug-toggle {
+            cursor: pointer;
+            color: var(--accent);
+            text-decoration: underline;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .debug-toggle:hover {
+            color: var(--primary);
+        }
+
         @media (max-width: 768px) {
             .upload-zone {
                 padding: 2rem 1rem;
@@ -272,6 +312,19 @@
             </div>
         </div>
 
+        <!-- Debug Section -->
+        <div class="debug-section" id="debugSection">
+            <div class="callout warning">
+                <h3>Debug Information</h3>
+                <p>The following field names were found in your PDF. This helps identify the correct field mapping:</p>
+                <a class="debug-toggle" id="debugToggle" onclick="document.getElementById('debugBox').classList.toggle('show')">Show/Hide Field Names</a>
+                <div class="debug-box show" id="debugBox">
+                    <pre id="debugContent">No data yet...</pre>
+                </div>
+                <p style="margin-top: 1rem;"><strong>Next Steps:</strong> If you see field names above, please share a few example field names (especially ones containing frequency or channel information) so we can update the parser to support your ICS-205 form version.</p>
+            </div>
+        </div>
+
         <!-- Results Section -->
         <div class="results-section" id="resultsSection">
             <h3>Extracted Channels</h3>
@@ -344,6 +397,8 @@
         const statusMessage = document.getElementById('statusMessage');
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
+        const debugSection = document.getElementById('debugSection');
+        const debugContent = document.getElementById('debugContent');
         const resultsSection = document.getElementById('resultsSection');
         const previewBody = document.getElementById('previewBody');
         const channelCount = document.getElementById('channelCount');
@@ -439,7 +494,20 @@
                 showProgress(90);
 
                 if (allChannels.length === 0) {
-                    showStatus('No channel data found in PDF. Ensure this is a fillable ICS-205 form with completed frequency information.', 'error');
+                    // Debug: Show what fields were found
+                    const allFields = [];
+                    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const annotations = await page.getAnnotations();
+                        const fieldValues = extractFormFields(annotations);
+                        allFields.push(...Object.keys(fieldValues));
+                    }
+
+                    console.log('DEBUG: Found field names:', allFields);
+
+                    // Show debug info to user
+                    showDebugInfo(allFields);
+                    showStatus('No channel data found in PDF. Check the debug information below to see detected field names.', 'error');
                     hideProgress();
                     return;
                 }
@@ -885,6 +953,7 @@
             convertedChannels = [];
             fileInput.value = '';
             statusBox.classList.remove('show');
+            debugSection.classList.remove('show');
             resultsSection.classList.remove('show');
             hideProgress();
         }
@@ -921,6 +990,20 @@
         function hideProgress() {
             progressBar.classList.remove('show');
             progressFill.style.width = '0%';
+        }
+
+        // Show Debug Info
+        function showDebugInfo(fieldNames) {
+            const debugSection = document.getElementById('debugSection');
+            const debugContent = document.getElementById('debugContent');
+
+            if (fieldNames.length === 0) {
+                debugContent.textContent = 'No form fields found in PDF. This may be a scanned image or non-fillable PDF.';
+            } else {
+                debugContent.textContent = fieldNames.join('\n');
+            }
+
+            debugSection.classList.add('show');
         }
     </script>
 </body>
