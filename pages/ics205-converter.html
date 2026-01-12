@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; worker-src blob:;">
+
+    <!-- Primary Meta Tags -->
+    <title>ICS-205 to CHIRP Converter - Atlanta Ham Radio</title>
+    <meta name="title" content="ICS-205 to CHIRP Converter - Atlanta Ham Radio">
+    <meta name="description" content="Convert ICS-205 Radio Communications Plan PDFs to CHIRP CSV format for easy radio programming. Free browser-based tool for amateur radio operators.">
+    <meta name="keywords" content="ICS-205, CHIRP converter, radio programming, PDF to CSV, amateur radio, ham radio tools, ARES, emergency communications">
+    <meta name="author" content="KQ4JP">
+    <link rel="canonical" href="https://atlantahamradio.org/pages/ics205-converter.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://atlantahamradio.org/pages/ics205-converter.html">
+    <meta property="og:title" content="ICS-205 to CHIRP Converter">
+    <meta property="og:description" content="Convert ICS-205 Radio Communications Plan PDFs to CHIRP CSV format for easy radio programming.">
+    <meta property="og:image" content="https://atlantahamradio.org/images/logo.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Atlanta Ham Radio">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://atlantahamradio.org/pages/ics205-converter.html">
+    <meta name="twitter:title" content="ICS-205 to CHIRP Converter">
+    <meta name="twitter:description" content="Convert ICS-205 Radio Communications Plan PDFs to CHIRP CSV format for easy radio programming.">
+    <meta name="twitter:image" content="https://atlantahamradio.org/images/logo.png">
+
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* Upload Zone Styling */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 0.75rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: var(--card-hover-bg);
+        }
+
+        .upload-zone.dragover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-zone svg {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            opacity: 0.5;
+        }
+
+        .upload-zone h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .upload-zone p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Status Box */
+        .status-box {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            display: none;
+            text-align: center;
+        }
+
+        .status-box.show {
+            display: block;
+        }
+
+        .status-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .status-icon.info { color: #3b82f6; }
+        .status-icon.success { color: #22c55e; }
+        .status-icon.error { color: #ef4444; }
+        .status-icon.warning { color: #f59e0b; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar.show {
+            display: block;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Results Section */
+        .results-section {
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 0.75rem;
+            background: var(--card-bg);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-table th {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .results-table td {
+            color: var(--text-secondary);
+        }
+
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table tbody tr:hover {
+            background: var(--card-hover-bg);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-actions .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .upload-zone {
+                padding: 2rem 1rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .modal-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .results-table {
+                font-size: 0.85rem;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="../js/header.js"></script>
+
+    <section class="hero">
+        <h2>ICS-205 to CHIRP Converter</h2>
+        <p>Convert ICS-205 Radio Communications Plan PDFs to CHIRP-compatible CSV files for easy radio programming.</p>
+    </section>
+
+    <section class="article-container">
+        <div class="callout info">
+            <h3>How to Use</h3>
+            <ol>
+                <li>Upload your ICS-205 PDF form using the file picker below</li>
+                <li>The tool will extract frequency data from the form fields</li>
+                <li>Review the extracted channels in the preview table</li>
+                <li>Click "Download CSV" to save the CHIRP-compatible file</li>
+                <li>Import the CSV into CHIRP to program your radio</li>
+            </ol>
+        </div>
+
+        <div class="callout warning">
+            <h3>Important Notes</h3>
+            <ul>
+                <li><strong>Privacy:</strong> This tool works entirely in your browser - no data is uploaded to a server</li>
+                <li><strong>PDF Requirements:</strong> Only fillable PDF forms are supported (not scanned images)</li>
+                <li><strong>Form Versions:</strong> Compatible with ICS-205 v2, v3, and v3.1</li>
+                <li><strong>Verification:</strong> Always verify frequencies before programming your radio</li>
+                <li><strong>Licensing:</strong> Ensure you have proper amateur radio license for programmed frequencies</li>
+            </ul>
+        </div>
+
+        <!-- Upload Zone -->
+        <div class="upload-zone" id="uploadZone">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <h3>Drop ICS-205 PDF Here</h3>
+            <p>or click to browse</p>
+            <input type="file" id="fileInput" accept=".pdf,application/pdf" style="display: none;">
+        </div>
+
+        <!-- Status Box -->
+        <div class="status-box" id="statusBox">
+            <div class="status-content">
+                <svg class="status-icon" id="statusIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p id="statusMessage">Processing PDF...</p>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <h3>Extracted Channels</h3>
+            <div id="channelCount" class="callout tip">
+                <p><strong>0 channels</strong> extracted from PDF</p>
+            </div>
+
+            <div class="table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>RX Freq</th>
+                            <th>TX Freq</th>
+                            <th>Tone</th>
+                            <th>Mode</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewBody">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="downloadBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Download CHIRP CSV
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    Start Over
+                </button>
+            </div>
+        </div>
+
+        <div class="callout tip" style="margin-top: 3rem;">
+            <h3>Tips for Best Results</h3>
+            <ul>
+                <li><strong>Complete Forms:</strong> Ensure all frequency rows are filled out completely</li>
+                <li><strong>Standard Formats:</strong> Use standard frequency formats (e.g., 146.520, 446.000)</li>
+                <li><strong>Tone Codes:</strong> Enter tones as numbers (141.3) or DCS codes (023N)</li>
+                <li><strong>Test First:</strong> Always test programmed frequencies before an event</li>
+                <li><strong>Save Backups:</strong> Keep a copy of both the PDF and CSV file</li>
+            </ul>
+        </div>
+    </section>
+
+    <script src="../js/footer.js"></script>
+
+    <!-- PDF.js from CDN -->
+    <script type="module">
+        // Import PDF.js from CDN
+        import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4/build/pdf.min.mjs';
+
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdn.jsdelivr.net/npm/pdfjs-dist@4/build/pdf.worker.min.mjs';
+
+        // Global state
+        let convertedChannels = [];
+
+        // DOM Elements
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const statusBox = document.getElementById('statusBox');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusMessage = document.getElementById('statusMessage');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const resultsSection = document.getElementById('resultsSection');
+        const previewBody = document.getElementById('previewBody');
+        const channelCount = document.getElementById('channelCount');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Event Listeners
+        uploadZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+        downloadBtn.addEventListener('click', handleDownload);
+        resetBtn.addEventListener('click', resetConverter);
+
+        // Drag and drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                processFile(file);
+            }
+        });
+
+        // File Selection Handler
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // Process File
+        async function processFile(file) {
+            // Validate file type
+            if (file.type !== 'application/pdf') {
+                showStatus('Please select a PDF file', 'error');
+                return;
+            }
+
+            // Validate file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                showStatus('File too large (max 10MB)', 'error');
+                return;
+            }
+
+            showStatus('Reading PDF...', 'info');
+            showProgress(10);
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                showProgress(30);
+                await processPDF(arrayBuffer);
+            } catch (error) {
+                console.error('PDF processing error:', error);
+                showStatus('Failed to read PDF: ' + error.message, 'error');
+                hideProgress();
+            }
+        }
+
+        // Process PDF with PDF.js
+        async function processPDF(arrayBuffer) {
+            showStatus('Parsing PDF form fields...', 'info');
+            showProgress(50);
+
+            try {
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                const numPages = pdf.numPages;
+
+                let allChannels = [];
+
+                // Process each page
+                for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const annotations = await page.getAnnotations();
+
+                    // Extract form field values
+                    const fieldValues = extractFormFields(annotations);
+                    const channels = parseICS205Fields(fieldValues);
+                    allChannels = allChannels.concat(channels);
+
+                    showProgress(50 + (pageNum / numPages) * 30);
+                }
+
+                showProgress(90);
+
+                if (allChannels.length === 0) {
+                    showStatus('No channel data found in PDF. Ensure this is a fillable ICS-205 form with completed frequency information.', 'error');
+                    hideProgress();
+                    return;
+                }
+
+                convertedChannels = allChannels;
+                showProgress(100);
+                displayResults(allChannels);
+
+            } catch (error) {
+                console.error('PDF parsing error:', error);
+                showStatus('Failed to parse PDF. Ensure this is a fillable ICS-205 form.', 'error');
+                hideProgress();
+            }
+        }
+
+        // Extract Form Fields from Annotations
+        function extractFormFields(annotations) {
+            const fields = {};
+
+            for (const annotation of annotations) {
+                if (annotation.subtype === 'Widget' && annotation.fieldName) {
+                    // Get field value
+                    let value = '';
+                    if (annotation.fieldValue !== null && annotation.fieldValue !== undefined) {
+                        value = String(annotation.fieldValue).trim();
+                    } else if (annotation.buttonValue !== null && annotation.buttonValue !== undefined) {
+                        value = String(annotation.buttonValue).trim();
+                    }
+
+                    fields[annotation.fieldName] = value;
+                }
+            }
+
+            return fields;
+        }
+
+        // Parse ICS-205 Fields
+        function parseICS205Fields(fields) {
+            const channels = [];
+
+            // Try to detect field naming pattern by looking for common patterns
+            const fieldNames = Object.keys(fields);
+
+            // Common ICS-205 field patterns for channels/rows
+            // Try extracting up to 50 potential rows (most ICS-205 forms have 10-30 channels)
+            for (let i = 1; i <= 50; i++) {
+                const channel = extractChannelRow(fields, i);
+
+                if (channel && channel.rxFreq) {
+                    channels.push(channel);
+                }
+            }
+
+            return channels;
+        }
+
+        // Extract Single Channel Row
+        function extractChannelRow(fields, rowNum) {
+            // Helper to find field with multiple naming patterns
+            const getField = (...patterns) => {
+                for (const pattern of patterns) {
+                    // Try direct match
+                    if (fields[pattern]) return fields[pattern];
+
+                    // Try with row number
+                    const withRow = pattern.replace('$N', rowNum);
+                    if (fields[withRow]) return fields[withRow];
+                }
+                return null;
+            };
+
+            // Try multiple field naming patterns
+            const rxFreq = getField(
+                `RX_Freq_${rowNum}`,
+                `RXFreq_${rowNum}`,
+                `Frequency_${rowNum}`,
+                `Row${rowNum}_RXFreq`,
+                `Row${rowNum}_Frequency`,
+                `Ch${rowNum}_RX`,
+                `Channel_${rowNum}_RX`
+            );
+
+            if (!rxFreq) return null; // Skip empty rows
+
+            const txFreq = getField(
+                `TX_Freq_${rowNum}`,
+                `TXFreq_${rowNum}`,
+                `Row${rowNum}_TXFreq`,
+                `Ch${rowNum}_TX`,
+                `Channel_${rowNum}_TX`
+            );
+
+            const name = getField(
+                `Name_${rowNum}`,
+                `Channel_Name_${rowNum}`,
+                `ChannelName_${rowNum}`,
+                `Row${rowNum}_Name`,
+                `Ch${rowNum}_Name`
+            );
+
+            const rxTone = getField(
+                `RX_Tone_${rowNum}`,
+                `RXTone_${rowNum}`,
+                `Row${rowNum}_RXTone`,
+                `Ch${rowNum}_RXTone`
+            );
+
+            const txTone = getField(
+                `TX_Tone_${rowNum}`,
+                `TXTone_${rowNum}`,
+                `Row${rowNum}_TXTone`,
+                `Ch${rowNum}_TXTone`
+            );
+
+            const mode = getField(
+                `Mode_${rowNum}`,
+                `Row${rowNum}_Mode`,
+                `Ch${rowNum}_Mode`
+            );
+
+            const assignment = getField(
+                `Assignment_${rowNum}`,
+                `Row${rowNum}_Assignment`,
+                `Ch${rowNum}_Assignment`
+            );
+
+            const functionField = getField(
+                `Function_${rowNum}`,
+                `Row${rowNum}_Function`,
+                `Ch${rowNum}_Function`
+            );
+
+            const remarks = getField(
+                `Remarks_${rowNum}`,
+                `Row${rowNum}_Remarks`,
+                `Ch${rowNum}_Remarks`
+            );
+
+            return {
+                channel: rowNum,
+                name: name || `CH-${rowNum}`,
+                function: functionField,
+                assignment: assignment,
+                rxFreq: parseFrequency(rxFreq),
+                rxTone: rxTone,
+                txFreq: parseFrequency(txFreq || rxFreq),
+                txTone: txTone,
+                mode: mode,
+                remarks: remarks
+            };
+        }
+
+        // Parse Frequency String
+        function parseFrequency(freqString) {
+            if (!freqString) return null;
+
+            // Remove whitespace and common separators
+            freqString = freqString.trim().replace(/[,\s]/g, '');
+
+            // Extract numeric part (handles "146.520 N", "146.520N", "146.520", etc.)
+            const match = freqString.match(/(\d+\.?\d*)/);
+            if (!match) return null;
+
+            const freq = parseFloat(match[1]);
+
+            // Validate frequency range (VHF/UHF amateur bands)
+            if ((freq >= 144 && freq <= 148) ||   // 2m
+                (freq >= 222 && freq <= 225) ||   // 1.25m
+                (freq >= 420 && freq <= 450)) {   // 70cm
+                return freq.toFixed(6);
+            }
+
+            return null;
+        }
+
+        // Parse Tone Code
+        function parseTone(toneString) {
+            if (!toneString) return { mode: '', tone: '', dcs: '', polarity: 'NN' };
+
+            toneString = toneString.trim();
+
+            // Check for DCS codes (e.g., "023N", "D023N", "023")
+            const dcsMatch = toneString.match(/D?(\d{3})([NR])?/i);
+            if (dcsMatch) {
+                return {
+                    mode: 'DTCS',
+                    tone: '',
+                    dcs: dcsMatch[1],
+                    polarity: (dcsMatch[2] || 'N').toUpperCase() + 'N'
+                };
+            }
+
+            // Check for CTCSS tones (e.g., "141.3", "141.3 Hz")
+            const ctcssMatch = toneString.match(/(\d+\.\d+)/);
+            if (ctcssMatch) {
+                const tone = parseFloat(ctcssMatch[1]);
+
+                // Validate CTCSS range (67.0 - 254.1 Hz)
+                if (tone >= 67.0 && tone <= 254.1) {
+                    return {
+                        mode: 'Tone',
+                        tone: tone.toFixed(1),
+                        dcs: '',
+                        polarity: 'NN'
+                    };
+                }
+            }
+
+            return { mode: '', tone: '', dcs: '', polarity: 'NN' };
+        }
+
+        // Calculate Duplex and Offset
+        function calculateDuplexOffset(rxFreq, txFreq) {
+            if (!txFreq || Math.abs(rxFreq - txFreq) < 0.001) {
+                return { duplex: '', offset: '0.000000' }; // Simplex
+            }
+
+            const offset = Math.abs(txFreq - rxFreq);
+
+            if (txFreq > rxFreq) {
+                return { duplex: '+', offset: offset.toFixed(6) };
+            } else {
+                return { duplex: '-', offset: offset.toFixed(6) };
+            }
+        }
+
+        // Determine FM Mode
+        function determineMode(modeString, frequency) {
+            // Check explicit mode from ICS-205
+            if (modeString) {
+                modeString = modeString.toUpperCase();
+                if (modeString.includes('D') || modeString.includes('DIGITAL')) {
+                    return 'DN'; // Digital narrow
+                }
+                if (modeString.includes('NFM') || modeString.includes('NARROW')) {
+                    return 'NFM';
+                }
+            }
+
+            // Default based on frequency
+            const freq = parseFloat(frequency);
+
+            // 70cm typically uses narrow FM
+            if (freq >= 420 && freq <= 450) {
+                return 'NFM';
+            }
+
+            return 'FM'; // Default
+        }
+
+        // Sanitize Channel Name for CHIRP
+        function sanitizeChannelName(name) {
+            // CHIRP limits: 6-16 characters, alphanumeric + space/dash
+            name = name.replace(/[^A-Za-z0-9 \-]/g, '').trim();
+
+            if (name.length > 16) {
+                name = name.substring(0, 16);
+            }
+
+            if (name.length === 0) {
+                name = 'CHANNEL';
+            }
+
+            return name;
+        }
+
+        // Escape CSV Field
+        function escapeCSV(value) {
+            value = String(value);
+
+            // Escape quotes and wrap in quotes if contains comma/quote
+            if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+                value = '"' + value.replace(/"/g, '""') + '"';
+            }
+
+            return value;
+        }
+
+        // Convert to CHIRP CSV
+        function convertToChirpCSV(channels) {
+            const csvRows = [];
+
+            // CSV header
+            csvRows.push('Location,Name,Frequency,Duplex,Offset,Tone,rToneFreq,cToneFreq,DtcsCode,DtcsPolarity,Mode,TStep,Skip,Comment');
+
+            channels.forEach((channel, index) => {
+                const location = index + 1;
+                const name = sanitizeChannelName(channel.name);
+                const frequency = channel.rxFreq;
+
+                // Determine duplex and offset
+                const { duplex, offset } = calculateDuplexOffset(
+                    parseFloat(channel.rxFreq),
+                    parseFloat(channel.txFreq)
+                );
+
+                // Parse tones
+                const rxTone = parseTone(channel.rxTone);
+                const txTone = parseTone(channel.txTone);
+
+                // Determine tone mode
+                let toneMode = '';
+                if (rxTone.mode && txTone.mode) {
+                    if (rxTone.mode === txTone.mode && rxTone.tone === txTone.tone) {
+                        toneMode = 'TSQL'; // Tone Squelch (RX and TX same)
+                    } else {
+                        toneMode = 'Cross'; // Cross tone
+                    }
+                } else if (txTone.mode) {
+                    toneMode = 'Tone'; // TX tone only
+                }
+
+                // Determine mode (FM width)
+                const mode = determineMode(channel.mode, channel.rxFreq);
+
+                // Build comment
+                const commentParts = [channel.assignment, channel.function, channel.remarks]
+                    .filter(p => p)
+                    .join(' - ');
+                const comment = commentParts.replace(/[\r\n]+/g, ' ').trim();
+
+                // Build CSV row
+                const row = [
+                    location,
+                    name,
+                    frequency,
+                    duplex,
+                    offset,
+                    toneMode,
+                    rxTone.tone || '',
+                    txTone.tone || '',
+                    txTone.dcs || rxTone.dcs || '',
+                    txTone.polarity || rxTone.polarity || 'NN',
+                    mode,
+                    '5.00', // Default tuning step
+                    '', // Skip
+                    comment
+                ];
+
+                csvRows.push(row.map(escapeCSV).join(','));
+            });
+
+            return csvRows.join('\n');
+        }
+
+        // Display Results
+        function displayResults(channels) {
+            // Update channel count
+            channelCount.querySelector('p').innerHTML =
+                `<strong>${channels.length} channel${channels.length !== 1 ? 's' : ''}</strong> extracted from PDF`;
+
+            // Clear previous results
+            previewBody.innerHTML = '';
+
+            // Populate table
+            channels.forEach((channel, index) => {
+                const row = document.createElement('tr');
+
+                const { duplex, offset } = calculateDuplexOffset(
+                    parseFloat(channel.rxFreq),
+                    parseFloat(channel.txFreq)
+                );
+
+                const txDisplay = duplex ?
+                    `${channel.rxFreq} ${duplex}${offset}` :
+                    channel.txFreq;
+
+                const rxTone = parseTone(channel.rxTone);
+                const txTone = parseTone(channel.txTone);
+                const toneDisplay = formatToneDisplay(rxTone, txTone);
+
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${sanitizeChannelName(channel.name)}</td>
+                    <td>${channel.rxFreq}</td>
+                    <td>${txDisplay}</td>
+                    <td>${toneDisplay}</td>
+                    <td>${determineMode(channel.mode, channel.rxFreq)}</td>
+                `;
+
+                previewBody.appendChild(row);
+            });
+
+            // Show results section
+            resultsSection.classList.add('show');
+
+            // Show success status
+            showStatus('Conversion complete! Review channels and download CSV.', 'success');
+            hideProgress();
+        }
+
+        // Format Tone Display
+        function formatToneDisplay(rxTone, txTone) {
+            if (!rxTone.mode && !txTone.mode) return 'None';
+
+            if (rxTone.mode === 'DTCS' || txTone.mode === 'DTCS') {
+                const code = txTone.dcs || rxTone.dcs;
+                return `DCS ${code}`;
+            }
+
+            if (rxTone.tone && txTone.tone) {
+                if (rxTone.tone === txTone.tone) {
+                    return `TSQL ${txTone.tone}`;
+                } else {
+                    return `${txTone.tone}/${rxTone.tone}`;
+                }
+            }
+
+            if (txTone.tone) {
+                return `Tone ${txTone.tone}`;
+            }
+
+            return 'Mixed';
+        }
+
+        // Handle CSV Download
+        function handleDownload() {
+            if (convertedChannels.length === 0) {
+                showStatus('No channels to download', 'error');
+                return;
+            }
+
+            const csvContent = convertToChirpCSV(convertedChannels);
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'ics205_chirp.csv');
+            link.style.display = 'none';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(url);
+
+            showStatus('CSV downloaded successfully!', 'success');
+        }
+
+        // Reset Converter
+        function resetConverter() {
+            convertedChannels = [];
+            fileInput.value = '';
+            statusBox.classList.remove('show');
+            resultsSection.classList.remove('show');
+            hideProgress();
+        }
+
+        // Show Status
+        function showStatus(message, type = 'info') {
+            statusMessage.textContent = message;
+            statusBox.classList.add('show');
+
+            // Update icon and color
+            statusIcon.classList.remove('info', 'success', 'error', 'warning');
+            statusIcon.classList.add(type);
+
+            // Icon SVG paths
+            const icons = {
+                info: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+                success: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                error: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z',
+                warning: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+            };
+
+            statusIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${icons[type] || icons.info}" />
+            `;
+        }
+
+        // Show Progress
+        function showProgress(percent) {
+            progressBar.classList.add('show');
+            progressFill.style.width = percent + '%';
+        }
+
+        // Hide Progress
+        function hideProgress() {
+            progressBar.classList.remove('show');
+            progressFill.style.width = '0%';
+        }
+    </script>
+</body>
+</html>
