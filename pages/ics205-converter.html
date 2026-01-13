@@ -595,8 +595,8 @@
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim().toLowerCase();
 
-                // Detect start of Section 4
-                if (line.includes('basic radio channel use') || line.includes('4.') || line.includes('function')) {
+                // Detect start of Section 4 (only if not already in it)
+                if (!inSection4 && (line.includes('basic radio channel use') || line.includes('4. basic'))) {
                     inSection4 = true;
                     console.log('Found Section 4 at line', i);
                     continue;
@@ -616,7 +616,11 @@
 
                 // Skip headers and empty lines
                 if (!originalLine || originalLine.length < 5) continue;
-                if (originalLine.toLowerCase().match(/function|channel|frequency|tone|mode|remarks/)) continue;
+                // Skip header rows (must have multiple header keywords or be very short)
+                const lowerLine = originalLine.toLowerCase();
+                const headerKeywords = ['function', 'channel', 'frequency', 'assignment', 'zone', 'grp'];
+                const headerMatches = headerKeywords.filter(kw => lowerLine.includes(kw)).length;
+                if (headerMatches >= 2 || (headerMatches >= 1 && originalLine.length < 50)) continue;
 
                 // Skip phone numbers (any line with ###-###-####)
                 if (originalLine.match(/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/)) continue;
