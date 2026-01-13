@@ -567,100 +567,37 @@
             }
         }
 
-        // Parse ICS-205 from OCR Text
+        // Parse any document from OCR Text - Universal approach
         function parseICS205FromOCR(text) {
             const channels = [];
             const lines = text.split('\n');
 
-            console.log('Parsing OCR text, lines:', lines.length);
+            console.log('Parsing OCR text with universal logic, lines:', lines.length);
 
-            // Detect format: ICS-205 vs Spreadsheet
-            const isICS205 = text.match(/ICS.*205|Basic Radio Channel Use|Incident Radio Communications/i);
-            const isSpreadsheet = text.match(/owner|frequency plan|tac sign|net/i) && !isICS205;
+            // Detect if we've entered the "Special Instructions" or notes section
+            let inNotesSection = false;
 
-            console.log('Format detected:', isICS205 ? 'ICS-205' : isSpreadsheet ? 'Spreadsheet' : 'Unknown');
-
-            if (isICS205) {
-                return parseICS205Format(lines);
-            } else {
-                return parseSpreadsheetFormat(lines);
-            }
-        }
-
-        // Parse ICS-205 Format (Section 4: Basic Radio Channel Use)
-        function parseICS205Format(lines) {
-            const channels = [];
-            let inSection4 = false;
-
+            // Simple universal parsing: look for frequency pairs on each line
             for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim().toLowerCase();
-
-                // Detect start of Section 4 (only if not already in it)
-                if (!inSection4 && (line.includes('basic radio channel use') || line.includes('4. basic'))) {
-                    inSection4 = true;
-                    console.log('Found Section 4 at line', i);
-                    continue;
-                }
-
-                // Detect end of Section 4 (Section 5 or 6)
-                if (line.includes('special instructions') || line.includes('5.') || line.includes('6.') || line.includes('prepared by')) {
-                    inSection4 = false;
-                    console.log('Ended Section 4 at line', i);
-                    break;
-                }
-
-                // Only parse if in Section 4
-                if (!inSection4) continue;
-
-                const originalLine = lines[i].trim();
-
-                // Skip headers and empty lines
-                if (!originalLine || originalLine.length < 5) continue;
-                // Skip header rows (must have multiple header keywords or be very short)
-                const lowerLine = originalLine.toLowerCase();
-                const headerKeywords = ['function', 'channel', 'frequency', 'assignment', 'zone', 'grp'];
-                const headerMatches = headerKeywords.filter(kw => lowerLine.includes(kw)).length;
-                if (headerMatches >= 2 || (headerMatches >= 1 && originalLine.length < 50)) continue;
-
-                // Skip phone numbers (any line with ###-###-####)
-                if (originalLine.match(/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/)) continue;
-
-                // Look for lines with frequency data
-                const hasFreq = /\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\b/.test(originalLine);
-                if (!hasFreq) continue;
-
-                const channel = parseICS205ChannelLine(originalLine);
-                if (channel) {
-                    channels.push(channel);
-                    console.log('ICS-205 channel:', channel);
-                }
-            }
-
-            return channels;
-        }
-
-        // Parse Spreadsheet Format
-        function parseSpreadsheetFormat(lines) {
-            const channels = [];
-            let headerLine = -1;
-
-            // Find header row
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim().toLowerCase();
-                if ((line.includes('function') || line.includes('owner') || line.includes('name') || line.includes('net')) &&
-                    (line.includes('frequency') || line.includes('freq'))) {
-                    headerLine = i;
-                    console.log('Found header at line', i);
-                    break;
-                }
-            }
-
-            // Parse data rows
-            for (let i = headerLine + 1; i < lines.length; i++) {
                 const line = lines[i].trim();
+                const lowerLine = line.toLowerCase();
 
-                // Skip empty lines
-                if (!line || line.length < 5) continue;
+                // Skip empty lines and very short lines
+                if (!line || line.length < 10) continue;
+
+                // Detect start of notes/special instructions section
+                if (lowerLine.includes('special instructions') ||
+                    lowerLine.includes('prepared by') ||
+                    lowerLine.match(/^5\.|^6\./)) {
+                    inNotesSection = true;
+                    console.log('Entered notes section at line', i);
+                }
+
+                // Skip lines in notes section
+                if (inNotesSection) continue;
+
+                // Skip header lines
+                if (isHeaderLine(line)) continue;
 
                 // Skip phone numbers
                 if (line.match(/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/)) continue;
@@ -669,163 +606,113 @@
                 const hasFreq = /\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\b/.test(line);
                 if (!hasFreq) continue;
 
-                const channel = parseSpreadsheetChannelLine(line);
+                const channel = parseUniversalChannelLine(line);
                 if (channel) {
                     channels.push(channel);
-                    console.log('Spreadsheet channel:', channel);
+                    console.log('Extracted channel:', channel);
                 }
             }
 
             return channels;
         }
 
-        // Parse ICS-205 Channel Line (Section 4 format)
-        function parseICS205ChannelLine(line) {
-            // ICS-205 Section 4 columns: Zone/Ch | Function | Name/Talkgroup | Assignment | RX Freq N/W | RX Tone/NAC | TX Freq N/W | TX Tone/NAC | Mode | Remarks
+        // Check if line is a header
+        function isHeaderLine(line) {
+            const lowerLine = line.toLowerCase();
+            const headerKeywords = ['function', 'channel', 'frequency', 'assignment', 'zone', 'grp', 'rx freq', 'tx freq', 'tone/nac', 'mode'];
+            const matches = headerKeywords.filter(kw => lowerLine.includes(kw)).length;
+            // If line has 3+ header keywords, it's likely a header
+            return matches >= 3;
+        }
 
-            // Extract frequencies
+        // Universal Channel Line Parser - Works with any document format
+        function parseUniversalChannelLine(line) {
+            console.log('Parsing line:', line);
+
+            // Extract all frequencies from the line
             const freqs = extractFrequencies(line);
             if (freqs.length === 0) return null;
 
+            // First frequency is RX (repeater input)
             const rxFreq = parseFrequency(freqs[0].freq);
             if (!rxFreq) return null;
 
-            // Determine TX frequency
-            let txFreq = rxFreq; // Default to simplex
             const rxNum = parseFloat(rxFreq);
 
+            // Determine TX frequency (repeater output)
+            let txFreq = rxFreq; // Default to simplex
+
             if (freqs.length >= 2) {
-                // Both RX and TX frequencies listed
+                // If two frequencies listed, second is TX
                 txFreq = parseFrequency(freqs[1].freq) || rxFreq;
             } else if (freqs[0].offset) {
-                // +/- indicator - use standard offset
-                if (freqs[0].offset === '+') {
-                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum + 0.6).toFixed(6);
-                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum + 1.6).toFixed(6);
-                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum + 5.0).toFixed(6);
-                } else if (freqs[0].offset === '-') {
+                // If +/- offset indicated, calculate TX based on standard offsets
+                const offset = freqs[0].offset;
+                if (offset === '+') {
+                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum + 0.6).toFixed(6);  // VHF 2m
+                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum + 1.6).toFixed(6); // 1.25m
+                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum + 5.0).toFixed(6); // UHF 70cm
+                } else if (offset === '-') {
                     if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum - 0.6).toFixed(6);
                     else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum - 1.6).toFixed(6);
                     else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum - 5.0).toFixed(6);
                 }
             }
 
-            // Extract Function (channel name) - before first frequency, after zone/ch number
-            let name = line.substring(0, freqs[0].position).trim();
-            // Remove leading zone/ch numbers and pipes
-            name = name.replace(/^\d+\s*[|]?\s*\d*\s*/, '').replace(/[|]/g, ' ').trim();
-            // Take first 1-3 words as Function name
-            const words = name.split(/\s+/).filter(w => w.length > 0 && w.length > 2);
-            name = words.slice(0, Math.min(3, words.length)).join(' ');
+            // Extract name from text before first frequency
+            let name = extractChannelName(line, freqs[0].position);
 
-            // Extract tones in order: RX Tone comes between RX Freq and TX Freq, TX Tone comes after TX Freq
-            const allTones = extractTones(line, freqs);
+            // Extract tones (standard CTCSS 67.0-254.1 Hz)
+            const allTones = extractTonesWithPosition(line, freqs);
 
-            let rToneFreq = ''; // RX Tone (after RX Freq)
-            let cToneFreq = ''; // TX Tone (after TX Freq)
+            let rToneFreq = ''; // Encode tone (to access repeater)
+            let cToneFreq = ''; // Decode tone (from repeater)
+
+            // Assign tones based on position relative to frequencies
+            console.log('Frequency positions - RX:', freqs[0], 'TX:', freqs.length >= 2 ? freqs[1] : 'none');
 
             if (freqs.length >= 2) {
-                // Two frequencies: RX and TX
-                // RX Tone is between RX Freq and TX Freq
-                // TX Tone is after TX Freq
-                const rxFreqEnd = freqs[0].position + freqs[0].freq.length;
+                // Two frequencies: look for tones between and after them
+                const rxFreqEnd = freqs[0].endPosition;
                 const txFreqStart = freqs[1].position;
-                const txFreqEnd = freqs[1].position + freqs[1].freq.length;
+                const txFreqEnd = freqs[1].endPosition;
+
+                console.log('Position boundaries - RX ends:', rxFreqEnd, 'TX starts:', txFreqStart, 'TX ends:', txFreqEnd);
 
                 for (const tone of allTones) {
-                    const tonePos = line.indexOf(tone, rxFreqEnd);
-                    if (tonePos > rxFreqEnd && tonePos < txFreqStart) {
-                        // Tone between RX and TX = RX Tone
-                        if (!rToneFreq) rToneFreq = tone;
-                    } else if (tonePos > txFreqEnd) {
-                        // Tone after TX = TX Tone
-                        if (!cToneFreq) cToneFreq = tone;
+                    console.log('Checking tone', tone.value, 'at position', tone.position);
+
+                    if (tone.position >= rxFreqEnd && tone.position < txFreqStart) {
+                        // Tone between RX and TX = encode tone (rToneFreq)
+                        console.log('  -> Assigning to rToneFreq (between frequencies)');
+                        if (!rToneFreq) rToneFreq = tone.value;
+                    } else if (tone.position >= txFreqEnd) {
+                        // Tone at or after TX = decode tone (cToneFreq)
+                        console.log('  -> Assigning to cToneFreq (after TX)');
+                        if (!cToneFreq) cToneFreq = tone.value;
+                    } else {
+                        console.log('  -> Not assigned (position check failed)');
                     }
                 }
             } else {
-                // Only one frequency (simplex)
-                // Any tone is assumed to be TX tone
+                // One frequency (simplex): any tone is encode tone
                 if (allTones.length > 0) {
-                    cToneFreq = allTones[0];
+                    rToneFreq = allTones[0].value;
                 }
             }
 
-            // Extract remarks (after mode/last tone)
+            console.log('Final assignment - Encode (rToneFreq):', rToneFreq, 'Decode (cToneFreq):', cToneFreq);
+
+            // Extract remarks (everything after last frequency/tone)
             let remarksStart = freqs[freqs.length - 1].position + 15;
             if (allTones.length > 0) {
-                const lastTonePos = line.lastIndexOf(allTones[allTones.length - 1]);
+                const lastTonePos = allTones[allTones.length - 1].position;
                 remarksStart = Math.max(remarksStart, lastTonePos + 10);
             }
             const remarks = line.substring(remarksStart).replace(/\b[ADM]\b/g, '').trim();
 
             return {
-                name: name || 'CHANNEL',
-                rxFreq: rxFreq,
-                txFreq: txFreq,
-                rxTone: rToneFreq,    // RX Tone → rToneFreq
-                txTone: cToneFreq,    // TX Tone → cToneFreq
-                mode: 'FM',
-                remarks: remarks
-            };
-        }
-
-        // Parse Spreadsheet Channel Line
-        function parseSpreadsheetChannelLine(line) {
-            // Spreadsheet columns: Owner/Net/Function | Frequency (RX) | Frequency (TX) | PL Tone | CTCSS Tone | etc.
-
-            // Extract frequencies
-            const freqs = extractFrequencies(line);
-            if (freqs.length === 0) return null;
-
-            const rxFreq = parseFrequency(freqs[0].freq);
-            if (!rxFreq) return null;
-
-            // Determine TX frequency
-            let txFreq = rxFreq;
-            const rxNum = parseFloat(rxFreq);
-
-            if (freqs.length >= 2) {
-                txFreq = parseFrequency(freqs[1].freq) || rxFreq;
-            } else if (freqs[0].offset) {
-                if (freqs[0].offset === '+') {
-                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum + 0.6).toFixed(6);
-                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum + 1.6).toFixed(6);
-                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum + 5.0).toFixed(6);
-                } else if (freqs[0].offset === '-') {
-                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum - 0.6).toFixed(6);
-                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum - 1.6).toFixed(6);
-                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum - 5.0).toFixed(6);
-                }
-            }
-
-            // Extract name (Owner/Net/Function - before first frequency)
-            let name = line.substring(0, freqs[0].position).trim();
-            name = name.replace(/^\d+\s*[|]?\s*/, '').replace(/[|]/g, ' ').trim();
-            const words = name.split(/\s+/).filter(w => w.length > 0);
-            name = words.slice(-Math.min(4, words.length)).join(' ');
-
-            // Extract tones
-            const tones = extractTones(line, freqs);
-
-            let rToneFreq = '';
-            let cToneFreq = '';
-
-            if (tones.length === 1) {
-                cToneFreq = tones[0];
-            } else if (tones.length >= 2) {
-                cToneFreq = tones[0]; // First is TX
-                rToneFreq = tones[1]; // Second is RX
-            }
-
-            // Remarks
-            const lastPos = Math.max(
-                freqs[freqs.length - 1].position + 10,
-                ...(tones.map((_, i) => line.lastIndexOf(tones[i])))
-            );
-            const remarks = line.substring(lastPos).replace(/\b([ADM])\b/g, '').trim();
-
-            return {
-                name: name || 'CHANNEL',
+                name: name,
                 rxFreq: rxFreq,
                 txFreq: txFreq,
                 rxTone: rToneFreq,
@@ -833,6 +720,26 @@
                 mode: 'FM',
                 remarks: remarks
             };
+        }
+
+        // Extract channel name from text before frequency
+        function extractChannelName(line, freqPosition) {
+            // Get text before first frequency
+            let beforeFreq = line.substring(0, freqPosition).trim();
+
+            // Remove common prefixes: zone/channel numbers, pipes, etc.
+            beforeFreq = beforeFreq.replace(/^\d+\s*[|]?\s*\d*\s*/, '').replace(/[|]/g, ' ').trim();
+
+            // Remove common column labels
+            beforeFreq = beforeFreq.replace(/^(function|assignment|name|talkgroup)[\s:]+/i, '').trim();
+
+            // Take meaningful words (skip very short words like "a", "to", etc.)
+            const words = beforeFreq.split(/\s+/).filter(w => w.length >= 2);
+
+            // Use last 2-3 words as name (likely the actual channel name)
+            const name = words.slice(-Math.min(3, words.length)).join(' ');
+
+            return name || 'CHANNEL';
         }
 
         // Extract frequencies from line
@@ -844,56 +751,49 @@
                 freqs.push({
                     freq: match[1],
                     offset: match[2] ? match[2].replace(/[()NW]/g, '').trim() : null,
-                    position: match.index
+                    position: match.index,
+                    endPosition: match.index + match[0].length
                 });
             }
+            console.log('Extracted frequencies:', freqs);
             return freqs;
         }
 
-        // Extract tones from line
-        function extractTones(line, freqs) {
+        // Extract tones from line with position information
+        function extractTonesWithPosition(line, freqs) {
             const tonePattern = /\b(\d{2,3})(\.\d{1,2})?\b/g;
             const tones = [];
             let match;
 
+            console.log('Looking for tones in line:', line);
+
             while ((match = tonePattern.exec(line)) !== null) {
                 const val = parseFloat(match[0]);
+                console.log('Found potential tone:', val, 'at position', match.index);
+
                 if (val >= 67.0 && val <= 254.1) {
-                    // Check it's not part of a frequency
+                    // Check it's not part of a frequency by seeing if it overlaps with any frequency
                     let isPartOfFreq = false;
                     for (const fmatch of freqs) {
-                        if (Math.abs(match.index - fmatch.position) < 10) {
+                        // Check if this tone position is within the frequency string itself
+                        // Frequencies are like "145.210" so the tone position should not be inside the freq
+                        if (match.index >= fmatch.position && match.index < fmatch.endPosition) {
+                            console.log('  -> Rejected: inside frequency at', fmatch.position);
                             isPartOfFreq = true;
                             break;
                         }
                     }
                     if (!isPartOfFreq) {
-                        tones.push(val.toFixed(1));
+                        console.log('  -> Accepted as tone:', val.toFixed(1));
+                        tones.push({
+                            value: val.toFixed(1),
+                            position: match.index
+                        });
                     }
                 }
             }
+            console.log('Total tones found:', tones);
             return tones;
-        }
-
-        // Extract Channel Name from OCR
-        function extractChannelName(line, allLines, lineIndex) {
-            // Try to find channel name before the frequency
-            const freqMatch = line.match(/\b(1[234]\d\.\d{1,4}|2[2-3]\d\.\d{1,4}|4[2-4]\d\.\d{1,4})\b/);
-            if (!freqMatch) return '';
-
-            const freqPos = freqMatch.index;
-            let beforeFreq = line.substring(0, freqPos).trim();
-
-            // Clean up common OCR artifacts
-            beforeFreq = beforeFreq.replace(/[|]/g, ' ').trim();
-
-            // Take last 1-3 words before frequency as channel name
-            const words = beforeFreq.split(/\s+/).filter(w => w.length > 0);
-            if (words.length > 0) {
-                return words.slice(-Math.min(3, words.length)).join(' ');
-            }
-
-            return '';
         }
 
         // Parse Frequency String
@@ -1022,20 +922,20 @@
                     parseFloat(channel.txFreq)
                 );
 
-                // Tones are already parsed as strings like "100.0" or "146.2"
-                const rToneFreq = channel.rxTone || ''; // PL/CTCSS tone (receive)
-                const cToneFreq = channel.txTone || ''; // TSQL/TX tone (transmit)
+                // Tones: rToneFreq = encode (to access repeater), cToneFreq = decode (from repeater)
+                const rToneFreq = channel.rxTone || ''; // Encode tone (what you transmit)
+                const cToneFreq = channel.txTone || ''; // Decode tone (what repeater transmits)
 
                 // Determine tone mode
                 let toneMode = '';
                 if (rToneFreq && cToneFreq) {
                     if (rToneFreq === cToneFreq) {
-                        toneMode = 'TSQL'; // Tone Squelch (RX and TX same)
+                        toneMode = 'TSQL'; // Tone Squelch (both encode and decode, same tone)
                     } else {
-                        toneMode = 'Cross'; // Cross tone (different RX/TX)
+                        toneMode = 'Cross'; // Cross tone (different encode/decode)
                     }
-                } else if (cToneFreq) {
-                    toneMode = 'Tone'; // TX tone only
+                } else if (rToneFreq) {
+                    toneMode = 'Tone'; // Encode only (PL access)
                 }
 
                 // Mode is always FM
@@ -1086,13 +986,13 @@
                     parseFloat(channel.txFreq)
                 );
 
+                // Show offset instead of full TX frequency
                 const txDisplay = duplex ?
-                    `${channel.rxFreq} ${duplex}${offset}` :
-                    channel.txFreq;
+                    `${duplex}${parseFloat(offset).toFixed(3)}` :
+                    'Simplex';
 
-                const rxTone = parseTone(channel.rxTone);
-                const txTone = parseTone(channel.txTone);
-                const toneDisplay = formatToneDisplay(rxTone, txTone);
+                // Format tone display directly from simple tone strings
+                const toneDisplay = formatToneDisplaySimple(channel.rxTone, channel.txTone);
 
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -1114,7 +1014,31 @@
             hideProgress();
         }
 
-        // Format Tone Display
+        // Format Tone Display - Simple version for string tones
+        function formatToneDisplaySimple(rTone, cTone) {
+            // rTone = encode (what you transmit), cTone = decode (what repeater transmits)
+            if (!rTone && !cTone) return 'None';
+
+            if (rTone && cTone) {
+                if (rTone === cTone) {
+                    return `TSQL ${rTone}`;
+                } else {
+                    return `${rTone}/${cTone}`;
+                }
+            }
+
+            if (rTone) {
+                return `Tone ${rTone}`;
+            }
+
+            if (cTone) {
+                return `Decode ${cTone}`;
+            }
+
+            return 'None';
+        }
+
+        // Format Tone Display - Legacy version (kept for compatibility)
         function formatToneDisplay(rxTone, txTone) {
             if (!rxTone.mode && !txTone.mode) return 'None';
 
