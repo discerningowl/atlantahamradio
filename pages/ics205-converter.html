@@ -577,8 +577,13 @@
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
 
-                // Look for frequency patterns (146.520, 446.000, etc.)
-                const freqMatch = line.match(/\b(1[234]\d\.\d{1,4}|2[2-3]\d\.\d{1,4}|4[2-4]\d\.\d{1,4})\b/g);
+                // Skip header rows and empty lines
+                if (!line || line.length < 5) continue;
+                if (line.match(/function|channel|frequency|assignment|tone|mode|remarks|owner|callsign/i)) continue;
+
+                // Look for frequency patterns with optional offset indicators
+                // Matches: 146.520, 444.975 (+), 146.820 (-), 445.825, etc.
+                const freqMatch = line.match(/\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\s*(\([+-]\))?/g);
 
                 if (freqMatch && freqMatch.length > 0) {
                     // Found a line with frequency, try to parse the full row
@@ -595,42 +600,97 @@
 
         // Parse Channel from OCR Line
         function parseChannelFromLine(line, allLines, lineIndex) {
-            // Try to extract: Channel Name, RX Freq, TX Freq, RX Tone, TX Tone, Mode
+            // Extract frequencies with offset indicators: 444.975 (+), 146.820 (-), or explicit 449.975
+            const freqPattern = /\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\s*(\([+-]\))?/g;
+            const freqMatches = [];
+            let match;
+            while ((match = freqPattern.exec(line)) !== null) {
+                freqMatches.push({
+                    freq: match[1],
+                    offset: match[2] ? match[2].replace(/[()]/g, '') : null,
+                    position: match.index
+                });
+            }
 
-            // Extract all frequencies from line
-            const freqs = line.match(/\b(1[234]\d\.\d{1,4}|2[2-3]\d\.\d{1,4}|4[2-4]\d\.\d{1,4})\b/g);
-            if (!freqs || freqs.length === 0) return null;
+            if (freqMatches.length === 0) return null;
 
-            const rxFreq = parseFrequency(freqs[0]);
+            // First frequency is RX
+            const rxFreqRaw = freqMatches[0].freq;
+            const rxOffset = freqMatches[0].offset;
+            const rxFreq = parseFrequency(rxFreqRaw);
             if (!rxFreq) return null;
 
-            // TX freq might be same as RX (simplex) or different (repeater)
-            const txFreq = freqs.length > 1 ? parseFrequency(freqs[1]) : rxFreq;
-
-            // Try to extract channel name (usually at start of line or nearby)
-            let name = extractChannelName(line, allLines, lineIndex);
-
-            // Try to extract tones (look for patterns like 141.3, 100.0, CSQ, etc.)
-            const tones = line.match(/\b(\d{2,3}\.\d)\b/g);
-            let rxTone = '';
-            let txTone = '';
-
-            if (tones && tones.length > 0) {
-                // Filter out frequencies (already extracted)
-                const pureTones = tones.filter(t => {
-                    const val = parseFloat(t);
-                    return val >= 67.0 && val <= 254.1; // CTCSS range
-                });
-
-                if (pureTones.length > 0) {
-                    txTone = pureTones[0]; // First tone is usually TX
-                    rxTone = pureTones.length > 1 ? pureTones[1] : pureTones[0];
+            // Calculate TX frequency
+            let txFreq = rxFreq;
+            if (freqMatches.length > 1) {
+                // Explicit TX frequency provided
+                txFreq = parseFrequency(freqMatches[1].freq);
+            } else if (rxOffset) {
+                // Calculate from offset indicator
+                const rxNum = parseFloat(rxFreq);
+                if (rxOffset === '+') {
+                    // Standard positive offsets
+                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum + 0.6).toFixed(6); // 2m
+                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum + 1.6).toFixed(6); // 1.25m
+                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum + 5.0).toFixed(6); // 70cm
+                } else if (rxOffset === '-') {
+                    // Standard negative offsets
+                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum - 0.6).toFixed(6); // 2m
+                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum - 1.6).toFixed(6); // 1.25m
+                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum - 5.0).toFixed(6); // 70cm
                 }
             }
 
-            // Try to extract mode (look for A, D, M, FM, NFM, etc.)
-            const modeMatch = line.match(/\b([ADM]|FM|NFM|DMR|DSTAR)\b/i);
-            const mode = modeMatch ? modeMatch[1] : '';
+            // Extract channel name (before first frequency)
+            let name = '';
+            const beforeFirstFreq = line.substring(0, freqMatches[0].position).trim();
+            if (beforeFirstFreq.length > 0) {
+                // Clean up and extract meaningful name
+                name = beforeFirstFreq
+                    .replace(/^\d+\s*/, '') // Remove leading numbers
+                    .replace(/[|]/g, ' ') // Replace pipes
+                    .trim();
+                // Take last few words as name
+                const words = name.split(/\s+/).filter(w => w.length > 0);
+                name = words.slice(-Math.min(4, words.length)).join(' ');
+            }
+
+            // Extract tones - handle both decimal (146.2) and integer (100, 167) formats
+            const tonePattern = /\b(\d{2,3})(\.\d{1,2})?\b/g;
+            const allNumericMatches = [];
+            let toneMatch;
+            while ((toneMatch = tonePattern.exec(line)) !== null) {
+                const val = parseFloat(toneMatch[0]);
+                // CTCSS tones: 67.0-254.1 Hz, or integers like 100, 146, 167
+                if ((val >= 67.0 && val <= 254.1) || (val >= 67 && val <= 254 && !toneMatch[2])) {
+                    // Check this isn't part of a frequency we already extracted
+                    let isFreq = false;
+                    for (const fmatch of freqMatches) {
+                        if (Math.abs(toneMatch.index - fmatch.position) < 10) {
+                            isFreq = true;
+                            break;
+                        }
+                    }
+                    if (!isFreq) {
+                        allNumericMatches.push({
+                            val: toneMatch[2] ? val.toFixed(1) : val.toFixed(1), // Normalize to decimal
+                            position: toneMatch.index
+                        });
+                    }
+                }
+            }
+
+            // Assign tones (TX tone usually comes first, or same for both)
+            let txTone = '';
+            let rxTone = '';
+            if (allNumericMatches.length > 0) {
+                txTone = allNumericMatches[0].val;
+                rxTone = allNumericMatches.length > 1 ? allNumericMatches[1].val : allNumericMatches[0].val;
+            }
+
+            // Extract mode
+            const modeMatch = line.match(/\b([ADM])\b(?!\w)/i); // A, D, or M as standalone letter
+            const mode = modeMatch ? modeMatch[1].toUpperCase() : '';
 
             return {
                 name: name || 'CHANNEL',
