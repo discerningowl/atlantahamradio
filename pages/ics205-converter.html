@@ -574,33 +574,69 @@
 
             console.log('Parsing OCR text, lines:', lines.length);
 
+            // Find header row to identify columns
+            let headerLine = -1;
+            let columnMapping = {};
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim().toLowerCase();
+
+                // Look for header row with multiple column indicators
+                if ((line.includes('function') || line.includes('owner') || line.includes('name')) &&
+                    (line.includes('frequency') || line.includes('freq'))) {
+                    headerLine = i;
+                    columnMapping = identifyColumns(lines[i]);
+                    console.log('Found header at line', i, ':', lines[i]);
+                    console.log('Column mapping:', columnMapping);
+                    break;
+                }
+            }
+
+            // Parse data rows
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
 
-                // Skip header rows and empty lines
+                // Skip empty lines and header area
                 if (!line || line.length < 5) continue;
-                if (line.match(/function|channel|frequency|assignment|tone|mode|remarks|owner|callsign/i)) continue;
+                if (i <= headerLine + 1) continue; // Skip header and divider
 
-                // Look for frequency patterns with optional offset indicators
-                // Matches: 146.520, 444.975 (+), 146.820 (-), 445.825, etc.
-                const freqMatch = line.match(/\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\s*(\([+-]\))?/g);
+                // Look for lines with frequency data
+                const hasFreq = /\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\b/.test(line);
+                if (!hasFreq) continue;
 
-                if (freqMatch && freqMatch.length > 0) {
-                    // Found a line with frequency, try to parse the full row
-                    const channel = parseChannelFromLine(line, lines, i);
-                    if (channel) {
-                        channels.push(channel);
-                        console.log('Found channel:', channel);
-                    }
+                const channel = parseChannelFromLine(line, lines, i, columnMapping);
+                if (channel) {
+                    channels.push(channel);
+                    console.log('Found channel:', channel);
                 }
             }
 
             return channels;
         }
 
+        // Identify column positions from header row
+        function identifyColumns(headerLine) {
+            const lower = headerLine.toLowerCase();
+            const mapping = {};
+
+            // Function/Owner/Name column (for channel name)
+            if (lower.includes('function')) mapping.nameCol = 'function';
+            else if (lower.includes('owner')) mapping.nameCol = 'owner';
+            else if (lower.includes('name') || lower.includes('net')) mapping.nameCol = 'name';
+
+            // Frequency columns
+            if (lower.includes('rx') || lower.includes('receive')) mapping.hasRxCol = true;
+            if (lower.includes('tx') || lower.includes('transmit')) mapping.hasTxCol = true;
+
+            // Tone columns
+            if (lower.includes('pl') || lower.includes('tone') || lower.includes('ctcss')) mapping.hasToneCol = true;
+
+            return mapping;
+        }
+
         // Parse Channel from OCR Line
-        function parseChannelFromLine(line, allLines, lineIndex) {
-            // Extract frequencies with offset indicators: 444.975 (+), 146.820 (-), or explicit 449.975
+        function parseChannelFromLine(line, allLines, lineIndex, columnMapping) {
+            // Extract all frequencies from the line
             const freqPattern = /\b(1[234]\d\.\d{2,5}|2[2-3]\d\.\d{2,5}|4[2-4]\d\.\d{2,5})\s*(\([+-]\))?/g;
             const freqMatches = [];
             let match;
@@ -614,92 +650,92 @@
 
             if (freqMatches.length === 0) return null;
 
-            // First frequency is RX
+            // Extract RX frequency (first frequency or labeled RX)
             const rxFreqRaw = freqMatches[0].freq;
             const rxOffset = freqMatches[0].offset;
             const rxFreq = parseFrequency(rxFreqRaw);
             if (!rxFreq) return null;
 
-            // Calculate TX frequency
-            let txFreq = rxFreq;
+            // Extract or calculate TX frequency
+            let txFreq = rxFreq; // Default to simplex
+            const rxNum = parseFloat(rxFreq);
+
             if (freqMatches.length > 1) {
-                // Explicit TX frequency provided
-                txFreq = parseFrequency(freqMatches[1].freq);
+                // Explicit TX frequency provided in line
+                txFreq = parseFrequency(freqMatches[1].freq) || rxFreq;
             } else if (rxOffset) {
-                // Calculate from offset indicator
-                const rxNum = parseFloat(rxFreq);
+                // Calculate from offset indicator (+) or (-)
                 if (rxOffset === '+') {
-                    // Standard positive offsets
-                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum + 0.6).toFixed(6); // 2m
-                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum + 1.6).toFixed(6); // 1.25m
-                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum + 5.0).toFixed(6); // 70cm
+                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum + 0.6).toFixed(6); // 2m +0.6
+                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum + 1.6).toFixed(6); // 1.25m +1.6
+                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum + 5.0).toFixed(6); // 70cm +5.0
                 } else if (rxOffset === '-') {
-                    // Standard negative offsets
-                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum - 0.6).toFixed(6); // 2m
-                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum - 1.6).toFixed(6); // 1.25m
-                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum - 5.0).toFixed(6); // 70cm
+                    if (rxNum >= 144 && rxNum <= 148) txFreq = (rxNum - 0.6).toFixed(6); // 2m -0.6
+                    else if (rxNum >= 222 && rxNum <= 225) txFreq = (rxNum - 1.6).toFixed(6); // 1.25m -1.6
+                    else if (rxNum >= 420 && rxNum <= 450) txFreq = (rxNum - 5.0).toFixed(6); // 70cm -5.0
                 }
             }
 
-            // Extract channel name (before first frequency)
+            // Extract channel name from Function/Owner/Name column (before first frequency)
             let name = '';
             const beforeFirstFreq = line.substring(0, freqMatches[0].position).trim();
             if (beforeFirstFreq.length > 0) {
-                // Clean up and extract meaningful name
                 name = beforeFirstFreq
-                    .replace(/^\d+\s*/, '') // Remove leading numbers
-                    .replace(/[|]/g, ' ') // Replace pipes
+                    .replace(/^\d+\s*[|]?\s*/, '') // Remove leading numbers and pipes
+                    .replace(/[|]/g, ' ')
                     .trim();
-                // Take last few words as name
                 const words = name.split(/\s+/).filter(w => w.length > 0);
                 name = words.slice(-Math.min(4, words.length)).join(' ');
             }
 
-            // Extract tones - handle both decimal (146.2) and integer (100, 167) formats
+            // Extract tones: PL Tone / CTCSS = rToneFreq, TSQL/TX Tone = cToneFreq
             const tonePattern = /\b(\d{2,3})(\.\d{1,2})?\b/g;
-            const allNumericMatches = [];
+            const allTones = [];
             let toneMatch;
+
             while ((toneMatch = tonePattern.exec(line)) !== null) {
                 const val = parseFloat(toneMatch[0]);
-                // CTCSS tones: 67.0-254.1 Hz, or integers like 100, 146, 167
-                if ((val >= 67.0 && val <= 254.1) || (val >= 67 && val <= 254 && !toneMatch[2])) {
-                    // Check this isn't part of a frequency we already extracted
-                    let isFreq = false;
+                // CTCSS tones: 67.0-254.1 Hz
+                if (val >= 67.0 && val <= 254.1) {
+                    // Make sure it's not part of a frequency
+                    let isPartOfFreq = false;
                     for (const fmatch of freqMatches) {
                         if (Math.abs(toneMatch.index - fmatch.position) < 10) {
-                            isFreq = true;
+                            isPartOfFreq = true;
                             break;
                         }
                     }
-                    if (!isFreq) {
-                        allNumericMatches.push({
-                            val: toneMatch[2] ? val.toFixed(1) : val.toFixed(1), // Normalize to decimal
-                            position: toneMatch.index
-                        });
+                    if (!isPartOfFreq) {
+                        allTones.push(val.toFixed(1));
                     }
                 }
             }
 
-            // Assign tones (TX tone usually comes first, or same for both)
-            let txTone = '';
-            let rxTone = '';
-            if (allNumericMatches.length > 0) {
-                txTone = allNumericMatches[0].val;
-                rxTone = allNumericMatches.length > 1 ? allNumericMatches[1].val : allNumericMatches[0].val;
+            // Assign tones - first tone is usually TX tone (cToneFreq), same or second is RX (rToneFreq)
+            let rToneFreq = ''; // PL Tone / CTCSS Tone (receive)
+            let cToneFreq = ''; // TSQL / TX Tone (transmit)
+
+            if (allTones.length > 0) {
+                cToneFreq = allTones[0]; // First tone is TX
+                rToneFreq = allTones.length > 1 ? allTones[1] : allTones[0]; // Second or same for RX
             }
 
-            // Extract mode
-            const modeMatch = line.match(/\b([ADM])\b(?!\w)/i); // A, D, or M as standalone letter
-            const mode = modeMatch ? modeMatch[1].toUpperCase() : '';
+            // Build comments from remaining data (assignment, remarks, etc.)
+            const afterFreqs = line.substring(freqMatches[freqMatches.length - 1].position + 10).trim();
+            let remarks = afterFreqs
+                .replace(/\b([ADM])\b/g, '') // Remove mode letters
+                .replace(/\d{2,3}\.\d{1,2}/g, '') // Remove tones we already extracted
+                .replace(/\s+/g, ' ')
+                .trim();
 
             return {
                 name: name || 'CHANNEL',
                 rxFreq: rxFreq,
                 txFreq: txFreq,
-                rxTone: rxTone,
-                txTone: txTone,
-                mode: mode,
-                remarks: ''
+                rxTone: rToneFreq, // PL Tone / CTCSS
+                txTone: cToneFreq, // TSQL / TX Tone
+                mode: 'FM', // Always FM as specified
+                remarks: remarks
             };
         }
 
@@ -800,26 +836,8 @@
 
         // Determine FM Mode
         function determineMode(modeString, frequency) {
-            // Check explicit mode from ICS-205
-            if (modeString) {
-                modeString = modeString.toUpperCase();
-                if (modeString.includes('D') || modeString.includes('DIGITAL')) {
-                    return 'DN'; // Digital narrow
-                }
-                if (modeString.includes('NFM') || modeString.includes('NARROW')) {
-                    return 'NFM';
-                }
-            }
-
-            // Default based on frequency
-            const freq = parseFloat(frequency);
-
-            // 70cm typically uses narrow FM
-            if (freq >= 420 && freq <= 450) {
-                return 'NFM';
-            }
-
-            return 'FM'; // Default
+            // Always return FM as specified by user
+            return 'FM';
         }
 
         // Sanitize Channel Name for CHIRP
@@ -868,30 +886,27 @@
                     parseFloat(channel.txFreq)
                 );
 
-                // Parse tones
-                const rxTone = parseTone(channel.rxTone);
-                const txTone = parseTone(channel.txTone);
+                // Tones are already parsed as strings like "100.0" or "146.2"
+                const rToneFreq = channel.rxTone || ''; // PL/CTCSS tone (receive)
+                const cToneFreq = channel.txTone || ''; // TSQL/TX tone (transmit)
 
                 // Determine tone mode
                 let toneMode = '';
-                if (rxTone.mode && txTone.mode) {
-                    if (rxTone.mode === txTone.mode && rxTone.tone === txTone.tone) {
+                if (rToneFreq && cToneFreq) {
+                    if (rToneFreq === cToneFreq) {
                         toneMode = 'TSQL'; // Tone Squelch (RX and TX same)
                     } else {
-                        toneMode = 'Cross'; // Cross tone
+                        toneMode = 'Cross'; // Cross tone (different RX/TX)
                     }
-                } else if (txTone.mode) {
+                } else if (cToneFreq) {
                     toneMode = 'Tone'; // TX tone only
                 }
 
-                // Determine mode (FM width)
-                const mode = determineMode(channel.mode, channel.rxFreq);
+                // Mode is always FM
+                const mode = 'FM';
 
-                // Build comment
-                const commentParts = [channel.assignment, channel.function, channel.remarks]
-                    .filter(p => p)
-                    .join(' - ');
-                const comment = commentParts.replace(/[\r\n]+/g, ' ').trim();
+                // Comments from remarks field
+                const comment = (channel.remarks || '').replace(/[\r\n]+/g, ' ').trim();
 
                 // Build CSV row
                 const row = [
@@ -901,10 +916,10 @@
                     duplex,
                     offset,
                     toneMode,
-                    rxTone.tone || '',
-                    txTone.tone || '',
-                    txTone.dcs || rxTone.dcs || '',
-                    txTone.polarity || rxTone.polarity || 'NN',
+                    rToneFreq, // rToneFreq (receive/PL tone)
+                    cToneFreq, // cToneFreq (transmit/TSQL tone)
+                    '', // DtcsCode (not used)
+                    'NN', // DtcsPolarity (not used)
                     mode,
                     '5.00', // Default tuning step
                     '', // Skip
