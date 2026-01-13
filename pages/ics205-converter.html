@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com; worker-src blob:; font-src data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com blob:; worker-src blob:; font-src data:; child-src blob:;">
 
     <!-- Primary Meta Tags -->
     <title>ICS-205 to CHIRP Converter - Atlanta Ham Radio</title>
@@ -487,20 +487,35 @@
                 // Initialize Tesseract worker (v5 API)
                 if (!ocrWorker) {
                     console.log('Creating Tesseract worker...');
-                    showStatus('Downloading OCR language data... (first time only)', 'info');
+                    showStatus('Initializing OCR engine... (downloading ~3MB, first time only)', 'info');
 
-                    ocrWorker = await window.Tesseract.createWorker('eng', 1, {
+                    // Create worker with timeout
+                    const workerPromise = window.Tesseract.createWorker({
                         logger: m => {
                             console.log('Tesseract:', m);
-                            if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract') {
-                                showStatus(`OCR Engine: ${m.status}...`, 'info');
-                            }
-                            if (m.status === 'loading language traineddata') {
-                                showStatus(`Downloading language data: ${Math.round(m.progress * 100)}%`, 'info');
+                            if (m.status === 'loading tesseract core') {
+                                showStatus('Loading OCR engine core...', 'info');
+                            } else if (m.status === 'initializing tesseract') {
+                                showStatus('Initializing OCR engine...', 'info');
+                            } else if (m.status === 'loading language traineddata') {
+                                const percent = Math.round(m.progress * 100);
+                                showStatus(`Downloading language data: ${percent}%`, 'info');
+                            } else if (m.status === 'initializing api') {
+                                showStatus('Starting OCR API...', 'info');
+                            } else if (m.status === 'loaded language model') {
+                                showStatus('Language model loaded!', 'info');
                             }
                         }
                     });
-                    console.log('Tesseract worker created successfully');
+
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('OCR initialization timeout after 60 seconds. Please refresh and try again.')), 60000)
+                    );
+
+                    ocrWorker = await Promise.race([workerPromise, timeoutPromise]);
+                    await ocrWorker.loadLanguage('eng');
+                    await ocrWorker.initialize('eng');
+                    console.log('Tesseract worker created and initialized successfully');
                 }
                 showProgress(20);
 
