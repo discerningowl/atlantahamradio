@@ -26,8 +26,20 @@ async function convertICS205ToChirp(pdfBuffer, options = {}) {
     try {
         let frequencyData;
 
-        // Step 1: Try OpenAI with direct PDF input (supports OCR for scanned PDFs)
-        if (process.env.OPENAI_API_KEY) {
+        // Step 1: Try DigitalOcean AI Agent (if configured)
+        if (process.env.DO_AI_AGENT_URL) {
+            try {
+                console.log('Attempting DigitalOcean AI Agent parsing...');
+                frequencyData = await parseICS205WithDOAgent(pdfBuffer);
+                console.log(`✓ DO AI Agent successfully parsed ${frequencyData.length} frequencies`);
+            } catch (doError) {
+                console.warn('DO AI Agent parsing failed, trying next method:', doError.message);
+                frequencyData = null;
+            }
+        }
+
+        // Step 2: Try OpenAI with direct PDF input (supports OCR for scanned PDFs)
+        if (!frequencyData && process.env.OPENAI_API_KEY) {
             try {
                 console.log('Attempting OpenAI GPT-4o parsing (with OCR support)...');
                 frequencyData = await parseICS205WithOpenAI(pdfBuffer);
@@ -38,15 +50,15 @@ async function convertICS205ToChirp(pdfBuffer, options = {}) {
             }
         }
 
-        // Step 2: Fallback to text extraction + AI parsing
+        // Step 3: Fallback to text extraction + AI parsing
         if (!frequencyData) {
             console.log('Using text extraction + AI parsing fallback...');
 
-            // Step 2a: Extract text from PDF
+            // Step 3a: Extract text from PDF
             console.log('Extracting text from PDF...');
             const extractedText = await extractTextFromPDF(pdfBuffer);
 
-            // Step 2b: Parse ICS-205 frequency data using AI (Gradient or OpenAI)
+            // Step 3b: Parse ICS-205 frequency data using AI (Gradient or OpenAI)
             console.log('Parsing ICS-205 frequency data with AI...');
             frequencyData = await parseICS205WithAI(extractedText);
         }
@@ -76,15 +88,19 @@ async function convertICS205ToChirp(pdfBuffer, options = {}) {
  * At least one AI provider must be configured
  */
 function validateEnvironment() {
+    const hasDOAgent = !!process.env.DO_AI_AGENT_URL;
     const hasOpenAI = !!process.env.OPENAI_API_KEY;
     const hasGradient = !!process.env.GRADIENT_AI_API_KEY;
 
-    if (!hasOpenAI && !hasGradient) {
-        throw new Error('Missing required environment variables: At least one of OPENAI_API_KEY or GRADIENT_AI_API_KEY must be set');
+    if (!hasDOAgent && !hasOpenAI && !hasGradient) {
+        throw new Error('Missing required environment variables: At least one of DO_AI_AGENT_URL, OPENAI_API_KEY, or GRADIENT_AI_API_KEY must be set');
     }
 
+    if (hasDOAgent) {
+        console.log('✓ DigitalOcean AI Agent configured (primary method, billed through DO)');
+    }
     if (hasOpenAI) {
-        console.log('✓ OpenAI API configured (primary method with OCR support)');
+        console.log('✓ OpenAI API configured (fallback method with OCR support)');
     }
     if (hasGradient) {
         console.log('✓ Gradient AI configured (fallback method)');
@@ -119,6 +135,147 @@ async function extractTextFromPDF(pdfBuffer) {
     } catch (error) {
         console.error('PDF extraction error:', error);
         throw new Error(`Failed to extract text from PDF: ${error.message}`);
+    }
+}
+
+/**
+ * Parse ICS-205 frequency data using DigitalOcean AI Agent
+ *
+ * Uses your DigitalOcean AI Agent to process the PDF.
+ * Billing goes through DigitalOcean.
+ *
+ * @param {Buffer} pdfBuffer - PDF file buffer
+ * @returns {Promise<Array>} Array of frequency objects
+ */
+async function parseICS205WithDOAgent(pdfBuffer) {
+    try {
+        const agentUrl = process.env.DO_AI_AGENT_URL;
+        const apiKey = process.env.DO_AI_AGENT_API_KEY;
+
+        if (!agentUrl) {
+            throw new Error('DO_AI_AGENT_URL not configured');
+        }
+
+        console.log(`Calling DO AI Agent at: ${agentUrl}`);
+
+        // Convert PDF to base64
+        const base64Pdf = pdfBuffer.toString('base64');
+
+        // Prepare the prompt for structured extraction
+        const prompt = `You are an expert at parsing ICS-205 Radio Communications Plan forms. Analyze this PDF document (which may be scanned/image-based) and extract all frequency information.
+
+Return ONLY a valid JSON array with this exact structure (no markdown, no additional text):
+
+[
+  {
+    "name": "Channel Name",
+    "rxFreq": "146.520",
+    "txFreq": "146.520",
+    "tone": "100.0",
+    "mode": "FM",
+    "remarks": "Simplex"
+  }
+]
+
+For each frequency/channel entry, extract:
+- name: Channel name or assignment (string)
+- rxFreq: Receive frequency in MHz (string, e.g., "146.520")
+- txFreq: Transmit frequency in MHz (string, same as rxFreq if simplex)
+- tone: CTCSS/PL tone frequency (string, e.g., "100.0", or null if none)
+- mode: Radio mode (string, "FM", "NFM", "AM", etc., default to "FM")
+- remarks: Any notes or function description (string, or null)
+
+If no frequencies are found, return an empty array: []`;
+
+        // Call DO AI Agent API
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+
+        // Add API key if provided
+        if (apiKey) {
+            headers['Authorization'] = `Bearer ${apiKey}`;
+        }
+
+        const requestBody = {
+            messages: [
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'text',
+                            text: prompt
+                        },
+                        {
+                            type: 'image_url',
+                            image_url: {
+                                url: `data:application/pdf;base64,${base64Pdf}`
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens: 2000,
+            temperature: 0.1,
+        };
+
+        const response = await fetch(agentUrl, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(requestBody),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`DO AI Agent API error: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+
+        const result = await response.json();
+
+        // Extract completion from response (format may vary)
+        let completion;
+        if (result.choices && result.choices[0]) {
+            completion = result.choices[0].message?.content || result.choices[0].text;
+        } else if (result.content) {
+            completion = result.content;
+        } else if (result.response) {
+            completion = result.response;
+        } else {
+            throw new Error('Unexpected response format from DO AI Agent');
+        }
+
+        console.log('DO AI Agent Response:', completion.substring(0, 200) + '...');
+
+        // Extract JSON from response
+        let jsonMatch = completion.match(/\[[\s\S]*\]/);
+        if (!jsonMatch) {
+            const markdownMatch = completion.match(/```(?:json)?\s*(\[[\s\S]*\])\s*```/);
+            if (markdownMatch) {
+                jsonMatch = [markdownMatch[1]];
+            }
+        }
+
+        if (!jsonMatch) {
+            throw new Error('No JSON array found in DO AI Agent response');
+        }
+
+        const frequencies = JSON.parse(jsonMatch[0]);
+
+        if (!Array.isArray(frequencies)) {
+            throw new Error('DO AI Agent response is not an array');
+        }
+
+        if (frequencies.length === 0) {
+            throw new Error('DO AI Agent found no frequencies in the PDF');
+        }
+
+        console.log(`✓ DO AI Agent parsed ${frequencies.length} frequencies from PDF`);
+
+        return frequencies;
+
+    } catch (error) {
+        console.error('DO AI Agent parsing error:', error);
+        throw error;
     }
 }
 

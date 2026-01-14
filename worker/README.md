@@ -111,10 +111,20 @@ curl -X POST http://localhost:8080/api/ics205/convert \
 
 The worker supports multiple AI providers with automatic fallback:
 
-**Primary (Recommended):**
+**Primary (Recommended - Cheapest!):**
+- `DO_AI_AGENT_URL` - Your DigitalOcean AI Agent URL
+  - Get from: DigitalOcean Console → Your AI Agent → Settings
+  - Example: `https://your-agent-id.agents.do-ai.run`
+  - Model: OpenAI GPT-oss-20b (or your configured model)
+  - Billing: Through DigitalOcean ($0.05 input / $0.45 output per 1M tokens)
+  - Features: May support PDF processing (needs testing)
+- `DO_AI_AGENT_API_KEY` - API key for your DO AI Agent (optional, if authentication required)
+
+**Alternative:**
 - `OPENAI_API_KEY` - Your OpenAI API key (supports PDF with OCR)
   - Get from: https://platform.openai.com/api-keys
   - Model used: gpt-4o
+  - Billing: Through OpenAI ($2.50 input / $10 output per 1M tokens)
   - Features: Direct PDF processing, built-in OCR for scanned documents
 
 **Fallback:**
@@ -122,7 +132,7 @@ The worker supports multiple AI providers with automatic fallback:
 - `GRADIENT_AI_WORKSPACE_ID` - Your Gradient AI workspace ID
 - `GRADIENT_AI_MODEL` - Model name to use for parsing
 
-**Note:** At least one AI provider must be configured. If both are configured, OpenAI will be used first (recommended for best results with image-based PDFs).
+**Note:** At least one AI provider must be configured. Priority: DO Agent → OpenAI → Gradient AI.
 
 **Other Settings:**
 - `PORT` - Server port (default: 8080)
@@ -149,7 +159,17 @@ doctl apps logs YOUR_APP_ID --type run --follow
 
 The worker uses a multi-tiered approach for maximum reliability:
 
-### Tier 1: OpenAI Direct PDF Processing (Primary)
+### Tier 1: DigitalOcean AI Agent (Primary)
+- **Method:** Your DO AI Agent with OpenAI GPT-oss-20b
+- **Input:** Raw PDF buffer (base64 encoded)
+- **Features:**
+  - ✅ Handles text-based PDFs
+  - ❓ May handle image-based PDFs (needs testing)
+  - 💰 Cheapest option ($0.05/$0.45 per 1M tokens)
+  - 🏢 Billed through DigitalOcean
+- **Used when:** `DO_AI_AGENT_URL` is configured
+
+### Tier 2: OpenAI Direct PDF Processing (Fallback)
 - **Method:** OpenAI GPT-4o with vision
 - **Input:** Raw PDF buffer (base64 encoded)
 - **Features:**
@@ -157,18 +177,19 @@ The worker uses a multi-tiered approach for maximum reliability:
   - ✅ Handles image-based PDFs (OCR)
   - ✅ Handles scanned documents
   - ✅ Best accuracy for frequency extraction
-- **Used when:** `OPENAI_API_KEY` is configured
+  - 💰 More expensive ($2.50/$10 per 1M tokens)
+- **Used when:** Tier 1 fails or `OPENAI_API_KEY` is configured
 
-### Tier 2: Text Extraction + AI Parsing (Fallback)
+### Tier 3: Text Extraction + AI Parsing (Fallback)
 - **Method:** pdf-parse + AI (OpenAI or Gradient AI)
 - **Input:** Extracted text from PDF
 - **Features:**
   - ✅ Works with text-based PDFs
   - ❌ Cannot handle image-based PDFs
   - ✅ Good accuracy for well-formatted PDFs
-- **Used when:** Tier 1 fails or OpenAI not configured
+- **Used when:** Tier 1 & 2 fail or not configured
 
-### Tier 3: Regex-based Parsing (Final Fallback)
+### Tier 4: Regex-based Parsing (Final Fallback)
 - **Method:** Regular expression pattern matching
 - **Input:** Extracted text from PDF
 - **Features:**
@@ -179,13 +200,19 @@ The worker uses a multi-tiered approach for maximum reliability:
 
 ## Recommended Configuration
 
-For best results (handles all PDF types including scanned documents):
+**For cheapest option (if you have DO AI Agent):**
+```bash
+DO_AI_AGENT_URL=https://your-agent-id.agents.do-ai.run
+DO_AI_AGENT_API_KEY=your-api-key  # If required
+```
+
+**For best results (handles all PDF types including scanned documents):**
 ```bash
 OPENAI_API_KEY=sk-...your-key-here
 GRADIENT_AI_API_KEY=your-gradient-key  # Optional fallback
 ```
 
-For budget-conscious setups (text-based PDFs only):
+**For budget-conscious setups (text-based PDFs only):**
 ```bash
 GRADIENT_AI_API_KEY=your-gradient-key
 GRADIENT_AI_WORKSPACE_ID=your-workspace-id
