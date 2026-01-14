@@ -4,9 +4,15 @@
  * HTTP API server for converting ICS-205 Radio Communications Plan PDFs
  * to CHIRP-compatible CSV files using Gradient AI.
  *
- * Endpoints:
+ * Note: This service is routed under /api/ics205 in DigitalOcean
+ *
+ * Public Endpoints (via atlantahamradio.org):
  *   POST /api/ics205/convert - Convert ICS-205 PDF to CHIRP CSV
- *   GET  /health            - Health check endpoint
+ *   GET  /api/ics205/health  - Health check endpoint
+ *
+ * Internal Routes (in this Express app):
+ *   POST /convert - Convert ICS-205 PDF to CHIRP CSV
+ *   GET  /health  - Health check endpoint
  */
 
 const express = require('express');
@@ -93,7 +99,7 @@ app.get('/', (req, res) => {
         service: 'ICS-205 to CHIRP CSV Converter',
         version: '1.0.0',
         endpoints: {
-            'POST /api/ics205/convert': 'Convert ICS-205 PDF to CHIRP CSV',
+            'POST /convert': 'Convert ICS-205 PDF to CHIRP CSV',
             'GET /health': 'Health check',
         },
         documentation: 'https://github.com/discerningowl/atlantahamradio',
@@ -101,7 +107,7 @@ app.get('/', (req, res) => {
 });
 
 // Convert ICS-205 PDF to CHIRP CSV
-app.post('/api/ics205/convert', upload.single('pdf'), async (req, res) => {
+app.post('/convert', upload.single('pdf'), async (req, res) => {
     const startTime = Date.now();
 
     try {
