@@ -1,8 +1,9 @@
 name: atlantahamradio
-region: atl
+region: atl  # ATL1 datacenter
 
+# Static frontend site (existing)
 static_sites:
-  - name: atlantahamradio
+  - name: atlantahamradio-frontend
     environment_slug: html
     source_dir: /
     error_document: 404.html
@@ -34,6 +35,47 @@ static_sites:
       - pattern: "**/*.js"
         headers:
           Cache-Control: "public, max-age=31536000, immutable"
+
+# Worker service for ICS-205 to CHIRP conversion
+services:
+  - name: ics205-parser-worker
+    source_dir: /worker
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
+    github:
+      repo: discerningowl/atlantahamradio
+      branch: main
+      deploy_on_push: true
+
+    envs:
+      - key: GRADIENT_AI_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: GRADIENT_AI_WORKSPACE_ID
+        scope: RUN_TIME
+        type: SECRET
+      - key: GRADIENT_AI_MODEL
+        scope: RUN_TIME
+        type: SECRET
+      - key: PORT
+        value: "8080"
+      - key: NODE_ENV
+        value: "production"
+
+    http_port: 8080
+
+    routes:
+      - path: /api/ics205
+
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 30
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
 
 domains:
   - domain: atlantahamradio.org
