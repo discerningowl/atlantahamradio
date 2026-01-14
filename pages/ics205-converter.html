@@ -54,28 +54,39 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.5rem;
+            border: 2px dashed #3b82f6;
         }
 
         .btn-test {
-            padding: 1rem;
-            background: var(--primary);
+            padding: 1rem 1.5rem;
+            background: #3b82f6;
             color: white;
-            border: none;
+            border: 2px solid #3b82f6;
             border-radius: 0.5rem;
             cursor: pointer;
             font-size: 1rem;
+            font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            min-height: 50px;
         }
 
         .btn-test:hover {
-            background: var(--primary-hover);
+            background: #2563eb;
+            border-color: #2563eb;
             transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
         }
 
         .btn-test:disabled {
             background: #555;
+            border-color: #555;
             cursor: not-allowed;
             transform: none;
+            opacity: 0.6;
         }
 
         .upload-zone {
