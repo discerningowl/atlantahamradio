@@ -18,7 +18,6 @@ function loadHeader() {
                     <a href="${pathPrefix}index.html#calendar">Calendar</a>
                     <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                     <a href="${pathPrefix}pages/resources.html">Resources</a>
-                    <a href="${pathPrefix}pages/ics205-converter.html">ICS-205 Tool</a>
                     <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
                     <a href="${pathPrefix}pages/clubs.html">Clubs</a>
                     <a href="${pathPrefix}pages/about.html">About</a>
@@ -36,7 +35,6 @@ function loadHeader() {
                 <a href="${pathPrefix}index.html#calendar">Calendar</a>
                 <a href="${pathPrefix}pages/getstarted.html">Get Started</a>
                 <a href="${pathPrefix}pages/resources.html">Resources</a>
-                <a href="${pathPrefix}pages/ics205-converter.html">ICS-205 Tool</a>
                 <a href="${pathPrefix}pages/organizers.html">For Organizers</a>
                 <a href="${pathPrefix}pages/clubs.html">Clubs</a>
                 <a href="${pathPrefix}pages/about.html">About</a>
