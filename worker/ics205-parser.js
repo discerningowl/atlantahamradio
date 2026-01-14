@@ -75,8 +75,15 @@ async function extractTextFromPDF(pdfBuffer) {
 
         console.log(`PDF parsed: ${data.numpages} pages, ${data.text.length} characters`);
 
+        // Debug: Log first 500 characters of extracted text
+        if (data.text && data.text.length > 0) {
+            console.log('--- Extracted Text Preview (first 500 chars) ---');
+            console.log(data.text.substring(0, 500));
+            console.log('--- End Preview ---');
+        }
+
         if (!data.text || data.text.trim().length === 0) {
-            throw new Error('PDF contains no extractable text. It may be an image-based PDF.');
+            throw new Error('PDF contains no extractable text. It may be an image-based PDF that requires OCR.');
         }
 
         return data.text;
@@ -187,32 +194,61 @@ function fallbackParsing(text) {
     const frequencies = [];
     const lines = text.split('\n');
 
-    // Regex patterns for common frequency formats
-    const freqPattern = /\b(\d{2,3}\.\d{2,4})\b/g;
+    // Enhanced regex patterns for various frequency formats
+    // Matches: 146.520, 146.52, 440.1234, 1467.5250, etc.
+    const freqPattern = /\b(\d{2,4}\.\d{1,4})\b/g;
+
+    // Tone pattern: matches 100.0, 88.5, etc.
     const tonePattern = /\b(\d{2,3}\.\d{1})\b/g;
+
+    // Track potential frequencies for debugging
+    let linesWithFrequencies = 0;
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
 
-        // Skip empty lines and headers
+        // Skip empty lines and common headers
         if (!line || line.length < 5) continue;
         if (line.toLowerCase().includes('frequency') && line.toLowerCase().includes('channel')) continue;
+        if (line.toLowerCase().includes('radio communications plan')) continue;
 
         // Look for frequency patterns
         const freqMatches = line.match(freqPattern);
         if (freqMatches && freqMatches.length >= 1) {
-            const rxFreq = freqMatches[0];
-            const txFreq = freqMatches.length >= 2 ? freqMatches[1] : rxFreq;
+            // Filter out frequencies that are likely not radio frequencies
+            // Radio frequencies are typically in ranges:
+            // VHF: 30-300 MHz, UHF: 300-3000 MHz
+            const validFreqs = freqMatches.filter(freq => {
+                const num = parseFloat(freq);
+                return num >= 30 && num <= 3000;
+            });
 
-            // Extract tone if present
+            if (validFreqs.length === 0) continue;
+
+            linesWithFrequencies++;
+            const rxFreq = validFreqs[0];
+            const txFreq = validFreqs.length >= 2 ? validFreqs[1] : rxFreq;
+
+            // Extract tone if present (but not if it's a frequency)
             const toneMatches = line.match(tonePattern);
-            const tone = toneMatches ? toneMatches[0] : null;
+            let tone = null;
+            if (toneMatches) {
+                // Tones are typically 67-254.1 Hz
+                const toneNum = parseFloat(toneMatches[0]);
+                if (toneNum >= 67 && toneNum <= 254.1) {
+                    tone = toneMatches[0];
+                }
+            }
 
             // Try to extract channel name (usually at beginning of line)
             let name = line.substring(0, 30).split(/\s{2,}/)[0].trim();
+            // Remove leading numbers/special chars if present
+            name = name.replace(/^[\d\s\.\-]+/, '').trim();
             if (!name || name.length < 2) {
                 name = `Channel ${frequencies.length + 1}`;
             }
+
+            console.log(`Found frequency on line ${i + 1}: ${rxFreq} MHz (${name})`);
 
             frequencies.push({
                 name: name,
@@ -225,8 +261,18 @@ function fallbackParsing(text) {
         }
     }
 
+    console.log(`Processed ${lines.length} lines, found ${linesWithFrequencies} lines with frequencies`);
+
     if (frequencies.length === 0) {
-        throw new Error('No frequencies found in PDF. The file may not be a valid ICS-205 form.');
+        // More helpful error message with debugging info
+        console.error('=== DEBUGGING INFO ===');
+        console.error(`Total lines processed: ${lines.length}`);
+        console.error(`Lines with frequency patterns: ${linesWithFrequencies}`);
+        console.error('First 1000 characters of text:');
+        console.error(text.substring(0, 1000));
+        console.error('=== END DEBUGGING INFO ===');
+
+        throw new Error('No frequencies found in PDF. Possible issues: (1) PDF is image-based and needs OCR, (2) Frequencies are in an unsupported format, (3) File is not a valid ICS-205 form. Check server logs for extracted text.');
     }
 
     console.log(`Fallback parsing found ${frequencies.length} frequencies`);

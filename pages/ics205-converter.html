@@ -222,6 +222,7 @@
                 <button class="btn-test" onclick="testHealth()">Test Health Check</button>
                 <button class="btn-test" onclick="testRoot()">Test Root Endpoint</button>
                 <button class="btn-test" onclick="testAllRoutes()">Test All Routes</button>
+                <button class="btn-test" id="debugTextBtn" onclick="debugExtractText()" disabled>Debug: Extract PDF Text</button>
                 <button class="btn-test" onclick="clearLogs()">Clear Logs</button>
             </div>
 
@@ -235,6 +236,7 @@
                 <code>GET /api/ics205/health</code>
                 <code>GET /api/ics205/</code>
                 <code>POST /api/ics205/convert</code>
+                <code>POST /api/ics205/debug-text</code>
                 <code>GET /health (direct)</code>
             </div>
 
@@ -396,6 +398,53 @@
             log('=== Route testing complete ===', 'info');
         }
 
+        // Debug: Extract text from PDF without parsing
+        async function debugExtractText() {
+            if (!selectedFile) {
+                log('No file selected for debug extraction', 'error');
+                alert('Please select a PDF file first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('pdf', selectedFile);
+
+            log(`Extracting text from ${selectedFile.name} (debug mode)...`, 'info');
+
+            try {
+                const response = await fetch('/api/ics205/debug-text', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                log(`Response status: ${response.status}`, response.ok ? 'success' : 'error');
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`Text extraction failed: ${errorText}`, 'error');
+                    return;
+                }
+
+                const result = await response.json();
+
+                log(`Text extraction successful:`, 'success');
+                log(`- Pages: ${result.pages}`, 'info');
+                log(`- Text length: ${result.textLength} characters`, 'info');
+                log(`--- Extracted Text (first 1000 chars) ---`, 'info');
+                log(result.text.substring(0, 1000), 'info');
+                log(`--- End of preview ---`, 'info');
+
+                if (result.text.length === 0) {
+                    log('⚠️ WARNING: PDF contains no extractable text! This is likely a scanned/image-based PDF that requires OCR.', 'error');
+                } else {
+                    log('✓ PDF has extractable text layer', 'success');
+                }
+
+            } catch (error) {
+                log(`Error during text extraction: ${error.message}`, 'error');
+            }
+        }
+
         // Update worker status badge
         function updateWorkerStatus(status) {
             const badge = document.getElementById('workerStatus');
@@ -423,6 +472,7 @@
                 document.getElementById('fileName').textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
                 document.getElementById('fileInfo').style.display = 'block';
                 document.getElementById('convertBtn').disabled = false;
+                document.getElementById('debugTextBtn').disabled = false;
                 log(`File selected: ${file.name}`, 'success');
             }
         }
