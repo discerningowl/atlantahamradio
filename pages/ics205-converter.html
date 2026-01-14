@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://atlantahamradio.org; font-src 'self';">
+
+    <!-- Primary Meta Tags -->
+    <title>ICS-205 Converter - Atlanta Ham Radio</title>
+    <meta name="title" content="ICS-205 to CHIRP Converter - Atlanta Ham Radio">
+    <meta name="description" content="Convert ICS-205 Radio Communications Plan PDFs to CHIRP CSV format using AI-powered parsing.">
+    <meta name="keywords" content="ICS-205, CHIRP converter, radio programming, PDF to CSV, amateur radio">
+    <meta name="author" content="KQ4JP">
+    <link rel="canonical" href="https://atlantahamradio.org/pages/ics205-converter.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://atlantahamradio.org/pages/ics205-converter.html">
+    <meta property="og:title" content="ICS-205 to CHIRP Converter">
+    <meta property="og:description" content="Convert ICS-205 Radio Communications Plan PDFs to CHIRP CSV format using AI.">
+    <meta property="og:image" content="https://atlantahamradio.org/images/logo.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://atlantahamradio.org/pages/ics205-converter.html">
+    <meta name="twitter:title" content="ICS-205 to CHIRP Converter">
+    <meta name="twitter:description" content="Convert ICS-205 Radio Communications Plan PDFs to CHIRP CSV format using AI.">
+
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .converter-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .debug-panel {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .debug-panel h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .test-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .btn-test {
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-test:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-test:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 0.75rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: var(--card-hover-bg);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-zone input[type="file"] {
+            display: none;
+        }
+
+        .debug-output {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: #0f0;
+        }
+
+        .debug-output .log-entry {
+            margin: 0.25rem 0;
+            padding: 0.25rem;
+        }
+
+        .log-entry.error {
+            color: #ff4444;
+        }
+
+        .log-entry.success {
+            color: #44ff44;
+        }
+
+        .log-entry.info {
+            color: #4444ff;
+        }
+
+        .log-entry.warning {
+            color: #ffaa00;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .status-badge.healthy {
+            background: #22c55e;
+            color: white;
+        }
+
+        .status-badge.unhealthy {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status-badge.unknown {
+            background: #666;
+            color: white;
+        }
+
+        .endpoint-list {
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .endpoint-list code {
+            display: block;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .progress {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <script src="../js/header.js"></script>
+
+    <section class="hero">
+        <h2>ICS-205 to CHIRP Converter</h2>
+        <p>AI-powered PDF to CSV conversion for radio programming</p>
+    </section>
+
+    <div class="converter-container">
+        <!-- Debug Panel -->
+        <div class="debug-panel">
+            <h3>🔧 API Diagnostics & Testing</h3>
+
+            <div class="test-buttons">
+                <button class="btn-test" onclick="testHealth()">Test Health Check</button>
+                <button class="btn-test" onclick="testRoot()">Test Root Endpoint</button>
+                <button class="btn-test" onclick="testAllRoutes()">Test All Routes</button>
+                <button class="btn-test" onclick="clearLogs()">Clear Logs</button>
+            </div>
+
+            <div>
+                <strong>Worker Status:</strong>
+                <span id="workerStatus" class="status-badge unknown">UNKNOWN</span>
+            </div>
+
+            <div class="endpoint-list">
+                <strong>Testing Endpoints:</strong>
+                <code>GET /api/ics205/health</code>
+                <code>GET /api/ics205/</code>
+                <code>POST /api/ics205/convert</code>
+                <code>GET /health (direct)</code>
+            </div>
+
+            <div>
+                <strong>Debug Output:</strong>
+                <div id="debugOutput" class="debug-output"></div>
+            </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="debug-panel">
+            <h3>📄 ICS-205 PDF Upload</h3>
+
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('pdfInput').click()">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; opacity: 0.5;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h3>Click to Upload ICS-205 PDF</h3>
+                    <p>Or drag and drop your file here</p>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Maximum file size: 10MB</p>
+                </div>
+                <input type="file" id="pdfInput" accept=".pdf" onchange="handleFileSelect(event)">
+            </div>
+
+            <div id="fileInfo" style="display: none; margin: 1rem 0;">
+                <strong>Selected File:</strong>
+                <div id="fileName" style="color: var(--accent);"></div>
+            </div>
+
+            <div class="progress" id="uploadProgress" style="display: none;">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <button class="btn-test" id="convertBtn" onclick="convertPDF()" disabled style="width: 100%; margin-top: 1rem;">
+                Convert to CHIRP CSV
+            </button>
+        </div>
+
+        <!-- Instructions -->
+        <div class="debug-panel">
+            <h3>📖 How to Use</h3>
+            <ol style="line-height: 1.8;">
+                <li><strong>Test the API:</strong> Click "Test Health Check" to verify the worker is running</li>
+                <li><strong>Upload PDF:</strong> Select your ICS-205 Radio Communications Plan PDF</li>
+                <li><strong>Convert:</strong> Click "Convert to CHIRP CSV" to process the file</li>
+                <li><strong>Download:</strong> Your CHIRP-compatible CSV will download automatically</li>
+                <li><strong>Import to CHIRP:</strong> Open CHIRP and import the CSV file</li>
+            </ol>
+
+            <p style="margin-top: 1rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.5rem;">
+                <strong>💡 Tip:</strong> If you encounter errors, check the debug output above.
+                The conversion uses AI to intelligently extract frequency data from your PDF.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+
+        // Logging function
+        function log(message, type = 'info') {
+            const output = document.getElementById('debugOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${timestamp}] ${message}`;
+            output.appendChild(entry);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Clear logs
+        function clearLogs() {
+            document.getElementById('debugOutput').innerHTML = '';
+            log('Logs cleared', 'info');
+        }
+
+        // Test health endpoint
+        async function testHealth() {
+            log('Testing health endpoint: /api/ics205/health', 'info');
+
+            try {
+                const response = await fetch('/api/ics205/health');
+                log(`Response status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Health check passed: ${JSON.stringify(data)}`, 'success');
+                    updateWorkerStatus('healthy');
+                } else {
+                    const text = await response.text();
+                    log(`Health check failed: ${text}`, 'error');
+                    updateWorkerStatus('unhealthy');
+                }
+            } catch (error) {
+                log(`Error testing health: ${error.message}`, 'error');
+                updateWorkerStatus('unhealthy');
+            }
+        }
+
+        // Test root endpoint
+        async function testRoot() {
+            log('Testing root endpoint: /api/ics205/', 'info');
+
+            try {
+                const response = await fetch('/api/ics205/');
+                log(`Response status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Root endpoint data: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    const text = await response.text();
+                    log(`Root endpoint failed: ${text}`, 'error');
+                }
+            } catch (error) {
+                log(`Error testing root: ${error.message}`, 'error');
+            }
+        }
+
+        // Test all possible routes
+        async function testAllRoutes() {
+            log('=== Testing all possible routes ===', 'info');
+
+            const routes = [
+                { method: 'GET', path: '/api/ics205/health', description: 'Health (with prefix)' },
+                { method: 'GET', path: '/health', description: 'Health (direct)' },
+                { method: 'GET', path: '/api/ics205/', description: 'Root (with prefix)' },
+                { method: 'GET', path: '/api/ics205', description: 'Root (no trailing slash)' },
+            ];
+
+            for (const route of routes) {
+                try {
+                    log(`Testing ${route.method} ${route.path}`, 'info');
+                    const response = await fetch(route.path, { method: route.method });
+
+                    if (response.ok) {
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            const data = await response.json();
+                            log(`✓ ${route.description}: ${response.status} - ${JSON.stringify(data).substring(0, 100)}`, 'success');
+                        } else {
+                            const text = await response.text();
+                            log(`✓ ${route.description}: ${response.status} - ${text.substring(0, 100)}`, 'success');
+                        }
+                    } else {
+                        log(`✗ ${route.description}: ${response.status} ${response.statusText}`, 'error');
+                    }
+                } catch (error) {
+                    log(`✗ ${route.description}: ${error.message}`, 'error');
+                }
+
+                // Small delay between requests
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+
+            log('=== Route testing complete ===', 'info');
+        }
+
+        // Update worker status badge
+        function updateWorkerStatus(status) {
+            const badge = document.getElementById('workerStatus');
+            badge.className = `status-badge ${status}`;
+            badge.textContent = status.toUpperCase();
+        }
+
+        // Handle file selection
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    log('Error: Please select a PDF file', 'error');
+                    alert('Please select a PDF file');
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    log('Error: File too large (max 10MB)', 'error');
+                    alert('File too large. Maximum size is 10MB.');
+                    return;
+                }
+
+                selectedFile = file;
+                document.getElementById('fileName').textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                document.getElementById('fileInfo').style.display = 'block';
+                document.getElementById('convertBtn').disabled = false;
+                log(`File selected: ${file.name}`, 'success');
+            }
+        }
+
+        // Drag and drop handlers
+        const uploadZone = document.getElementById('uploadZone');
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                document.getElementById('pdfInput').files = e.dataTransfer.files;
+                handleFileSelect({ target: { files: [file] } });
+            }
+        });
+
+        // Convert PDF
+        async function convertPDF() {
+            if (!selectedFile) {
+                log('No file selected', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('pdf', selectedFile);
+
+            log(`Starting conversion of ${selectedFile.name}...`, 'info');
+
+            // Show progress bar
+            document.getElementById('uploadProgress').style.display = 'block';
+            document.getElementById('progressBar').style.width = '30%';
+            document.getElementById('convertBtn').disabled = true;
+
+            try {
+                const response = await fetch('/api/ics205/convert', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                document.getElementById('progressBar').style.width = '70%';
+
+                log(`Response status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`Conversion failed: ${errorText}`, 'error');
+                    alert(`Conversion failed: ${response.statusText}\n\nCheck debug output for details.`);
+                    return;
+                }
+
+                const result = await response.json();
+                document.getElementById('progressBar').style.width = '100%';
+
+                if (result.success) {
+                    log(`✓ Conversion successful! ${result.channelCount} channels extracted`, 'success');
+                    log(`Duration: ${result.duration}ms`, 'info');
+
+                    // Download CSV
+                    const blob = new Blob([result.csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = result.filename || 'channels.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    log(`✓ CSV downloaded: ${result.filename}`, 'success');
+                    alert(`Success! ${result.channelCount} channels converted.\n\nCSV file downloaded: ${result.filename}`);
+                } else {
+                    log(`Conversion failed: ${result.error}`, 'error');
+                    alert(`Conversion failed: ${result.error}`);
+                }
+
+            } catch (error) {
+                log(`Error during conversion: ${error.message}`, 'error');
+                alert(`Error during conversion: ${error.message}\n\nCheck debug output for details.`);
+            } finally {
+                // Reset UI
+                setTimeout(() => {
+                    document.getElementById('uploadProgress').style.display = 'none';
+                    document.getElementById('progressBar').style.width = '0%';
+                    document.getElementById('convertBtn').disabled = false;
+                }, 1000);
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            log('Page loaded - ICS-205 Converter ready', 'success');
+            log('Click "Test Health Check" to verify worker status', 'info');
+        });
+    </script>
+
+    <script src="../js/footer.js"></script>
+</body>
+</html>
