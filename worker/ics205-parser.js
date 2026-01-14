@@ -7,6 +7,7 @@
 
 const pdfParse = require('pdf-parse');
 const { Gradient } = require('@gradientai/nodejs-sdk');
+const OpenAI = require('openai');
 
 /**
  * Convert ICS-205 PDF to CHIRP CSV format
@@ -23,13 +24,32 @@ async function convertICS205ToChirp(pdfBuffer, options = {}) {
     validateEnvironment();
 
     try {
-        // Step 1: Extract text from PDF
-        console.log('Extracting text from PDF...');
-        const extractedText = await extractTextFromPDF(pdfBuffer);
+        let frequencyData;
 
-        // Step 2: Parse ICS-205 frequency data using AI
-        console.log('Parsing ICS-205 frequency data with Gradient AI...');
-        const frequencyData = await parseICS205WithAI(extractedText);
+        // Step 1: Try OpenAI with direct PDF input (supports OCR for scanned PDFs)
+        if (process.env.OPENAI_API_KEY) {
+            try {
+                console.log('Attempting OpenAI GPT-4o parsing (with OCR support)...');
+                frequencyData = await parseICS205WithOpenAI(pdfBuffer);
+                console.log(`✓ OpenAI successfully parsed ${frequencyData.length} frequencies`);
+            } catch (openaiError) {
+                console.warn('OpenAI parsing failed, falling back to text extraction:', openaiError.message);
+                frequencyData = null;
+            }
+        }
+
+        // Step 2: Fallback to text extraction + AI parsing
+        if (!frequencyData) {
+            console.log('Using text extraction + AI parsing fallback...');
+
+            // Step 2a: Extract text from PDF
+            console.log('Extracting text from PDF...');
+            const extractedText = await extractTextFromPDF(pdfBuffer);
+
+            // Step 2b: Parse ICS-205 frequency data using AI (Gradient or OpenAI)
+            console.log('Parsing ICS-205 frequency data with AI...');
+            frequencyData = await parseICS205WithAI(extractedText);
+        }
 
         // Step 3: Convert to CHIRP CSV format
         console.log('Converting to CHIRP CSV format...');
@@ -53,13 +73,21 @@ async function convertICS205ToChirp(pdfBuffer, options = {}) {
 
 /**
  * Validate required environment variables
+ * At least one AI provider must be configured
  */
 function validateEnvironment() {
-    const required = ['GRADIENT_AI_API_KEY'];
-    const missing = required.filter(key => !process.env[key]);
+    const hasOpenAI = !!process.env.OPENAI_API_KEY;
+    const hasGradient = !!process.env.GRADIENT_AI_API_KEY;
 
-    if (missing.length > 0) {
-        throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+    if (!hasOpenAI && !hasGradient) {
+        throw new Error('Missing required environment variables: At least one of OPENAI_API_KEY or GRADIENT_AI_API_KEY must be set');
+    }
+
+    if (hasOpenAI) {
+        console.log('✓ OpenAI API configured (primary method with OCR support)');
+    }
+    if (hasGradient) {
+        console.log('✓ Gradient AI configured (fallback method)');
     }
 }
 
@@ -95,6 +123,201 @@ async function extractTextFromPDF(pdfBuffer) {
 }
 
 /**
+ * Parse ICS-205 frequency data using OpenAI with direct PDF input
+ *
+ * Uses OpenAI GPT-4o to process the PDF directly, including OCR for scanned documents.
+ * This is the primary method as it can handle image-based PDFs.
+ *
+ * @param {Buffer} pdfBuffer - PDF file buffer
+ * @returns {Promise<Array>} Array of frequency objects
+ */
+async function parseICS205WithOpenAI(pdfBuffer) {
+    try {
+        const apiKey = process.env.OPENAI_API_KEY;
+
+        if (!apiKey) {
+            throw new Error('OPENAI_API_KEY not configured');
+        }
+
+        // Initialize OpenAI client
+        const openai = new OpenAI({ apiKey });
+
+        // Convert PDF to base64 for OpenAI API
+        const base64Pdf = pdfBuffer.toString('base64');
+
+        // Prepare the prompt for structured extraction
+        const prompt = `You are an expert at parsing ICS-205 Radio Communications Plan forms. Analyze this PDF document (which may be scanned/image-based) and extract all frequency information.
+
+Return ONLY a valid JSON array with this exact structure (no markdown, no additional text):
+
+[
+  {
+    "name": "Channel Name",
+    "rxFreq": "146.520",
+    "txFreq": "146.520",
+    "tone": "100.0",
+    "mode": "FM",
+    "remarks": "Simplex"
+  }
+]
+
+For each frequency/channel entry, extract:
+- name: Channel name or assignment (string)
+- rxFreq: Receive frequency in MHz (string, e.g., "146.520")
+- txFreq: Transmit frequency in MHz (string, same as rxFreq if simplex)
+- tone: CTCSS/PL tone frequency (string, e.g., "100.0", or null if none)
+- mode: Radio mode (string, "FM", "NFM", "AM", etc., default to "FM")
+- remarks: Any notes or function description (string, or null)
+
+If no frequencies are found, return an empty array: []`;
+
+        console.log('Sending PDF to OpenAI GPT-4o for analysis...');
+
+        // Call OpenAI API with vision model
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4o',
+            messages: [
+                {
+                    role: 'user',
+                    content: [
+                        {
+                            type: 'text',
+                            text: prompt
+                        },
+                        {
+                            type: 'image_url',
+                            image_url: {
+                                url: `data:application/pdf;base64,${base64Pdf}`
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens: 2000,
+            temperature: 0.1, // Low temperature for structured output
+        });
+
+        const completion = response.choices[0].message.content;
+        console.log('OpenAI Response:', completion.substring(0, 200) + '...');
+
+        // Extract JSON from response (handle cases where AI adds markdown formatting)
+        let jsonMatch = completion.match(/\[[\s\S]*\]/);
+        if (!jsonMatch) {
+            // Try to find JSON within markdown code blocks
+            const markdownMatch = completion.match(/```(?:json)?\s*(\[[\s\S]*\])\s*```/);
+            if (markdownMatch) {
+                jsonMatch = [markdownMatch[1]];
+            }
+        }
+
+        if (!jsonMatch) {
+            throw new Error('No JSON array found in OpenAI response');
+        }
+
+        const frequencies = JSON.parse(jsonMatch[0]);
+
+        if (!Array.isArray(frequencies)) {
+            throw new Error('OpenAI response is not an array');
+        }
+
+        if (frequencies.length === 0) {
+            throw new Error('OpenAI found no frequencies in the PDF');
+        }
+
+        console.log(`✓ OpenAI parsed ${frequencies.length} frequencies from PDF`);
+
+        return frequencies;
+
+    } catch (error) {
+        console.error('OpenAI parsing error:', error);
+        throw error;
+    }
+}
+
+/**
+ * Parse extracted text using OpenAI (fallback method for text-only input)
+ *
+ * @param {string} text - Extracted text from PDF
+ * @returns {Promise<Array>} Array of frequency objects
+ */
+async function parseTextWithOpenAI(text) {
+    const apiKey = process.env.OPENAI_API_KEY;
+
+    if (!apiKey) {
+        throw new Error('OPENAI_API_KEY not configured');
+    }
+
+    const openai = new OpenAI({ apiKey });
+
+    const prompt = `You are an expert at parsing ICS-205 Radio Communications Plan forms. Extract all frequency information from the following text and return ONLY a valid JSON array.
+
+For each frequency/channel entry, extract:
+- name: Channel name or assignment (string)
+- rxFreq: Receive frequency in MHz (string, e.g., "146.520")
+- txFreq: Transmit frequency in MHz (string, e.g., "146.520", same as rxFreq if simplex)
+- tone: CTCSS/PL tone frequency (string, e.g., "100.0", or null if none)
+- mode: Radio mode (string, "FM", "NFM", "AM", etc., default to "FM")
+- remarks: Any notes or function description (string, or null)
+
+Return ONLY a JSON array with this exact structure, no additional text:
+[
+  {
+    "name": "Channel Name",
+    "rxFreq": "146.520",
+    "txFreq": "146.520",
+    "tone": "100.0",
+    "mode": "FM",
+    "remarks": "Simplex"
+  }
+]
+
+If no frequencies are found, return an empty array: []
+
+ICS-205 Text:
+${text}
+
+JSON Array:`;
+
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+            {
+                role: 'user',
+                content: prompt
+            }
+        ],
+        max_tokens: 2000,
+        temperature: 0.1,
+    });
+
+    const completion = response.choices[0].message.content;
+    console.log('OpenAI Response:', completion.substring(0, 200) + '...');
+
+    // Extract JSON from response
+    let jsonMatch = completion.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) {
+        const markdownMatch = completion.match(/```(?:json)?\s*(\[[\s\S]*\])\s*```/);
+        if (markdownMatch) {
+            jsonMatch = [markdownMatch[1]];
+        }
+    }
+
+    if (!jsonMatch) {
+        throw new Error('No JSON array found in OpenAI response');
+    }
+
+    const frequencies = JSON.parse(jsonMatch[0]);
+
+    if (!Array.isArray(frequencies)) {
+        throw new Error('OpenAI response is not an array');
+    }
+
+    console.log(`OpenAI text parsing found ${frequencies.length} frequencies`);
+
+    return frequencies;
+}
+
+/**
  * Parse ICS-205 frequency data using Gradient AI
  *
  * Uses Gradient AI to intelligently extract structured frequency data
@@ -104,9 +327,25 @@ async function extractTextFromPDF(pdfBuffer) {
  * @returns {Promise<Array>} Array of frequency objects
  */
 async function parseICS205WithAI(text) {
+    // Try OpenAI text-based parsing first (if configured)
+    if (process.env.OPENAI_API_KEY) {
+        try {
+            console.log('Attempting OpenAI text-based parsing...');
+            return await parseTextWithOpenAI(text);
+        } catch (error) {
+            console.warn('OpenAI text parsing failed, trying Gradient AI:', error.message);
+        }
+    }
+
+    // Fall back to Gradient AI
     try {
+        console.log('Using Gradient AI for text parsing...');
         const apiKey = process.env.GRADIENT_AI_API_KEY;
         const workspaceId = process.env.GRADIENT_AI_WORKSPACE_ID;
+
+        if (!apiKey) {
+            throw new Error('GRADIENT_AI_API_KEY not configured');
+        }
 
         // Initialize Gradient AI client
         const gradient = new Gradient({ accessToken: apiKey, workspaceId });
