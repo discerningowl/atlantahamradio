@@ -59,6 +59,9 @@ services:
       - key: GRADIENT_AI_MODEL
         scope: RUN_TIME
         type: SECRET
+      - key: OPENAI_API_KEY
+        scope: RUN_TIME
+        type: SECRET
       - key: PORT
         value: "8080"
       - key: NODE_ENV
