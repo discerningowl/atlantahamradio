@@ -20,6 +20,7 @@ const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
 const { convertICS205ToChirp } = require('./ics205-parser');
+const pdfParse = require('pdf-parse');
 
 // Load environment variables (for local development)
 if (process.env.NODE_ENV !== 'production') {
@@ -100,10 +101,57 @@ app.get('/', (req, res) => {
         version: '1.0.0',
         endpoints: {
             'POST /convert': 'Convert ICS-205 PDF to CHIRP CSV',
+            'POST /debug-text': 'Debug: Extract text from PDF (no parsing)',
             'GET /health': 'Health check',
         },
         documentation: 'https://github.com/discerningowl/atlantahamradio',
     });
+});
+
+// Debug endpoint: Extract text from PDF without parsing
+app.post('/debug-text', upload.single('pdf'), async (req, res) => {
+    try {
+        // Validate file upload
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                error: 'No PDF file uploaded.',
+            });
+        }
+
+        console.log(JSON.stringify({
+            timestamp: new Date().toISOString(),
+            event: 'debug_text_extraction',
+            filename: req.file.originalname,
+            fileSize: req.file.size,
+        }));
+
+        // Extract text from PDF
+        const data = await pdfParse(req.file.buffer);
+
+        // Return extracted text and metadata
+        res.json({
+            success: true,
+            filename: req.file.originalname,
+            pages: data.numpages,
+            textLength: data.text.length,
+            text: data.text,
+            info: data.info || {},
+        });
+
+    } catch (error) {
+        console.error(JSON.stringify({
+            timestamp: new Date().toISOString(),
+            event: 'debug_text_extraction_failed',
+            filename: req.file?.originalname || 'unknown',
+            error: error.message,
+        }));
+
+        res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to extract text from PDF',
+        });
+    }
 });
 
 // Convert ICS-205 PDF to CHIRP CSV
