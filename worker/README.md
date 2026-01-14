@@ -107,12 +107,24 @@ curl -X POST http://localhost:8080/api/ics205/convert \
 
 ## Environment Variables
 
-Required:
+### AI Provider Configuration
+
+The worker supports multiple AI providers with automatic fallback:
+
+**Primary (Recommended):**
+- `OPENAI_API_KEY` - Your OpenAI API key (supports PDF with OCR)
+  - Get from: https://platform.openai.com/api-keys
+  - Model used: gpt-4o
+  - Features: Direct PDF processing, built-in OCR for scanned documents
+
+**Fallback:**
 - `GRADIENT_AI_API_KEY` - Your Gradient AI API key
 - `GRADIENT_AI_WORKSPACE_ID` - Your Gradient AI workspace ID
 - `GRADIENT_AI_MODEL` - Model name to use for parsing
 
-Optional:
+**Note:** At least one AI provider must be configured. If both are configured, OpenAI will be used first (recommended for best results with image-based PDFs).
+
+**Other Settings:**
 - `PORT` - Server port (default: 8080)
 - `NODE_ENV` - Environment (development/production)
 
@@ -133,48 +145,51 @@ View logs:
 doctl apps logs YOUR_APP_ID --type run --follow
 ```
 
-## Implementation Notes
+## Processing Flow
 
-### TODO: Gradient AI Integration
+The worker uses a multi-tiered approach for maximum reliability:
 
-The following functions need actual Gradient AI API integration:
+### Tier 1: OpenAI Direct PDF Processing (Primary)
+- **Method:** OpenAI GPT-4o with vision
+- **Input:** Raw PDF buffer (base64 encoded)
+- **Features:**
+  - ✅ Handles text-based PDFs
+  - ✅ Handles image-based PDFs (OCR)
+  - ✅ Handles scanned documents
+  - ✅ Best accuracy for frequency extraction
+- **Used when:** `OPENAI_API_KEY` is configured
 
-1. **`extractTextWithGradientAI()`** in `ics205-parser.js`
-   - Currently throws error (not implemented)
-   - Needs to call Gradient AI API to extract text from PDF
-   - Should return extracted text as string
+### Tier 2: Text Extraction + AI Parsing (Fallback)
+- **Method:** pdf-parse + AI (OpenAI or Gradient AI)
+- **Input:** Extracted text from PDF
+- **Features:**
+  - ✅ Works with text-based PDFs
+  - ❌ Cannot handle image-based PDFs
+  - ✅ Good accuracy for well-formatted PDFs
+- **Used when:** Tier 1 fails or OpenAI not configured
 
-2. **`parseICS205WithAI()`** in `ics205-parser.js`
-   - Currently throws error (not implemented)
-   - Needs to use AI to parse frequency data from text
-   - Should return array of frequency objects
+### Tier 3: Regex-based Parsing (Final Fallback)
+- **Method:** Regular expression pattern matching
+- **Input:** Extracted text from PDF
+- **Features:**
+  - ✅ Works with text-based PDFs
+  - ❌ Cannot handle image-based PDFs
+  - ⚠️ Limited accuracy with unusual formats
+- **Used when:** All AI methods fail
 
-### Example Gradient AI Integration
+## Recommended Configuration
 
-```javascript
-async function extractTextWithGradientAI(pdfBuffer) {
-    const response = await fetch('https://api.gradient.ai/v1/extract', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${process.env.GRADIENT_AI_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            file: pdfBuffer.toString('base64'),
-            model: process.env.GRADIENT_AI_MODEL || 'document-extraction',
-        }),
-    });
-
-    if (!response.ok) {
-        throw new Error(`Gradient AI API error: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    return result.text;
-}
+For best results (handles all PDF types including scanned documents):
+```bash
+OPENAI_API_KEY=sk-...your-key-here
+GRADIENT_AI_API_KEY=your-gradient-key  # Optional fallback
 ```
 
-Adjust based on actual Gradient AI API documentation.
+For budget-conscious setups (text-based PDFs only):
+```bash
+GRADIENT_AI_API_KEY=your-gradient-key
+GRADIENT_AI_WORKSPACE_ID=your-workspace-id
+```
 
 ## Security
 
