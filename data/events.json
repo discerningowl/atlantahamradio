@@ -145,10 +145,10 @@
       "endTime": "16:00",
       "type": "training",
       "location": "Forsyth, GA",
-      "description": null,
-      "contact": null,
+      "description": "Session covering the latest in emergency communications, incident response, and public service operations. ",
+      "contact": Georgia ARES,
       "website": "https://gaares.org/ga-ares-state-meeting-2026/",
-      "instructions": null
+      "instructions": "All attendees of the meeting MUST BE REGISTERED under GEMA rules. Registration is available at the meeting, but this process is much more time consuming than the check-in process for preregistered attendees."
     },
     {
       "id": 13,
@@ -206,7 +206,7 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": null,
+      "contact": Atlanta ARES,
       "website": null,
       "instructions": "Signup coming soon"
     },
@@ -377,7 +377,7 @@
     },
     {
       "id": 30,
-      "title": "FCARC Pota Party",
+      "title": "FCARC POTA Party",
       "date": "2026-03-21",
       "endDate": "2026-03-22",
       "time": null,
@@ -386,7 +386,7 @@
       "type": "event",
       "location": "Panola Mtn State Park, Pavilion 1",
       "description": "Explore the POTA event, practice emergency/portable radio setups, and get hands‑on experience. Bring your own equipment; if you don't have a radio, mine is available when not in use.",
-      "contact": "Fayette ARES",
+      "contact": "Fayette Country Amateur Radio Club (FCARC)",
       "website": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf",
       "instructions": null
     }
