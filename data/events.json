@@ -6,34 +6,44 @@
       "date": "2025-11-01",
       "endDate": "2025-11-02",
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "meeting",
       "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
       "description": null,
-      "contact": "https://stonemountainhamfest.com/"
+      "contact": null,
+      "website": "https://stonemountainhamfest.com/",
+      "instructions": null
     },
     {
       "id": 2,
       "title": "Invesco QQQ Thanksgiving Day Half Marathon, 5K, Mile & Dash",
       "date": "2025-11-27",
+      "endDate": null,
       "time": "5:00am-11:00am",
       "startTime": "05:00",
       "endTime": "11:00",
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565 (password: HAM2025)"
+      "contact": null,
+      "website": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565",
+      "instructions": "Password: HAM2025"
     },
     {
       "id": 3,
       "title": "The Polar Opposite Peachtree 2026",
       "date": "2026-01-03",
+      "endDate": null,
       "time": "5:30am-1:00pm",
       "startTime": "05:30",
       "endTime": "13:00",
       "type": "race",
       "location": "Downtown Atlanta",
       "description": "Register through the provided Link. Ham radio opertors will be cooridinated by Atlanta ARES",
-      "contact": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071 (password: HAMPOP26)"
+      "contact": "Atlanta ARES",
+      "website": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071",
+      "instructions": "Password: HAMPOP26"
     },
     {
       "id": 5,
@@ -41,34 +51,44 @@
       "date": "2026-01-24",
       "endDate": "2026-01-25",
       "time": "Start: 1600 UTC on Saturday (11 am EST) End: 21:59 UTC on Sunday(4:59 pm EST)",
+      "startTime": null,
+      "endTime": null,
       "type": "event",
       "location": "See website",
       "description": "Winter Field Day is an annual amateur‑radio event held on the last full weekend in January that challenges operators to set up portable stations in cold, remote conditions to practice emergency communications.",
-      "contact": "https://winterfieldday.org"
+      "contact": null,
+      "website": "https://winterfieldday.org",
+      "instructions": null
     },
     {
       "id": 6,
       "title": "Classic City Marathon",
       "date": "2026-01-24",
+      "endDate": null,
       "time": "7:00am-1:00pm",
       "startTime": "07:00",
       "endTime": "13:00",
       "type": "race",
       "location": "Athens, GA",
       "description": "Athens Radio Club will be coordinating ham radio operators for this event. Bob Herrin - KE4JLL, the club Public Service coordinator can provide you with more details and updates",
-      "contact": "Sign up Form: https://www.athensradioclub.org/marathonsignup2026"
+      "contact": "Bob Herrin - KE4JLL",
+      "website": "https://www.athensradioclub.org/marathonsignup2026",
+      "instructions": null
     },
     {
       "id": 7,
       "title": "Gwinnett ARS Techfest",
       "date": "2026-01-31",
+      "endDate": null,
       "time": "8:30am-3:15pm",
       "startTime": "08:30",
       "endTime": "15:15",
       "type": "meeting",
       "location": "Gwinnett County, GA",
       "description": null,
-      "contact": "http://www.techfest.info/"
+      "contact": null,
+      "website": "http://www.techfest.info/",
+      "instructions": null
     },
     {
       "id": 8,
@@ -76,42 +96,59 @@
       "date": "2026-02-13",
       "endDate": "2026-02-15",
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "meeting",
       "location": "Orlando, FL",
       "description": "Orlando HamCation is a three‑day annual ham‑radio convention in Orlando, Florida that combines vendor exhibits, technical talks, awards and social events for amateur‑radio enthusiasts.",
-      "contact": "https://www.hamcation.com/"
+      "contact": null,
+      "website": "https://www.hamcation.com/",
+      "instructions": null
     },
     {
       "id": 10,
       "title": "Dalton Hamfest",
       "date": "2026-02-28",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "meeting",
       "location": "Dalton, GA",
       "description": null,
-      "contact": "https://www.qrz.com/db/W4DRC"
+      "contact": null,
+      "website": "https://www.qrz.com/db/W4DRC",
+      "instructions": null
     },
     {
       "id": 11,
       "title": "Publix Atlanta Marathon",
       "date": "2026-03-01",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "race",
       "location": "Atlanta, GA",
       "description": "Ham radio volunteers provide real‑time health and welfare relays to public‑safety agencies along the March 1st course",
-      "contact": "To sign up:\n\n1. Go to https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393\n\n2. Enter the password \"PAMHAM2026\" and click \"Submit\"\n\n3. Register for the \"Communications - HAM operator\" slot"
+      "contact": null,
+      "website": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393",
+      "instructions": "1. Go to the website\n2. Enter password \"PAMHAM2026\" and click Submit\n3. Register for the \"Communications - HAM operator\" slot"
     },
     {
       "id": 12,
       "title": "GA ARES Annual Training (ARES100)",
       "date": "2026-03-14",
+      "endDate": null,
       "time": "8:00am-4:00pm",
       "startTime": "08:00",
       "endTime": "16:00",
       "type": "training",
       "location": "Forsyth, GA",
       "description": null,
-      "contact": "https://gaares.org/ga-ares-state-meeting-2026/"
+      "contact": null,
+      "website": "https://gaares.org/ga-ares-state-meeting-2026/",
+      "instructions": null
     },
     {
       "id": 13,
@@ -119,10 +156,14 @@
       "date": "2026-04-18",
       "endDate": "2026-04-19",
       "time": "Start: April 18, 2026 @ 8:00am EDT (1200UTC) End: April 19, 2025 @ 7:59pm EDT (2359UTC)",
+      "startTime": null,
+      "endTime": null,
       "type": "event",
       "location": "See website",
       "description": "Georgia Parks on the Air is a weekend‑long contest that mobilizes ham operators to activate (or “hunt” from) every Georgia state park—about 50 parks—in a single 36‑hour window, rewarding contacts made from those park sites.",
-      "contact": "https://gaparks.org/"
+      "contact": null,
+      "website": "https://gaparks.org/",
+      "instructions": null
     },
     {
       "id": 15,
@@ -130,10 +171,14 @@
       "date": "2026-05-15",
       "endDate": "2026-05-17",
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "meeting",
       "location": "Dayton, OH",
-      "description": "Dayton Hamvention is one of the world’s largest amateur‑radio conventions, held each May in the Dayton, Ohio area where thousands of hams gather for exhibits, vendors, workshops and community networking.",
-      "contact": "https://hamvention.org/"
+      "description": "Dayton Hamvention is one of the world's largest amateur‑radio conventions, held each May in the Dayton, Ohio area where thousands of hams gather for exhibits, vendors, workshops and community networking.",
+      "contact": null,
+      "website": "https://hamvention.org/",
+      "instructions": null
     },
     {
       "id": 17,
@@ -141,22 +186,29 @@
       "date": "2026-06-27",
       "endDate": "2026-06-28",
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "event",
       "location": "See website",
       "description": null,
-      "contact": "http://www.arrl.org/field-day"
+      "contact": null,
+      "website": "http://www.arrl.org/field-day",
+      "instructions": null
     },
     {
       "id": 18,
       "title": "Peachtree Road Race",
       "date": "2026-07-04",
+      "endDate": null,
       "time": "05:00am-12:30p",
       "startTime": "05:00",
       "endTime": "12:30",
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": "Signup comming"
+      "contact": null,
+      "website": null,
+      "instructions": "Signup coming soon"
     },
     {
       "id": 19,
@@ -164,84 +216,119 @@
       "date": "2026-08-22",
       "endDate": "2026-08-23",
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "event",
       "location": "Huntsville, AL",
       "description": "Huntsville Hamfest is a two‑day ARRL‑sanctioned gathering held each August at the Von Braun Center in Huntsville, Alabama, featuring a flea market, vendor displays and family‑friendly activities for amateur‑radio enthusiasts.",
-      "contact": "https://hamfest.org/"
+      "contact": null,
+      "website": "https://hamfest.org/",
+      "instructions": null
     },
     {
       "id": 20,
       "title": "No One Walks Alone",
       "date": "2026-09-12",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "race",
       "location": "CJ Smith Park, Newnan, GA",
       "description": "Pathways Center and AnotherWay Foundation, Inc. will host a community walk to honor loved ones that have lost their lives to suicide and to raise funds to support individuals seeking mental health treatment that are not able to afford care.",
-      "contact": "Newnan Regional Amateur Radio Club"
+      "contact": "Newnan Regional Amateur Radio Club",
+      "website": null,
+      "instructions": null
     },
     {
       "id": 21,
       "title": "PTC Sprint Tri",
       "date": "2026-09-13",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "race",
       "location": "Peachtree City, GA",
       "description": null,
-      "contact": "Fayette ARES"
+      "contact": "Fayette ARES",
+      "website": null,
+      "instructions": null
     },
     {
       "id": 22,
       "title": "Bike MS: Georgia Peach Ride 2026",
       "date": "2026-09-13",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "race",
       "location": "Wild Leap Brewery, LaGrange, GA 30240",
       "description": null,
-      "contact": "http://www.lagrangeradioclub.org/"
+      "contact": "LaGrange Radio Club",
+      "website": "http://www.lagrangeradioclub.org/",
+      "instructions": null
     },
     {
       "id": 23,
       "title": "Ferst Lewis Grizzard and Catfish Bike Ride",
       "date": "2026-10-04",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "race",
       "location": "The Moreland Mill, Moreland, GA",
-      "description": "Coweta Ferst Readers, Inc.’s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County",
-      "contact": "Newnan Regional Amateur Radio Club"
+      "description": "Coweta Ferst Readers, Inc.'s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County",
+      "contact": "Newnan Regional Amateur Radio Club",
+      "website": null,
+      "instructions": null
     },
     {
       "id": 24,
       "title": "Spin for Kids Group Bike Ride",
       "date": "2026-10-04",
+      "endDate": null,
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "race",
       "location": "Camp Twin Lakes, Rutledge, GA",
       "description": null,
-      "contact": "Baldwin County ARES"
+      "contact": "Baldwin County ARES",
+      "website": null,
+      "instructions": null
     },
     {
       "id": 25,
       "title": "PNC Atlanta 10 Mile and 5K",
       "date": "2026-10-25",
+      "endDate": null,
       "time": "6:00am-12:00pm",
       "startTime": "06:00",
       "endTime": "12:00",
       "type": "race",
       "location": "Atlanta, GA",
-      "description": "The Southeast’s largest and most iconic 10 mile race. Scenic course, skyline views.",
-      "contact": "https://www.atlantaradioclub.org/atlanta-ares.html"
+      "description": "The Southeast's largest and most iconic 10 mile race. Scenic course, skyline views.",
+      "contact": "Atlanta ARES",
+      "website": "https://www.atlantaradioclub.org/atlanta-ares.html",
+      "instructions": null
     },
     {
       "id": 26,
       "title": "Snowflake 10k",
       "date": "2026-01-10",
+      "endDate": null,
       "time": "8:00am-12:00pm",
       "startTime": "08:00",
       "endTime": "12:00",
       "type": "race",
       "location": "Winterville, GA",
       "description": "The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail, and persons who have disabilities.",
-      "contact": "Bob Herrin - KE4JLL of the Athens Radio Club"
+      "contact": "Bob Herrin - KE4JLL",
+      "website": null,
+      "instructions": null
     },
     {
       "id": 27,
@@ -249,34 +336,44 @@
       "date": "2026-11-07",
       "endDate": "2026-11-08",
       "time": null,
+      "startTime": null,
+      "endTime": null,
       "type": "meeting",
       "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
       "description": "Stone Mountain Hamfest: Annual amateur radio convention and flea market featuring vendors, exhibits, forums, and prizes for ham radio enthusiasts, electronics fans, and tech hobbyists. Hosted by the Alford Memorial Radio Club.",
-      "contact": "https://stonemountainhamfest.com/"
+      "contact": null,
+      "website": "https://stonemountainhamfest.com/",
+      "instructions": null
     },
     {
       "id": 28,
       "title": "Georgia QSO Party",
       "date": "2026-04-11",
+      "endDate": null,
       "time": "2:00pm-midnight",
       "startTime": "14:00",
       "endTime": "23:59",
       "type": "event",
       "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
-      "contact": "https://gaqsoparty.com/"
+      "contact": null,
+      "website": "https://gaqsoparty.com/",
+      "instructions": null
     },
     {
       "id": 29,
       "title": "Georgia QSO Party",
       "date": "2026-04-12",
+      "endDate": null,
       "time": "10:00am-7:59pm",
       "startTime": "10:00",
       "endTime": "19:59",
       "type": "event",
       "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
-      "contact": "https://gaqsoparty.com/"
+      "contact": null,
+      "website": "https://gaqsoparty.com/",
+      "instructions": null
     },
     {
       "id": 30,
@@ -288,8 +385,10 @@
       "endTime": "18:00",
       "type": "event",
       "location": "Panola Mtn State Park, Pavilion 1",
-      "description": "Explore the POTA event, practice emergency/portable radio setups, and get hands‑on experience. Bring your own equipment; if you don’t have a radio, mine is available when not in use.",
-      "contact": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf"
+      "description": "Explore the POTA event, practice emergency/portable radio setups, and get hands‑on experience. Bring your own equipment; if you don't have a radio, mine is available when not in use.",
+      "contact": "Fayette ARES",
+      "website": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf",
+      "instructions": null
     }
   ]
 }

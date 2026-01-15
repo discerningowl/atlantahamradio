@@ -27,7 +27,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:event-1@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20251101
 DTEND;VALUE=DATE:20251103
 SUMMARY:Stone Mountain Hamfest
@@ -39,32 +39,32 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-2@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20251127T050000
 DTEND;TZID=America/New_York:20251127T110000
 SUMMARY:Invesco QQQ Thanksgiving Day Half Marathon\, 5K\, Mile & Dash
 LOCATION:Atlanta\, GA
-URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565 (password: HAM2025)
+URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-3@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260103T053000
 DTEND;TZID=America/New_York:20260103T130000
 SUMMARY:The Polar Opposite Peachtree 2026
 LOCATION:Downtown Atlanta
 DESCRIPTION:Register through the provided Link. Ham radio opertors will be cooridinated by Atlanta ARES
-URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071 (password: HAMPOP26)
+URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-5@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260124
 DTEND;VALUE=DATE:20260126
 SUMMARY:Winter Field Day
@@ -77,20 +77,20 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-6@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260124T070000
 DTEND;TZID=America/New_York:20260124T130000
 SUMMARY:Classic City Marathon
 LOCATION:Athens\, GA
 DESCRIPTION:Athens Radio Club will be coordinating ham radio operators for this event. Bob Herrin - KE4JLL\, the club Public Service coordinator can provide you with more details and updates
-URL:Sign up Form: https://www.athensradioclub.org/marathonsignup2026
+URL:https://www.athensradioclub.org/marathonsignup2026
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-7@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260131T083000
 DTEND;TZID=America/New_York:20260131T151500
 SUMMARY:Gwinnett ARS Techfest
@@ -102,7 +102,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-8@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260213
 DTEND;VALUE=DATE:20260216
 SUMMARY:Orlando Hamcation
@@ -115,7 +115,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-10@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260228
 DTEND;VALUE=DATE:20260301
 SUMMARY:Dalton Hamfest
@@ -127,26 +127,20 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-11@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260301
 DTEND;VALUE=DATE:20260302
 SUMMARY:Publix Atlanta Marathon
 LOCATION:Atlanta\, GA
 DESCRIPTION:Ham radio volunteers provide real‑time health and welfare relays to public‑safety agencies along the March 1st course
-URL:To sign up:
-
-1. Go to https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393
-
-2. Enter the password "PAMHAM2026" and click "Submit"
-
-3. Register for the "Communications - HAM operator" slot
+URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-12@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260314T080000
 DTEND;TZID=America/New_York:20260314T160000
 SUMMARY:GA ARES Annual Training (ARES100)
@@ -158,7 +152,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-13@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260418
 DTEND;VALUE=DATE:20260420
 SUMMARY:Georgia Parks on the Air
@@ -171,12 +165,12 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-15@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260515
 DTEND;VALUE=DATE:20260518
 SUMMARY:Dayton Hamvention
 LOCATION:Dayton\, OH
-DESCRIPTION:Dayton Hamvention is one of the world’s largest amateur‑radio conventions\, held each May in the Dayton\, Ohio area where thousands of hams gather for exhibits\, vendors\, workshops and community networking.
+DESCRIPTION:Dayton Hamvention is one of the world's largest amateur‑radio conventions\, held each May in the Dayton\, Ohio area where thousands of hams gather for exhibits\, vendors\, workshops and community networking.
 URL:https://hamvention.org/
 CATEGORIES:Meeting
 STATUS:CONFIRMED
@@ -184,7 +178,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-17@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260627
 DTEND;VALUE=DATE:20260629
 SUMMARY:ARRL Field Day
@@ -196,19 +190,18 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-18@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260704T050000
 DTEND;TZID=America/New_York:20260704T123000
 SUMMARY:Peachtree Road Race
 LOCATION:Atlanta\, GA
-URL:Signup comming
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-19@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260822
 DTEND;VALUE=DATE:20260824
 SUMMARY:Huntsville Hamfest
@@ -221,32 +214,30 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-20@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260912
 DTEND;VALUE=DATE:20260913
 SUMMARY:No One Walks Alone
 LOCATION:CJ Smith Park\, Newnan\, GA
 DESCRIPTION:Pathways Center and AnotherWay Foundation\, Inc. will host a community walk to honor loved ones that have lost their lives to suicide and to raise funds to support individuals seeking mental health treatment that are not able to afford care.
-URL:Newnan Regional Amateur Radio Club
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-21@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260913
 DTEND;VALUE=DATE:20260914
 SUMMARY:PTC Sprint Tri
 LOCATION:Peachtree City\, GA
-URL:Fayette ARES
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-22@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260913
 DTEND;VALUE=DATE:20260914
 SUMMARY:Bike MS: Georgia Peach Ride 2026
@@ -258,37 +249,35 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-23@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20261004
 DTEND;VALUE=DATE:20261005
 SUMMARY:Ferst Lewis Grizzard and Catfish Bike Ride
 LOCATION:The Moreland Mill\, Moreland\, GA
-DESCRIPTION:Coweta Ferst Readers\, Inc.’s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County
-URL:Newnan Regional Amateur Radio Club
+DESCRIPTION:Coweta Ferst Readers\, Inc.'s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-24@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20261004
 DTEND;VALUE=DATE:20261005
 SUMMARY:Spin for Kids Group Bike Ride
 LOCATION:Camp Twin Lakes\, Rutledge\, GA
-URL:Baldwin County ARES
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-25@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20261025T060000
 DTEND;TZID=America/New_York:20261025T120000
 SUMMARY:PNC Atlanta 10 Mile and 5K
 LOCATION:Atlanta\, GA
-DESCRIPTION:The Southeast’s largest and most iconic 10 mile race. Scenic course\, skyline views.
+DESCRIPTION:The Southeast's largest and most iconic 10 mile race. Scenic course\, skyline views.
 URL:https://www.atlantaradioclub.org/atlanta-ares.html
 CATEGORIES:Race
 STATUS:CONFIRMED
@@ -296,20 +285,19 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-26@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260110T080000
 DTEND;TZID=America/New_York:20260110T120000
 SUMMARY:Snowflake 10k
 LOCATION:Winterville\, GA
 DESCRIPTION:The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail\, and persons who have disabilities.
-URL:Bob Herrin - KE4JLL of the Athens Radio Club
 CATEGORIES:Race
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-27@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20261107
 DTEND;VALUE=DATE:20261109
 SUMMARY:Stone Mountain Hamfest
@@ -322,7 +310,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-28@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260411T140000
 DTEND;TZID=America/New_York:20260411T235900
 SUMMARY:Georgia QSO Party
@@ -335,7 +323,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-29@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;TZID=America/New_York:20260412T100000
 DTEND;TZID=America/New_York:20260412T195900
 SUMMARY:Georgia QSO Party
@@ -348,12 +336,12 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-30@atlantahamradio.org
-DTSTAMP:20260115T134432Z
+DTSTAMP:20260115T140236Z
 DTSTART;VALUE=DATE:20260321
 DTEND;VALUE=DATE:20260323
 SUMMARY:FCARC Pota Party
 LOCATION:Panola Mtn State Park\, Pavilion 1
-DESCRIPTION:Explore the POTA event\, practice emergency/portable radio setups\, and get hands‑on experience. Bring your own equipment\; if you don’t have a radio\, mine is available when not in use.
+DESCRIPTION:Explore the POTA event\, practice emergency/portable radio setups\, and get hands‑on experience. Bring your own equipment\; if you don't have a radio\, mine is available when not in use.
 URL:https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf
 CATEGORIES:Event
 STATUS:CONFIRMED
