@@ -288,7 +288,7 @@ function showEventModal(eventId) {
     const title = document.getElementById('modalTitle');
     const details = document.getElementById('modalDetails');
     const description = document.getElementById('modalDescription');
-    const contact = document.getElementById('modalContact');
+    const contactInfo = document.getElementById('modalContactInfo');
 
     typeBadge.innerHTML = `
         <span class="event-dot" style="background: ${eventTypes[event.type].color}"></span>
@@ -318,7 +318,23 @@ function showEventModal(eventId) {
     `;
 
     description.textContent = event.description;
-    contact.textContent = event.contact;
+
+    // Build contact info section
+    let contactHTML = '';
+
+    if (event.contact) {
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Contact:</strong> ${escapeHTML(event.contact)}</p>`;
+    }
+
+    if (event.website) {
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Website:</strong> <a href="${escapeHTML(event.website)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.website)}</a></p>`;
+    }
+
+    if (event.instructions) {
+        contactHTML += `<p style="margin-bottom: 0.5rem; white-space: pre-line;"><strong>Instructions:</strong><br>${escapeHTML(event.instructions)}</p>`;
+    }
+
+    contactInfo.innerHTML = contactHTML;
 
     // Setup Add to Calendar button
     const addToCalendarBtn = document.getElementById('addToCalendarBtn');
@@ -476,7 +492,7 @@ function generateICS(event) {
         `SUMMARY:${escapeICSText(event.title)}`,
         `LOCATION:${escapeICSText(event.location)}`,
         description ? `DESCRIPTION:${description}` : '',
-        event.contact ? `URL:${event.contact}` : '',
+        event.website ? `URL:${event.website}` : '',
         `CATEGORIES:${eventTypes[event.type]?.label || 'Event'}`,
         'STATUS:CONFIRMED',
         'TRANSP:TRANSPARENT',
