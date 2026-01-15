@@ -146,7 +146,7 @@
       "type": "training",
       "location": "Forsyth, GA",
       "description": "Session covering the latest in emergency communications, incident response, and public service operations. ",
-      "contact": Georgia ARES,
+      "contact": "Georgia ARES",
       "website": "https://gaares.org/ga-ares-state-meeting-2026/",
       "instructions": "All attendees of the meeting MUST BE REGISTERED under GEMA rules. Registration is available at the meeting, but this process is much more time consuming than the check-in process for preregistered attendees."
     },
@@ -206,7 +206,7 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": Atlanta ARES,
+      "contact": "Atlanta ARES",
       "website": null,
       "instructions": "Signup coming soon"
     },
