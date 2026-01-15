@@ -223,7 +223,7 @@
       "id": 25,
       "title": "PNC Atlanta 10 Mile and 5K",
       "date": "2026-10-25",
-      "time": null,
+      "time": "6:00am-12:00pm",
       "startTime": "06:00",
       "endTime": "12:00",
       "type": "race",
@@ -277,6 +277,19 @@
       "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
       "contact": "https://gaqsoparty.com/"
+    },
+    {
+      "id": 30,
+      "title": "FCARC Pota Party",
+      "date": "2026-03-21",
+      "endDate": "2026-03-22",
+      "time": null,
+      "startTime": "08:00",
+      "endTime": "18:00",
+      "type": "event",
+      "location": "Panola Mtn State Park, Pavilion 1",
+      "description": "Explore the POTA event, practice emergency/portable radio setups, and get hands‑on experience. Bring your own equipment; if you don’t have a radio, mine is available when not in use.",
+      "contact": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf"
     }
   ]
 }
