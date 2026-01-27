@@ -389,6 +389,21 @@
       "contact": "Fayette Country Amateur Radio Club (FCARC)",
       "website": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf",
       "instructions": null
+    },
+    {
+      "id": 31,
+      "title": "Winter POTA Event",
+      "date": "2026-02-20",
+      "endDate": "2026-02-22",
+      "time": null,
+      "startTime": null,
+      "endTime": null,
+      "type": "event",
+      "location": "Watson Mill Bridge State Park US-2207",
+      "description": "We will continue with our plans made for Winter Field Day, setup on Friday and operate for all weekend making tons of POTA contacts.",
+      "contact": "Athens Radio Club",
+      "website": "https://www.qrz.com/db/W4G",
+      "instructions": "Visitors are invited to come out and play radio or just watch. The stations will be in the Equestrian Area Cabins on the East side of the park. The closest address is 1788 Watson Mill Bridge Road."
     }
   ]
 }
