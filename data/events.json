@@ -416,8 +416,8 @@
       "type": "emergency",
       "location": "QTH",
       "description": "On Feb 4th the Peachtree City NWS will conduct its yearly tornado drill. If inclement weather is happening that day, it will be either re-scheduled or possibly canceled. We will be linking in all the Georgia Skywarn Linked Repeaters at 8am and will start taking check-ins for the drill at 9am.",
-      "contact": "WX4PTC",
-      "website": "https://www.qrz.com/db/W4G",
+      "contact": "WX4PTC - see website for SKYWARN repeaters in your county.",
+      "website": "https://georgiaskywarn.com",
       "instructions": "Check-ins to the net will be taken by callsigns. Beginning with Alpha calls, then beginning with Whiskey calls, then November calls followed by Kilo calls. This sequence will be repeated many times during the duration of the net. When checking in we will want the following information;\nCallsign, Name, County.\nThat is it. That way we can get people in and out so people needing to get back to work can. Our biggest goal is to reach as many of the PTC NWS forecast area as possible. This is where relays may come in handy and is often wanted during severe weather outbreaks."
     }
   ]
