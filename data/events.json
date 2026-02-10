@@ -479,6 +479,21 @@
       "contact": "Athens Radio Club",
       "website": "https://www.athensradioclub.org/publicservice",
       "instructions": null
+    },
+    {
+      "id": 37,
+      "title": "Invesco QQQ Thanksgiving Day Half Marathon, 5K, Mile & Dash",
+      "date": "2026-11-26",
+      "endDate": null,
+      "time": "5:00am-11:00am",
+      "startTime": "05:00",
+      "endTime": "11:00",
+      "type": "race",
+      "location": "Atlanta, GA",
+      "description": null,
+      "contact": null,
+      "website": null,
+      "instructions": "Signup coming soon"
     }
   ]
 }
