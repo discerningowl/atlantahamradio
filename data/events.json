@@ -434,6 +434,51 @@
       "contact": null,
       "website": "https://winterfieldday.org",
       "instructions": null
+    },
+    {
+      "id": 34,
+      "title": "Star Spangled Classic Fireworks",
+      "date": "2026-06-28",
+      "endDate": null,
+      "time": "6:00pm-10:00pm",
+      "startTime": "18:00",
+      "endTime": "22:00",
+      "type": "event",
+      "location": "Southeast Clarke Park, Athens, GA",
+      "description": "Athens Radio Club provides communications supporting parking and traffic management for Athens-Clarke County's annual Independence Day fireworks celebration.",
+      "contact": "Athens Radio Club",
+      "website": "https://www.accgov.com/1553/Star-Spangled-Classic",
+      "instructions": null
+    },
+    {
+      "id": 35,
+      "title": "Coach Mike's Run Through the Woods 5K",
+      "date": "2026-08-01",
+      "endDate": null,
+      "time": "8:00am",
+      "startTime": "08:00",
+      "endTime": null,
+      "type": "race",
+      "location": "Athens YMCA, 915 Hawthorne Ave, Athens, GA 30605",
+      "description": "Cross country 5K race in memory of Coach Mike Castronis. Athens Radio Club provides communications support. Course begins on the YMCA track with two loops through adjacent woods.",
+      "contact": "Athens Radio Club",
+      "website": "https://runsignup.com/Race/GA/Athens/CoachMikesRunThroughTheWoodsXC5K",
+      "instructions": null
+    },
+    {
+      "id": 36,
+      "title": "Colbert Trunk or Treat",
+      "date": "2026-10-24",
+      "endDate": null,
+      "time": null,
+      "startTime": null,
+      "endTime": null,
+      "type": "event",
+      "location": "Colbert City Park (Red Canna Park), Colbert, GA",
+      "description": "Athens Radio Club provides communications and parking support for community Halloween event.",
+      "contact": "Athens Radio Club",
+      "website": "https://www.athensradioclub.org/publicservice",
+      "instructions": null
     }
   ]
 }
