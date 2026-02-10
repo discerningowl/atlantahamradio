@@ -419,6 +419,21 @@
       "contact": "WX4PTC - see website for SKYWARN repeaters in your county.",
       "website": "https://georgiaskywarn.com",
       "instructions": "Check-ins to the net will be taken by callsigns. Beginning with Alpha calls, then beginning with Whiskey calls, then November calls followed by Kilo calls. This sequence will be repeated many times during the duration of the net. When checking in we will want the following information;\nCallsign, Name, County.\nThat is it. That way we can get people in and out so people needing to get back to work can. Our biggest goal is to reach as many of the PTC NWS forecast area as possible. This is where relays may come in handy and is often wanted during severe weather outbreaks."
+    },
+    {
+      "id": 33,
+      "title": "Winter Field Day",
+      "date": "2027-01-30",
+      "endDate": "2027-01-31",
+      "time": "Start: 1600 UTC on Saturday (11 am EST) End: 21:59 UTC on Sunday (4:59 pm EST)",
+      "startTime": null,
+      "endTime": null,
+      "type": "event",
+      "location": "See website",
+      "description": "Winter Field Day is an annual amateur‑radio event held on the last full weekend in January that challenges operators to set up portable stations in cold, remote conditions to practice emergency communications.",
+      "contact": null,
+      "website": "https://winterfieldday.org",
+      "instructions": null
     }
   ]
 }
