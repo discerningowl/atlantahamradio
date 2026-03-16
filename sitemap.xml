@@ -83,4 +83,10 @@
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>
     </url>
+    <url>
+        <loc>https://atlantahamradio.org/pages/ham-basics.html</loc>
+        <lastmod>2026-03-16</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>
