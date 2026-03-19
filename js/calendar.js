@@ -323,13 +323,9 @@ function showEventModal(eventId) {
     let contactHTML = '';
 
     if (event.eventOrganizer) {
-        const orgText = escapeHTML(event.eventOrganizer);
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Organizer:</strong> ${
-            event.eventOrgUrl
-                ? `<a href="${escapeHTML(event.eventOrgUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${orgText}</a>`
-                : orgText
-        }</p>`;
-    } else if (event.eventOrgUrl) {
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Organizer:</strong> ${escapeHTML(event.eventOrganizer)}</p>`;
+    }
+    if (event.eventOrgUrl) {
         contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventOrgUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.eventOrgUrl)}</a></p>`;
     }
 
