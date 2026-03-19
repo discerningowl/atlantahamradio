@@ -129,7 +129,7 @@ function generateICS() {
             `SUMMARY:${escapeICSText(event.title)}`,
             `LOCATION:${escapeICSText(event.location)}`,
             description ? `DESCRIPTION:${description}` : '',
-            event.website ? `URL:${event.website}` : '',
+            (event.signUpUrl || event.eventOrgUrl) ? `URL:${event.signUpUrl || event.eventOrgUrl}` : '',
             `CATEGORIES:${category}`,
             'STATUS:CONFIRMED',
             'TRANSP:TRANSPARENT',

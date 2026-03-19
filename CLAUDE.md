@@ -136,15 +136,20 @@ const pathPrefix = isInSubdir ? '../' : '';
     {
       "id": 1,
       "title": "Event Name",
-      "date": "2025-11-01",        // Required: YYYY-MM-DD
-      "endDate": "2025-11-02",      // Optional: multi-day events
-      "time": "5:00am-11:00am",     // Optional: display format (for UI)
-      "startTime": "05:00",         // Optional: HH:MM format (24-hour)
-      "endTime": "11:00",           // Optional: HH:MM format (24-hour)
-      "type": "race",               // race|event|training|meeting|emergency
+      "date": "2025-11-01",              // Required: YYYY-MM-DD
+      "endDate": "2025-11-02",           // Optional: multi-day events
+      "time": "5:00am-11:00am",          // Optional: display format (for UI)
+      "startTime": "05:00",              // Optional: HH:MM format (24-hour)
+      "endTime": "11:00",                // Optional: HH:MM format (24-hour)
+      "type": "race",                    // race|event|training|meeting|emergency
       "location": "Atlanta, GA",
-      "description": "...",         // Optional
-      "contact": "https://..."      // Contact URL or info
+      "description": "...",              // Optional
+      "eventOrganizer": "Atlanta Track Club",   // Optional: name of event org
+      "eventOrgUrl": "https://...",      // Optional: event org's website
+      "hamCoordinator": "Atlanta ARES",  // Optional: ham club/ARES coordinating
+      "hamCoordinatorUrl": "https://...",// Optional: ham coordinator's website
+      "signUpUrl": "https://...",        // Optional: volunteer sign-up link
+      "instructions": "..."             // Optional: volunteer instructions
     }
   ]
 }

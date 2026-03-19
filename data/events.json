@@ -11,8 +11,11 @@
       "type": "meeting",
       "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
       "description": null,
-      "contact": null,
-      "website": "https://stonemountainhamfest.com/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://stonemountainhamfest.com/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -26,8 +29,11 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": null,
-      "website": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565",
+      "eventOrganizer": "Atlanta Track Club",
+      "eventOrgUrl": null,
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=104565",
       "instructions": "Password: HAM2025"
     },
     {
@@ -41,8 +47,11 @@
       "type": "race",
       "location": "Downtown Atlanta",
       "description": "Register through the provided Link. Ham radio opertors will be cooridinated by Atlanta ARES",
-      "contact": "Atlanta ARES",
-      "website": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071",
+      "eventOrganizer": "Atlanta Track Club",
+      "eventOrgUrl": null,
+      "hamCoordinator": "Atlanta ARES",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071",
       "instructions": "Password: HAMPOP26"
     },
     {
@@ -56,8 +65,11 @@
       "type": "event",
       "location": "See website",
       "description": "Winter Field Day is an annual amateur‑radio event held on the last full weekend in January that challenges operators to set up portable stations in cold, remote conditions to practice emergency communications.",
-      "contact": null,
-      "website": "https://winterfieldday.org",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://winterfieldday.org",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -71,8 +83,11 @@
       "type": "race",
       "location": "Athens, GA",
       "description": "Athens Radio Club will be coordinating ham radio operators for this event. Bob Herrin - KE4JLL, the club Public Service coordinator can provide you with more details and updates",
-      "contact": "Bob Herrin - KE4JLL",
-      "website": "https://www.athensradioclub.org/marathonsignup2026",
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Bob Herrin - KE4JLL",
+      "hamCoordinatorUrl": "https://www.athensradioclub.org/marathonsignup2026",
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -86,8 +101,11 @@
       "type": "meeting",
       "location": "Gwinnett County, GA",
       "description": null,
-      "contact": null,
-      "website": "http://www.techfest.info/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "http://www.techfest.info/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -101,8 +119,11 @@
       "type": "meeting",
       "location": "Orlando, FL",
       "description": "Orlando HamCation is a three‑day annual ham‑radio convention in Orlando, Florida that combines vendor exhibits, technical talks, awards and social events for amateur‑radio enthusiasts.",
-      "contact": null,
-      "website": "https://www.hamcation.com/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://www.hamcation.com/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -116,8 +137,11 @@
       "type": "meeting",
       "location": "Dalton, GA",
       "description": null,
-      "contact": null,
-      "website": "https://www.qrz.com/db/W4DRC",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://www.qrz.com/db/W4DRC",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -131,8 +155,11 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": "Ham radio volunteers provide real‑time health and welfare relays to public‑safety agencies along the March 1st course",
-      "contact": null,
-      "website": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393",
+      "eventOrganizer": "Atlanta Track Club",
+      "eventOrgUrl": null,
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393",
       "instructions": "1. Go to the website\n2. Enter password \"PAMHAM2026\" and click Submit\n3. Register for the \"Communications - HAM operator\" slot"
     },
     {
@@ -146,8 +173,11 @@
       "type": "training",
       "location": "Forsyth, GA",
       "description": "Session covering the latest in emergency communications, incident response, and public service operations. ",
-      "contact": "Georgia ARES",
-      "website": "https://gaares.org/ga-ares-state-meeting-2026/",
+      "eventOrganizer": "Georgia ARES",
+      "eventOrgUrl": "https://gaares.org/ga-ares-state-meeting-2026/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": "All attendees of the meeting MUST BE REGISTERED under GEMA rules. Registration is available at the meeting, but this process is much more time consuming than the check-in process for preregistered attendees."
     },
     {
@@ -160,9 +190,12 @@
       "endTime": null,
       "type": "event",
       "location": "See website",
-      "description": "Georgia Parks on the Air is a weekend‑long contest that mobilizes ham operators to activate (or “hunt” from) every Georgia state park—about 50 parks—in a single 36‑hour window, rewarding contacts made from those park sites.",
-      "contact": null,
-      "website": "https://gaparks.org/",
+      "description": "Georgia Parks on the Air is a weekend‑long contest that mobilizes ham operators to activate (or "hunt" from) every Georgia state park—about 50 parks—in a single 36‑hour window, rewarding contacts made from those park sites.",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://gaparks.org/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -176,8 +209,11 @@
       "type": "meeting",
       "location": "Dayton, OH",
       "description": "Dayton Hamvention is one of the world's largest amateur‑radio conventions, held each May in the Dayton, Ohio area where thousands of hams gather for exhibits, vendors, workshops and community networking.",
-      "contact": null,
-      "website": "https://hamvention.org/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://hamvention.org/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -191,8 +227,11 @@
       "type": "event",
       "location": "See website",
       "description": null,
-      "contact": null,
-      "website": "http://www.arrl.org/field-day",
+      "eventOrganizer": "ARRL",
+      "eventOrgUrl": "http://www.arrl.org/field-day",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -206,8 +245,11 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": "Atlanta ARES",
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Atlanta ARES",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": "Signup coming soon"
     },
     {
@@ -221,8 +263,11 @@
       "type": "event",
       "location": "Huntsville, AL",
       "description": "Huntsville Hamfest is a two‑day ARRL‑sanctioned gathering held each August at the Von Braun Center in Huntsville, Alabama, featuring a flea market, vendor displays and family‑friendly activities for amateur‑radio enthusiasts.",
-      "contact": null,
-      "website": "https://hamfest.org/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://hamfest.org/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -236,8 +281,11 @@
       "type": "race",
       "location": "CJ Smith Park, Newnan, GA",
       "description": "Pathways Center and AnotherWay Foundation, Inc. will host a community walk to honor loved ones that have lost their lives to suicide and to raise funds to support individuals seeking mental health treatment that are not able to afford care.",
-      "contact": "Newnan Regional Amateur Radio Club",
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Newnan Regional Amateur Radio Club",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -251,13 +299,16 @@
       "type": "race",
       "location": "Drake Field, Peachtree City, GA",
       "description": null,
-      "contact": "Fayette ARES",
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Fayette ARES",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
       "id": 22,
-      "title": "Bike MS: Georgia Peach Ride 2026",
+      "title": "Bike MS: Georgia Peach Ride 2026",
       "date": "2026-09-13",
       "endDate": null,
       "time": null,
@@ -266,8 +317,11 @@
       "type": "race",
       "location": "Wild Leap Brewery, LaGrange, GA 30240",
       "description": null,
-      "contact": "LaGrange Radio Club",
-      "website": "http://www.lagrangeradioclub.org/",
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "LaGrange Radio Club",
+      "hamCoordinatorUrl": "http://www.lagrangeradioclub.org/",
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -281,8 +335,11 @@
       "type": "race",
       "location": "The Moreland Mill, Moreland, GA",
       "description": "Coweta Ferst Readers, Inc.'s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County",
-      "contact": "Newnan Regional Amateur Radio Club",
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Newnan Regional Amateur Radio Club",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -296,13 +353,16 @@
       "type": "race",
       "location": "Camp Twin Lakes, Rutledge, GA",
       "description": null,
-      "contact": "Baldwin County ARES",
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Baldwin County ARES",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
       "id": 25,
-      "title": "PNC Atlanta 10 Mile and 5K",
+      "title": "PNC Atlanta 10 Mile and 5K",
       "date": "2026-10-25",
       "endDate": null,
       "time": "6:00am-12:00pm",
@@ -311,8 +371,11 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": "The Southeast's largest and most iconic 10 mile race. Scenic course, skyline views.",
-      "contact": "Atlanta ARES",
-      "website": "https://www.atlantaradioclub.org/atlanta-ares.html",
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Atlanta ARES",
+      "hamCoordinatorUrl": "https://www.atlantaradioclub.org/atlanta-ares.html",
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -326,8 +389,11 @@
       "type": "race",
       "location": "Winterville, GA",
       "description": "The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail, and persons who have disabilities.",
-      "contact": "Bob Herrin - KE4JLL",
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Bob Herrin - KE4JLL",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -341,8 +407,11 @@
       "type": "meeting",
       "location": "Gwinnett County Fairgrounds, Lawrenceville, GA 30045",
       "description": "Stone Mountain Hamfest: Annual amateur radio convention and flea market featuring vendors, exhibits, forums, and prizes for ham radio enthusiasts, electronics fans, and tech hobbyists. Hosted by the Alford Memorial Radio Club.",
-      "contact": null,
-      "website": "https://stonemountainhamfest.com/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://stonemountainhamfest.com/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -356,8 +425,11 @@
       "type": "event",
       "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
-      "contact": null,
-      "website": "https://gaqsoparty.com/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://gaqsoparty.com/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -371,8 +443,11 @@
       "type": "event",
       "location": "See GA QSO Party Website",
       "description": "Annual on-air amateur radio contest held the second full weekend in April, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.",
-      "contact": null,
-      "website": "https://gaqsoparty.com/",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://gaqsoparty.com/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -386,8 +461,11 @@
       "type": "event",
       "location": "Panola Mtn State Park, Pavilion 1",
       "description": "Explore the POTA event, practice emergency/portable radio setups, and get hands‑on experience. Bring your own equipment; if you don't have a radio, mine is available when not in use.",
-      "contact": "Fayette Country Amateur Radio Club (FCARC)",
-      "website": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf",
+      "eventOrganizer": "Fayette Country Amateur Radio Club (FCARC)",
+      "eventOrgUrl": "https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -401,8 +479,11 @@
       "type": "event",
       "location": "Watson Mill Bridge State Park US-2207",
       "description": "We will continue with our plans made for Winter Field Day, setup on Friday and operate for all weekend making tons of POTA contacts.",
-      "contact": "Athens Radio Club",
-      "website": "https://www.qrz.com/db/W4G",
+      "eventOrganizer": "Athens Radio Club",
+      "eventOrgUrl": "https://www.qrz.com/db/W4G",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": "Visitors are invited to come out and play radio or just watch. The stations will be in the Equestrian Area Cabins on the East side of the park. The closest address is 1788 Watson Mill Bridge Road."
     },
     {
@@ -416,8 +497,11 @@
       "type": "emergency",
       "location": "QTH",
       "description": "On Feb 4th the Peachtree City NWS will conduct its yearly tornado drill. If inclement weather is happening that day, it will be either re-scheduled or possibly canceled. We will be linking in all the Georgia Skywarn Linked Repeaters at 8am and will start taking check-ins for the drill at 9am.",
-      "contact": "WX4PTC - see website for SKYWARN repeaters in your county.",
-      "website": "https://georgiaskywarn.com",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://georgiaskywarn.com",
+      "hamCoordinator": "WX4PTC",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": "Check-ins to the net will be taken by callsigns. Beginning with Alpha calls, then beginning with Whiskey calls, then November calls followed by Kilo calls. This sequence will be repeated many times during the duration of the net. When checking in we will want the following information;\nCallsign, Name, County.\nThat is it. That way we can get people in and out so people needing to get back to work can. Our biggest goal is to reach as many of the PTC NWS forecast area as possible. This is where relays may come in handy and is often wanted during severe weather outbreaks."
     },
     {
@@ -431,8 +515,11 @@
       "type": "event",
       "location": "See website",
       "description": "Winter Field Day is an annual amateur‑radio event held on the last full weekend in January that challenges operators to set up portable stations in cold, remote conditions to practice emergency communications.",
-      "contact": null,
-      "website": "https://winterfieldday.org",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://winterfieldday.org",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -446,8 +533,11 @@
       "type": "event",
       "location": "Southeast Clarke Park, Athens, GA",
       "description": "Athens Radio Club provides communications supporting parking and traffic management for Athens-Clarke County's annual Independence Day fireworks celebration.",
-      "contact": "Athens Radio Club",
-      "website": "https://www.accgov.com/1553/Star-Spangled-Classic",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://www.accgov.com/1553/Star-Spangled-Classic",
+      "hamCoordinator": "Athens Radio Club",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -461,8 +551,11 @@
       "type": "race",
       "location": "Athens YMCA, 915 Hawthorne Ave, Athens, GA 30605",
       "description": "Cross country 5K race in memory of Coach Mike Castronis. Athens Radio Club provides communications support. Course begins on the YMCA track with two loops through adjacent woods.",
-      "contact": "Athens Radio Club",
-      "website": "https://runsignup.com/Race/GA/Athens/CoachMikesRunThroughTheWoodsXC5K",
+      "eventOrganizer": null,
+      "eventOrgUrl": "https://runsignup.com/Race/GA/Athens/CoachMikesRunThroughTheWoodsXC5K",
+      "hamCoordinator": "Athens Radio Club",
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -476,8 +569,11 @@
       "type": "event",
       "location": "Colbert City Park (Red Canna Park), Colbert, GA",
       "description": "Athens Radio Club provides communications and parking support for community Halloween event.",
-      "contact": "Athens Radio Club",
-      "website": "https://www.athensradioclub.org/publicservice",
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "Athens Radio Club",
+      "hamCoordinatorUrl": "https://www.athensradioclub.org/publicservice",
+      "signUpUrl": null,
       "instructions": null
     },
     {
@@ -491,8 +587,11 @@
       "type": "race",
       "location": "Atlanta, GA",
       "description": null,
-      "contact": null,
-      "website": null,
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
       "instructions": "Signup coming soon"
     }
   ]
