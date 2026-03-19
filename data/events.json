@@ -577,6 +577,24 @@
       "instructions": null
     },
     {
+      "id": 38,
+      "title": "Peachy Trunkfest & Swap",
+      "date": "2026-04-11",
+      "endDate": null,
+      "time": "9:00am-11:00am",
+      "startTime": "09:00",
+      "endTime": "11:00",
+      "type": "meeting",
+      "location": "Fayetteville, GA",
+      "description": "A casual, vehicle-based tailgate swap meet hosted by the Fayette County Amateur Radio Club (KK4GQ). Buy, sell, and trade used amateur radio equipment—rigs, antennas, parts—directly from your trunk. FREE to attend and sell! Complimentary coffee and donuts while supplies last. Cash is highly recommended. Sellers should arrive 8:00am–8:45am. Talk-In: 145.210 (–) PL 131.8 Hz. Vehicle-based event only—no tents, external tables, amplified sound, alcohol, or open fires.",
+      "eventOrganizer": "Fayette County Amateur Radio Club (KK4GQ)",
+      "eventOrgUrl": "https://kk4gq.org/peachy",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "signUpUrl": null,
+      "instructions": null
+    },
+    {
       "id": 37,
       "title": "Invesco QQQ Thanksgiving Day Half Marathon, 5K, Mile & Dash",
       "date": "2026-11-26",
