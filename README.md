@@ -2,8 +2,6 @@
 
 A community website connecting amateur radio operators to public service events, clubs, and resources across the Atlanta metropolitan area.
 
-[![Deploy to DigitalOcean](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps)
-
 ## 🎯 Purpose
 
 This website serves the Atlanta ham radio community by providing:
