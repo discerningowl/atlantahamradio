@@ -345,7 +345,7 @@ function showEventModal(eventId) {
     }
 
     if (event.signUpUrl) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.signUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Sign Up to Volunteer</a></p>`;
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.signUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Volunteer as a Ham</a></p>`;
     }
 
     if (event.instructions) {
