@@ -631,7 +631,7 @@ When creating a new page, include this SEO template in the `<head>`:
 4. Optional fields: `endDate`, `time`, `startTime`, `endTime`, `description`
 5. Date format: `YYYY-MM-DD` (ISO 8601)
 6. Time format: `HH:MM` (24-hour, e.g., "08:00", "16:30")
-7. Increment `id` from highest existing ID
+7. **Always increment `id` from the highest existing ID — never reuse a retired ID.** Event IDs are permanent once assigned; they appear as UIDs in `events.ics` and calendar apps use them to track events across subscription refreshes. Reusing an ID causes duplicate calendar entries for subscribers. Gaps in the sequence from deleted events are expected and harmless.
 
 **Event Type Values**:
 - `race` - Races, runs, marathons
