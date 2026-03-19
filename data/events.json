@@ -587,7 +587,7 @@
       "type": "meeting",
       "location": "Fayetteville, GA",
       "description": "A casual, vehicle-based tailgate swap meet hosted by the Fayette County Amateur Radio Club (KK4GQ). \nBuy, sell, and trade used amateur radio equipment—rigs, antennas, parts—directly from your trunk. FREE to attend and sell! Complimentary coffee and donuts while supplies last. Cash is highly recommended. \nSellers should arrive 8:00am–8:45am. Talk-In: 145.210 (–) PL 131.8 Hz. Vehicle-based event only—no tents, external tables, amplified sound, alcohol, or open fires.",
-      "eventOrganizer": "Fayette County Amateur Radio Club (KK4GQ)",
+      "eventOrganizer": null,
       "eventOrgUrl": "https://kk4gq.org/peachy",
       "hamCoordinator": "Fayette County Amateur Radio Club (KK4GQ)",
       "hamCoordinatorUrl": null,
