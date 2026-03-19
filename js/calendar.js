@@ -333,23 +333,36 @@ function showEventModal(eventId) {
         contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventOrgUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.eventOrgUrl)}</a></p>`;
     }
 
-    if (event.hamCoordinator) {
-        const coordText = escapeHTML(event.hamCoordinator);
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Ham Coordinator:</strong> ${
-            event.hamCoordinatorUrl
-                ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${coordText}</a>`
-                : coordText
-        }</p>`;
-    } else if (event.hamCoordinatorUrl) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Ham Coordinator Info:</strong> <a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.hamCoordinatorUrl)}</a></p>`;
-    }
+    const hasHamInfo = event.hamCoordinator || event.hamCoordinatorUrl || event.signUpUrl || event.instructions;
+    if (hasHamInfo) {
+        contactHTML += `<p style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; border-top: 1px solid #334155; padding-top: 0.75rem;">Ham Radio Volunteers Needed</p>`;
 
-    if (event.signUpUrl) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.signUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Volunteer as a Ham</a></p>`;
-    }
+        if (event.hamCoordinator) {
+            const coordText = escapeHTML(event.hamCoordinator);
+            if (event.signUpUrl) {
+                contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Ham Radio Contact:</strong> ${
+                    event.hamCoordinatorUrl
+                        ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${coordText}</a>`
+                        : coordText
+                }</p>`;
+            } else {
+                contactHTML += `<p style="margin-bottom: 0.5rem;">To volunteer as a ham radio operator, contact ${
+                    event.hamCoordinatorUrl
+                        ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${coordText}</a>`
+                        : `<strong>${coordText}</strong>`
+                }.</p>`;
+            }
+        } else if (event.hamCoordinatorUrl && !event.signUpUrl) {
+            contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Contact the ham radio coordinator to volunteer</a></p>`;
+        }
 
-    if (event.instructions) {
-        contactHTML += `<p style="margin-bottom: 0.5rem; white-space: pre-line;"><strong>Instructions:</strong><br>${escapeHTML(event.instructions)}</p>`;
+        if (event.signUpUrl) {
+            contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.signUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Volunteer as a Ham</a></p>`;
+        }
+
+        if (event.instructions) {
+            contactHTML += `<p style="margin-bottom: 0.5rem; white-space: pre-line;"><strong>Instructions:</strong><br>${escapeHTML(event.instructions)}</p>`;
+        }
     }
 
     contactInfo.innerHTML = contactHTML;
