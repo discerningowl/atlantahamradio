@@ -322,12 +322,30 @@ function showEventModal(eventId) {
     // Build contact info section
     let contactHTML = '';
 
-    if (event.contact) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Contact:</strong> ${escapeHTML(event.contact)}</p>`;
+    if (event.eventOrganizer) {
+        const orgText = escapeHTML(event.eventOrganizer);
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Organizer:</strong> ${
+            event.eventOrgUrl
+                ? `<a href="${escapeHTML(event.eventOrgUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${orgText}</a>`
+                : orgText
+        }</p>`;
+    } else if (event.eventOrgUrl) {
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventOrgUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.eventOrgUrl)}</a></p>`;
     }
 
-    if (event.website) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Website:</strong> <a href="${escapeHTML(event.website)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.website)}</a></p>`;
+    if (event.hamCoordinator) {
+        const coordText = escapeHTML(event.hamCoordinator);
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Ham Coordinator:</strong> ${
+            event.hamCoordinatorUrl
+                ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${coordText}</a>`
+                : coordText
+        }</p>`;
+    } else if (event.hamCoordinatorUrl) {
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Ham Coordinator Info:</strong> <a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.hamCoordinatorUrl)}</a></p>`;
+    }
+
+    if (event.signUpUrl) {
+        contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.signUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Sign Up to Volunteer</a></p>`;
     }
 
     if (event.instructions) {
@@ -492,7 +510,7 @@ function generateICS(event) {
         `SUMMARY:${escapeICSText(event.title)}`,
         `LOCATION:${escapeICSText(event.location)}`,
         description ? `DESCRIPTION:${description}` : '',
-        event.website ? `URL:${event.website}` : '',
+        (event.signUpUrl || event.eventOrgUrl) ? `URL:${event.signUpUrl || event.eventOrgUrl}` : '',
         `CATEGORIES:${eventTypes[event.type]?.label || 'Event'}`,
         'STATUS:CONFIRMED',
         'TRANSP:TRANSPARENT',
