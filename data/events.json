@@ -595,6 +595,24 @@
       "instructions": null
     },
     {
+      "id": 39,
+      "title": "Dacula Memorial Day Parade",
+      "date": "2026-05-25",
+      "endDate": null,
+      "time": "7:00am-1:00pm",
+      "startTime": "07:00",
+      "endTime": "13:00",
+      "type": "event",
+      "location": "Hebron Baptist Church, 202 Hebron Church Rd, Dacula, GA 30019",
+      "description": "Ham radio operators help coordinate the Dacula Memorial Day Parade by lining up participants (vehicles, floats, marching bands, groups, tractors, and horses) at Hebron Baptist Church so they depart in the correct order for announcement at the Announcing Stand.",
+      "eventOrganizer": null,
+      "eventOrgUrl": null,
+      "hamCoordinator": "GARS",
+      "hamCoordinatorUrl": "https://www.gars.org",
+      "signUpUrl": "https://docs.google.com/forms/d/e/1FAIpQLSc4c7i-daThdqO09g39q6qRj7ZZVJX4n6h_KV2x2O6-Z1nvyg/viewform",
+      "instructions": "Arrive at 7:00 AM to help set up the pop-up tent, portable repeater, and tripod markers with flags. Wear comfortable shoes and clothing. Bring and wear your yellow safety vest and GARS Mission Hat (free hats available for new volunteers). Program your HT to the portable repeater: 147.045 MHz (minus offset), PL 82.5. No HT? No problem — you can shadow someone who has one. Chick-fil-A breakfast biscuits and coffee will be provided."
+    },
+    {
       "id": 37,
       "title": "Invesco QQQ Thanksgiving Day Half Marathon, 5K, Mile & Dash",
       "date": "2026-11-26",
