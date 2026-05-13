@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Generate events.ics from events.json
- * This script creates a static ICS calendar file that can be subscribed to
+ * This script creates a static ICS calendar file that can be subscribed to.
+ * Run automatically via GitHub Actions when events.json changes.
  */
 
 const fs = require('fs');
@@ -12,32 +13,34 @@ const eventsPath = path.join(__dirname, '../data/events.json');
 const eventsData = JSON.parse(fs.readFileSync(eventsPath, 'utf8'));
 const events = eventsData.events;
 
-// Event type labels
+// Event type labels for CATEGORIES field
 const eventTypes = {
-    race: 'Race',
-    event: 'Event',
-    training: 'Training',
-    meeting: 'Meeting',
-    emergency: 'Emergency'
+    'public-service': 'Public Service',
+    'activity':       'Ham Activity',
+    'meeting':        'Meeting',
+    'training':       'Training'
 };
 
-// Format date as YYYYMMDD for all-day events
+// Format YYYYMMDD from a YYYY-MM-DD string, parsed as local time
+// (avoids UTC midnight → previous day bug with new Date(string))
 function formatICSDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}${month}${day}`;
+    const [year, month, day] = dateString.split('-').map(Number);
+    return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
 }
 
-// Format date and time as YYYYMMDDTHHMMSS for timed events
+// Format YYYYMMDDTHHMMSS from a YYYY-MM-DD string and HH:MM time string
 function formatICSDateTime(dateString, timeString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const [year, month, day] = dateString.split('-').map(Number);
     const [hours, minutes] = timeString.split(':');
-    return `${year}${month}${day}T${hours}${minutes}00`;
+    return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}T${hours}${minutes}00`;
+}
+
+// Format YYYYMMDD from a Date object (local time)
+function formatICSDateObj(dateObj) {
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}${month}${day}`;
 }
 
 // Escape special characters for ICS format
@@ -49,7 +52,7 @@ function escapeICSText(text) {
                 .replace(/\n/g, '\\n');
 }
 
-// Generate timestamp
+// Generate UTC timestamp for DTSTAMP
 function getTimestamp() {
     const now = new Date();
     const year = now.getUTCFullYear();
@@ -96,40 +99,41 @@ function generateICS() {
     ].join('\r\n') + '\r\n';
 
     events.forEach(event => {
-        const description = escapeICSText(event.description || '');
+        const description = escapeICSText(event.eventDescription || '');
         const category = eventTypes[event.type] || 'Event';
 
-        // Determine if this is a timed event or all-day event
-        // Multi-day events are ALWAYS all-day, regardless of time fields
+        // Multi-day events are always all-day regardless of time fields
         const isMultiDay = !!event.endDate;
         const hasTime = event.startTime && event.endTime && !isMultiDay;
 
         let dtstart, dtend;
 
         if (hasTime) {
-            // Timed event (single-day only)
-            dtstart = `DTSTART;TZID=America/New_York:${formatICSDateTime(event.date, event.startTime)}`;
-            dtend = `DTEND;TZID=America/New_York:${formatICSDateTime(event.date, event.endTime)}`;
+            // Timed single-day event
+            dtstart = `DTSTART;TZID=America/New_York:${formatICSDateTime(event.startDate, event.startTime)}`;
+            dtend = `DTEND;TZID=America/New_York:${formatICSDateTime(event.startDate, event.endTime)}`;
         } else {
             // All-day event (multi-day or no time specified)
-            const startDate = formatICSDate(event.date);
-            const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
-            endDateObj.setDate(endDateObj.getDate() + 1);
-            const endDate = formatICSDate(endDateObj);
-            dtstart = `DTSTART;VALUE=DATE:${startDate}`;
-            dtend = `DTEND;VALUE=DATE:${endDate}`;
+            // Build end date as local Date object to avoid UTC shift, then add 1 day (ICS spec)
+            const endDateStr = event.endDate || event.startDate;
+            const [ey, em, ed] = endDateStr.split('-').map(Number);
+            const endDateObj = new Date(ey, em - 1, ed + 1);
+
+            dtstart = `DTSTART;VALUE=DATE:${formatICSDate(event.startDate)}`;
+            dtend = `DTEND;VALUE=DATE:${formatICSDateObj(endDateObj)}`;
         }
 
         icsContent += [
             'BEGIN:VEVENT',
             `UID:event-${event.id}@atlantahamradio.org`,
             `DTSTAMP:${timestamp}`,
+            `SEQUENCE:0`,
             dtstart,
             dtend,
             `SUMMARY:${escapeICSText(event.title)}`,
-            `LOCATION:${escapeICSText(event.location)}`,
+            `LOCATION:${escapeICSText(event.eventLocation)}`,
             description ? `DESCRIPTION:${description}` : '',
-            (event.signUpUrl || event.eventOrgUrl) ? `URL:${event.signUpUrl || event.eventOrgUrl}` : '',
+            (event.volunteerSignUpUrl || event.eventUrl) ? `URL:${event.volunteerSignUpUrl || event.eventUrl}` : '',
             `CATEGORIES:${category}`,
             'STATUS:CONFIRMED',
             'TRANSP:TRANSPARENT',

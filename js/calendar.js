@@ -5,11 +5,10 @@ let filterCategory = 'all';
 let searchQuery = '';
 
 const eventTypes = {
-    race: { color: '#3b82f6', label: 'Race/Run' },
-    event: { color: '#a855f7', label: 'Event' },
-    training: { color: '#22c55e', label: 'Training/Net' },
-    meeting: { color: '#f97316', label: 'Meeting/Hamfest' },
-    emergency: { color: '#ef4444', label: 'Emergency Drill' }
+    'public-service': { color: '#3b82f6', label: 'Public Service' },
+    'activity':       { color: '#a855f7', label: 'Ham Activity' },
+    'meeting':        { color: '#f97316', label: 'Meeting/Hamfest' },
+    'training':       { color: '#22c55e', label: 'Training & Drills' }
 };
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -23,34 +22,41 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
+// Derive a human-readable time string from startTime/endTime (HH:MM 24-hour)
+function formatTimeDisplay(startTime, endTime) {
+    if (!startTime) return null;
+    const fmt = t => {
+        const [h, m] = t.split(':').map(Number);
+        const period = h >= 12 ? 'pm' : 'am';
+        const hour = h > 12 ? h - 12 : h === 0 ? 12 : h;
+        return m === 0 ? `${hour}${period}` : `${hour}:${String(m).padStart(2, '0')}${period}`;
+    };
+    return endTime ? `${fmt(startTime)}–${fmt(endTime)}` : fmt(startTime);
+}
+
 async function loadEvents() {
     try {
         const response = await fetch('data/events.json');
         const data = await response.json();
         events = data.events.map(e => {
-            // Parse date as local time to avoid timezone offset issues
-            const [year, month, day] = e.date.split('-').map(Number);
+            // Parse startDate as local time to avoid timezone offset issues
+            const [year, month, day] = e.startDate.split('-').map(Number);
             const eventData = {
                 ...e,
-                date: new Date(year, month - 1, day)
+                startDate: new Date(year, month - 1, day)
             };
 
-            // Parse end date if it exists
+            // Parse endDate if it exists
             if (e.endDate) {
                 const [endYear, endMonth, endDay] = e.endDate.split('-').map(Number);
                 eventData.endDate = new Date(endYear, endMonth - 1, endDay);
             }
-
-            // Keep startTime and endTime as strings (HH:MM format)
-            if (e.startTime) eventData.startTime = e.startTime;
-            if (e.endTime) eventData.endTime = e.endTime;
 
             return eventData;
         });
         renderCalendar();
     } catch (error) {
         console.error('Error loading events:', error);
-        // Use sample data if file not found
         events = [];
         renderCalendar();
     }
@@ -83,13 +89,11 @@ function setFilter(category) {
 function handleSearch() {
     searchQuery = document.getElementById('searchInput').value.toLowerCase();
 
-    // Show/hide clear button
     const clearBtn = document.getElementById('searchClearBtn');
     if (clearBtn) {
         clearBtn.style.display = searchQuery ? 'flex' : 'none';
     }
 
-    // Auto-switch to list view when searching
     if (searchQuery && currentView === 'month') {
         setView('list');
     }
@@ -101,7 +105,6 @@ function clearSearch() {
     searchQuery = '';
     document.getElementById('searchInput').value = '';
 
-    // Hide clear button
     const clearBtn = document.getElementById('searchClearBtn');
     if (clearBtn) {
         clearBtn.style.display = 'none';
@@ -115,13 +118,11 @@ function setView(view) {
     document.getElementById('monthViewBtn').classList.toggle('active', view === 'month');
     document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
 
-    // Show/hide month selector based on view
     const monthNav = document.querySelector('.month-nav');
     if (monthNav) {
         monthNav.style.visibility = view === 'month' ? 'visible' : 'hidden';
     }
 
-    // Clear search when switching to month view
     if (view === 'month' && searchQuery) {
         searchQuery = '';
         document.getElementById('searchInput').value = '';
@@ -141,11 +142,10 @@ function getEventsForDay(day) {
     return events.filter(event => {
         if (filterCategory !== 'all' && event.type !== filterCategory) return false;
 
-        // Check if the day falls within the event's date range
-        const startDate = new Date(event.date);
+        const startDate = new Date(event.startDate);
         startDate.setHours(0, 0, 0, 0);
 
-        const endDate = event.endDate ? new Date(event.endDate) : new Date(event.date);
+        const endDate = event.endDate ? new Date(event.endDate) : new Date(event.startDate);
         endDate.setHours(23, 59, 59, 999);
 
         checkDate.setHours(12, 0, 0, 0);
@@ -179,17 +179,14 @@ function renderMonthView() {
 
     let html = '<div class="calendar-grid">';
 
-    // Day headers
     ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
         html += `<div class="day-header">${day}</div>`;
     });
 
-    // Empty cells
     for (let i = 0; i < firstDay; i++) {
         html += '<div></div>';
     }
 
-    // Days
     for (let day = 1; day <= daysInMonth; day++) {
         const dayEvents = getEventsForDay(day);
         const isToday = isCurrentMonth && today.getDate() === day;
@@ -219,19 +216,13 @@ function renderListView() {
 
     const filteredEvents = events
         .filter(e => {
-            // Filter by category
             if (filterCategory !== 'all' && e.type !== filterCategory) return false;
-
-            // Filter by search query
             if (searchQuery && !e.title.toLowerCase().includes(searchQuery)) return false;
-
-            // Filter out past events (only show today and future)
-            const eventEndDate = e.endDate || e.date;
+            const eventEndDate = e.endDate || e.startDate;
             if (eventEndDate < today) return false;
-
             return true;
         })
-        .sort((a, b) => a.date - b.date);
+        .sort((a, b) => a.startDate - b.startDate);
 
     if (filteredEvents.length === 0) {
         const message = searchQuery
@@ -242,7 +233,9 @@ function renderListView() {
 
     return `
         <div class="list-view">
-            ${filteredEvents.map(event => `
+            ${filteredEvents.map(event => {
+                const timeDisplay = formatTimeDisplay(event.startTime, event.endTime);
+                return `
                 <div class="event-card" onclick='showEventModal(${event.id})'>
                     <div class="event-card-header">
                         <div class="event-card-info">
@@ -254,27 +247,27 @@ function renderListView() {
                             <div class="event-details">
                                 <div class="event-detail">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                                    ${event.endDate && event.endDate.getTime() !== event.date.getTime()
-                                        ? `${event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${event.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-                                        : event.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                                    ${event.endDate && event.endDate.getTime() !== event.startDate.getTime()
+                                        ? `${event.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${event.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                                        : event.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                                     }
                                 </div>
-                                ${event.time ? `
+                                ${timeDisplay ? `
                                 <div class="event-detail">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                    ${event.time}
+                                    ${timeDisplay}
                                 </div>
                                 ` : ''}
                                 <div class="event-detail">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    ${event.location}
+                                    ${escapeHTML(event.eventLocation)}
                                 </div>
                             </div>
                         </div>
                         <button class="btn btn-primary">Details</button>
                     </div>
                 </div>
-            `).join('')}
+            `}).join('')}
         </div>
     `;
 }
@@ -290,80 +283,96 @@ function showEventModal(eventId) {
     const description = document.getElementById('modalDescription');
     const contactInfo = document.getElementById('modalContactInfo');
 
+    // Type badge
     typeBadge.innerHTML = `
         <span class="event-dot" style="background: ${eventTypes[event.type].color}"></span>
         <span>${eventTypes[event.type].label}</span>
     `;
 
+    // Title
     title.textContent = event.title;
 
+    // Date / time / location block
+    const timeDisplay = formatTimeDisplay(event.startTime, event.endTime);
     details.innerHTML = `
         <div class="modal-detail">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            ${event.endDate && event.endDate.getTime() !== event.date.getTime()
-                ? `${event.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} - ${event.endDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}`
-                : event.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+            ${event.endDate && event.endDate.getTime() !== event.startDate.getTime()
+                ? `${event.startDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} – ${event.endDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}`
+                : event.startDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
             }
         </div>
-        ${event.time ? `
+        ${timeDisplay ? `
         <div class="modal-detail">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ${escapeHTML(event.time)}
+            ${timeDisplay}
         </div>
         ` : ''}
         <div class="modal-detail">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            ${escapeHTML(event.location)}
+            ${escapeHTML(event.eventLocation)}
         </div>
     `;
 
-    description.textContent = event.description;
+    // Description
+    if (event.eventDescription) {
+        description.textContent = event.eventDescription;
+        description.style.display = '';
+    } else {
+        description.textContent = '';
+        description.style.display = 'none';
+    }
 
-    // Build contact info section
+    // Contact / action block — type-specific
     let contactHTML = '';
 
-    if (event.eventOrganizer) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Organizer:</strong> ${escapeHTML(event.eventOrganizer)}</p>`;
-    }
-    if (event.eventOrgUrl) {
-        contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventOrgUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${escapeHTML(event.eventOrgUrl)}</a></p>`;
+    // Event organizer row (all types)
+    if (event.eventOrganizer || event.eventUrl) {
+        if (event.eventOrganizer && event.eventUrl) {
+            contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">${escapeHTML(event.eventOrganizer)}</a></p>`;
+        } else if (event.eventOrganizer) {
+            contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Organized by:</strong> ${escapeHTML(event.eventOrganizer)}</p>`;
+        } else {
+            contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">${escapeHTML(event.eventUrl)}</a></p>`;
+        }
     }
 
-    const hasHamInfo = event.hamCoordinator || event.hamCoordinatorUrl || event.signUpUrl || event.instructions;
-    if (hasHamInfo) {
-        contactHTML += `<p style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; border-top: 1px solid #334155; padding-top: 0.75rem;">Ham Radio Volunteers Needed</p>`;
+    // Public service: volunteer section
+    if (event.type === 'public-service') {
+        contactHTML += `<p style="margin-top:1rem;margin-bottom:0.5rem;font-weight:600;border-top:1px solid #334155;padding-top:0.75rem;">Ham Radio Volunteers Needed</p>`;
 
         if (event.hamCoordinator) {
             const coordText = escapeHTML(event.hamCoordinator);
-            if (event.signUpUrl) {
-                contactHTML += `<p style="margin-bottom: 0.5rem;"><strong>Ham Radio Contact:</strong> ${
-                    event.hamCoordinatorUrl
-                        ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${coordText}</a>`
-                        : coordText
-                }</p>`;
+            const coordLink = event.hamCoordinatorUrl
+                ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">${coordText}</a>`
+                : `<strong>${coordText}</strong>`;
+
+            if (event.volunteerSignUpUrl) {
+                contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Ham Radio Contact:</strong> ${coordLink}</p>`;
             } else {
-                contactHTML += `<p style="margin-bottom: 0.5rem;">To volunteer as a ham radio operator, contact ${
-                    event.hamCoordinatorUrl
-                        ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">${coordText}</a>`
-                        : `<strong>${coordText}</strong>`
-                }.</p>`;
+                contactHTML += `<p style="margin-bottom:0.5rem;">To volunteer as a ham radio operator, contact ${coordLink}.</p>`;
             }
-        } else if (event.hamCoordinatorUrl && !event.signUpUrl) {
-            contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color: #3b82f6; text-decoration: none;">Contact the ham radio coordinator to volunteer</a></p>`;
+        } else if (event.hamCoordinatorUrl && !event.volunteerSignUpUrl) {
+            contactHTML += `<p style="margin-bottom:0.5rem;"><a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">Contact the ham radio coordinator to volunteer</a></p>`;
         }
 
-        if (event.signUpUrl) {
-            contactHTML += `<p style="margin-bottom: 0.5rem;"><a href="${escapeHTML(event.signUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Volunteer as a Ham</a></p>`;
+        if (event.volunteerSignUpUrl) {
+            contactHTML += `<p style="margin-bottom:0.5rem;"><a href="${escapeHTML(event.volunteerSignUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-block;text-decoration:none;">Sign Up to Volunteer</a></p>`;
         }
 
-        if (event.instructions) {
-            contactHTML += `<p style="margin-bottom: 0.5rem; white-space: pre-line;"><strong>Instructions:</strong><br>${escapeHTML(event.instructions)}</p>`;
+        if (event.notes) {
+            contactHTML += `<p style="margin-top:0.75rem;margin-bottom:0.5rem;white-space:pre-line;"><strong>Sign-up Instructions:</strong><br>${escapeHTML(event.notes)}</p>`;
         }
+
+    } else if (event.notes) {
+        // Activity / meeting / training: show notes with a neutral label
+        const notesLabel = event.type === 'training' ? 'Participation Notes' : 'Notes';
+        contactHTML += `<p style="margin-top:${contactHTML ? '1rem' : '0'};margin-bottom:0.5rem;white-space:pre-line;"><strong>${notesLabel}:</strong><br>${escapeHTML(event.notes)}</p>`;
     }
 
     contactInfo.innerHTML = contactHTML;
 
-    // Setup Add to Calendar button
+    // Add to Calendar button
     const addToCalendarBtn = document.getElementById('addToCalendarBtn');
     addToCalendarBtn.onclick = (e) => {
         e.stopPropagation();
@@ -402,24 +411,17 @@ async function copySubscribeUrl() {
 
     try {
         await navigator.clipboard.writeText(calendarUrl);
-
-        // Visual feedback: Update button
         button.innerHTML = '✓ Copied!';
         button.style.background = '#22c55e';
         input.select();
-
-        // Reset after 2 seconds
         setTimeout(() => {
             button.innerHTML = 'Copy';
             button.style.background = '#3b82f6';
         }, 2000);
     } catch (err) {
         console.error('Failed to copy URL:', err);
-        // Fallback: Select text for manual copy
         input.select();
         button.innerHTML = 'Select & Copy';
-
-        // Reset after 2 seconds
         setTimeout(() => {
             button.innerHTML = 'Copy';
         }, 2000);
@@ -428,7 +430,6 @@ async function copySubscribeUrl() {
 
 // ICS file generation utilities
 function formatICSDate(date) {
-    // Format date as YYYYMMDD for all-day events
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -436,7 +437,6 @@ function formatICSDate(date) {
 }
 
 function formatICSDateTime(date, timeString) {
-    // Format date and time as YYYYMMDDTHHMMSS for timed events
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -459,10 +459,7 @@ function generateICS(event) {
         now.getMinutes().toString().padStart(2, '0') +
         now.getSeconds().toString().padStart(2, '0') + 'Z';
 
-    const description = escapeICSText(event.description || '');
-
-    // Determine if this is a timed event or all-day event
-    // Multi-day events are ALWAYS all-day, regardless of time fields
+    const description = escapeICSText(event.eventDescription || '');
     const isMultiDay = !!event.endDate;
     const hasTime = event.startTime && event.endTime && !isMultiDay;
 
@@ -470,11 +467,8 @@ function generateICS(event) {
     let timezoneBlock = '';
 
     if (hasTime) {
-        // Timed event (single-day only)
-        dtstart = `DTSTART;TZID=America/New_York:${formatICSDateTime(event.date, event.startTime)}`;
-        dtend = `DTEND;TZID=America/New_York:${formatICSDateTime(event.date, event.endTime)}`;
-
-        // Add timezone definition for timed events
+        dtstart = `DTSTART;TZID=America/New_York:${formatICSDateTime(event.startDate, event.startTime)}`;
+        dtend = `DTEND;TZID=America/New_York:${formatICSDateTime(event.startDate, event.endTime)}`;
         timezoneBlock = [
             'BEGIN:VTIMEZONE',
             'TZID:America/New_York',
@@ -495,12 +489,11 @@ function generateICS(event) {
             'END:VTIMEZONE'
         ].join('\r\n');
     } else {
-        // All-day event (multi-day or no time specified)
-        const startDate = formatICSDate(event.date);
-        const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.date);
+        const startDateStr = formatICSDate(event.startDate);
+        const endDateObj = event.endDate ? new Date(event.endDate) : new Date(event.startDate);
         endDateObj.setDate(endDateObj.getDate() + 1);
         const endDate = formatICSDate(endDateObj);
-        dtstart = `DTSTART;VALUE=DATE:${startDate}`;
+        dtstart = `DTSTART;VALUE=DATE:${startDateStr}`;
         dtend = `DTEND;VALUE=DATE:${endDate}`;
     }
 
@@ -514,12 +507,13 @@ function generateICS(event) {
         'BEGIN:VEVENT',
         `UID:event-${event.id}@atlantahamradio.org`,
         `DTSTAMP:${timestamp}`,
+        `SEQUENCE:0`,
         dtstart,
         dtend,
         `SUMMARY:${escapeICSText(event.title)}`,
-        `LOCATION:${escapeICSText(event.location)}`,
+        `LOCATION:${escapeICSText(event.eventLocation)}`,
         description ? `DESCRIPTION:${description}` : '',
-        (event.signUpUrl || event.eventOrgUrl) ? `URL:${event.signUpUrl || event.eventOrgUrl}` : '',
+        (event.volunteerSignUpUrl || event.eventUrl) ? `URL:${event.volunteerSignUpUrl || event.eventUrl}` : '',
         `CATEGORIES:${eventTypes[event.type]?.label || 'Event'}`,
         'STATUS:CONFIRMED',
         'TRANSP:TRANSPARENT',

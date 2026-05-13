@@ -28,11 +28,10 @@
     --shadow-lg: rgba(0, 0, 0, 0.15);
 
     /* Event type colors - vibrant, work in both modes */
-    --event-race: #3b82f6;
-    --event-event: #a855f7;
+    --event-public-service: #3b82f6;
+    --event-activity: #a855f7;
     --event-training: #22c55e;
     --event-meeting: #f97316;
-    --event-emergency: #ef4444;
 
     /* Button colors */
     --btn-primary: #3b82f6;
@@ -543,7 +542,7 @@ nav a:hover {
 }
 
 .view-btn.active {
-    background: var(--event-race);
+    background: var(--event-public-service);
     color: white;
 }
 
@@ -585,7 +584,7 @@ nav a:hover {
 }
 
 .filter-btn.active {
-    background: var(--event-race);
+    background: var(--event-public-service);
     color: white;
 }
 
@@ -968,11 +967,10 @@ footer {
     color: var(--text-muted);
 }
 
-.event-type-race { background: var(--event-race); }
-.event-type-event { background: var(--event-event); }
+.event-type-public-service { background: var(--event-public-service); }
+.event-type-activity { background: var(--event-activity); }
 .event-type-training { background: var(--event-training); }
 .event-type-meeting { background: var(--event-meeting); }
-.event-type-emergency { background: var(--event-emergency); }
 
 /* Back to top button */
 .back-to-top {
@@ -1620,7 +1618,7 @@ footer {
 }
 
 .club-count {
-    background: var(--event-race);
+    background: var(--event-public-service);
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
@@ -1996,7 +1994,7 @@ footer {
     padding: 1.5rem 1.5rem 1.5rem 4.5rem;
     margin-bottom: 1.5rem;
     background: var(--bg-tertiary);
-    border-left: 4px solid var(--event-race);
+    border-left: 4px solid var(--event-public-service);
     border-radius: 0.5rem;
     border: 1px solid var(--border-primary);
     border-left-width: 4px;
@@ -2009,7 +2007,7 @@ footer {
     top: 1.5rem;
     width: 2.5rem;
     height: 2.5rem;
-    background: var(--event-race);
+    background: var(--event-public-service);
     color: white;
     font-weight: bold;
     font-size: 1.25rem;
@@ -2100,11 +2098,11 @@ footer {
 }
 
 .article-container .callout.info {
-    border-left-color: var(--event-race);
+    border-left-color: var(--event-public-service);
     background: var(--bg-tertiary);
     border: 1px solid var(--border-primary);
     border-left-width: 4px;
-    border-left-color: var(--event-race);
+    border-left-color: var(--event-public-service);
 }
 
 .article-container .callout.warning {

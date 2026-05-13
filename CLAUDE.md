@@ -134,33 +134,54 @@ const pathPrefix = isInSubdir ? '../' : '';
 {
   "events": [
     {
-      "id": 1,
-      "title": "Event Name",
-      "date": "2025-11-01",              // Required: YYYY-MM-DD
-      "endDate": "2025-11-02",           // Optional: multi-day events
-      "time": "5:00am-11:00am",          // Optional: display format (for UI)
-      "startTime": "05:00",              // Optional: HH:MM format (24-hour)
-      "endTime": "11:00",                // Optional: HH:MM format (24-hour)
-      "type": "race",                    // race|event|training|meeting|emergency
-      "location": "Atlanta, GA",
-      "description": "...",              // Optional
-      "eventOrganizer": "Atlanta Track Club",   // Optional: name of event org
-      "eventOrgUrl": "https://...",      // Optional: event org's website
-      "hamCoordinator": "Atlanta ARES",  // Optional: ham club/ARES coordinating
-      "hamCoordinatorUrl": "https://...",// Optional: ham coordinator's website
-      "signUpUrl": "https://...",        // Optional: volunteer sign-up link
-      "instructions": "..."             // Optional: volunteer instructions
+      "id": 1,                                   // Permanent — never reuse a retired ID
+      "title": "Event Name",                     // Required
+      "type": "public-service",                  // public-service|activity|meeting|training
+      "startDate": "2026-07-04",                 // Required: YYYY-MM-DD
+      "endDate": "2026-07-05",                   // Optional: multi-day events only
+      "startTime": "05:00",                      // Optional: HH:MM 24-hour
+      "endTime": "11:00",                        // Optional: HH:MM 24-hour
+      "eventLocation": "Atlanta, GA",            // Required
+      "eventDescription": "...",                 // Optional: context about the event
+      "eventOrganizer": "Atlanta Track Club",    // Optional: name of org running the event
+      "eventUrl": "https://...",                 // Optional: primary URL for the event
+      "hamCoordinator": "Atlanta ARES",          // public-service only: ham club/ARES coordinating
+      "hamCoordinatorUrl": "https://...",        // public-service only: coordinator's website
+      "volunteerSignUpUrl": "https://...",       // public-service only: volunteer signup link
+      "notes": "..."                             // Optional: see per-type meaning below
     }
   ]
 }
 ```
 
-**Time Handling**:
-- **`startTime`** and **`endTime`**: Structured time data in 24-hour format (HH:MM) for ICS generation
-- **`time`**: Human-readable display format (e.g., "5:00am-11:00am") shown in UI
-- **Single-day events** with `startTime`/`endTime`: Generate timed calendar events (DATETIME format)
-- **Multi-day events** (with `endDate`): Always generate all-day events, even if times are present
-- **Events without times**: Generate all-day events (DATE format)
+**Event types and field conventions**:
+
+| Field | `public-service` | `activity` | `meeting` | `training` |
+|---|---|---|---|---|
+| `startDate` | ✅ required | ✅ required | ✅ required | ✅ required |
+| `endDate` | optional | optional | optional | — |
+| `startTime` / `endTime` | optional | optional | — | optional |
+| `eventLocation` | ✅ required | ✅ required | ✅ required | ✅ required |
+| `eventDescription` | optional | optional | optional | optional |
+| `eventOrganizer` | optional | optional | optional | optional |
+| `eventUrl` | optional | optional | optional | optional |
+| `hamCoordinator` | optional | ❌ not used | ❌ not used | ❌ not used |
+| `hamCoordinatorUrl` | optional | ❌ not used | ❌ not used | ❌ not used |
+| `volunteerSignUpUrl` | optional | ❌ not used | ❌ not used | ❌ not used |
+| `notes` | sign-up instructions | participation notes | general notes | participation notes |
+
+**Type definitions**:
+- `public-service` — Ham operators providing comms support for a non-ham event (races, parades, community events). The modal always shows a "Ham Radio Volunteers Needed" section.
+- `activity` — Ham-centric events where operators participate (Field Day, POTA, contests). No volunteer coordination.
+- `meeting` — Hamfests, conventions, swap meets. Informational/attend-if-interested.
+- `training` — Training sessions and emergency drills (Skywarn, ARES exercises).
+
+**Time handling**:
+- `startTime` and `endTime` are HH:MM 24-hour strings used for both ICS generation and UI display.
+- Display format is derived automatically in JS (`formatTimeDisplay()`). Do not add a separate display field.
+- Single-day events with `startTime`/`endTime` generate timed calendar events (DATETIME format).
+- Multi-day events (with `endDate`) always generate all-day events, even if times are present.
+- Events without times generate all-day events (DATE format).
 
 **Clubs** (`data/clubs.json`):
 ```json
@@ -209,11 +230,10 @@ background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
 --text-muted: #94a3b8;
 
 /* Event Type Colors */
---race: #3b82f6;      /* Blue */
---event: #a855f7;     /* Purple */
---training: #22c55e;  /* Green */
---meeting: #f97316;   /* Orange */
---emergency: #ef4444; /* Red */
+--event-public-service: #3b82f6;  /* Blue */
+--event-activity:       #a855f7;  /* Purple */
+--event-meeting:        #f97316;  /* Orange */
+--event-training:       #22c55e;  /* Green */
 
 /* Special Buttons */
 --youtube: #FF0000;
@@ -627,39 +647,60 @@ When creating a new page, include this SEO template in the `<head>`:
 
 1. Edit `/data/events.json`
 2. Add new event object to `events` array
-3. Required fields: `id`, `title`, `date`, `type`, `location`, `contact`
-4. Optional fields: `endDate`, `time`, `startTime`, `endTime`, `description`
-5. Date format: `YYYY-MM-DD` (ISO 8601)
-6. Time format: `HH:MM` (24-hour, e.g., "08:00", "16:30")
-7. **Always increment `id` from the highest existing ID — never reuse a retired ID.** Event IDs are permanent once assigned; they appear as UIDs in `events.ics` and calendar apps use them to track events across subscription refreshes. Reusing an ID causes duplicate calendar entries for subscribers. Gaps in the sequence from deleted events are expected and harmless.
+3. Required fields: `id`, `title`, `type`, `startDate`, `eventLocation`
+4. Optional fields: `endDate`, `startTime`, `endTime`, `eventDescription`, `eventOrganizer`, `eventUrl`, `notes`
+5. For `public-service` type only: `hamCoordinator`, `hamCoordinatorUrl`, `volunteerSignUpUrl`
+6. Date format: `YYYY-MM-DD` (ISO 8601)
+7. Time format: `HH:MM` 24-hour (e.g., "08:00", "16:30"). Display is derived automatically — do not add a separate display string.
+8. **Always increment `id` from the highest existing ID — never reuse a retired ID.** Event IDs are permanent once assigned; they appear as UIDs in `events.ics` and calendar apps use them to track events across subscription refreshes. Reusing an ID causes duplicate calendar entries for subscribers. Gaps in the sequence from deleted events are expected and harmless.
 
 **Event Type Values**:
-- `race` - Races, runs, marathons
-- `event` - General community events
-- `training` - Training sessions, nets, drills
-- `meeting` - Club meetings, hamfests, conventions
-- `emergency` - Emergency preparedness drills
+- `public-service` — Races, runs, walks, parades, community events where hams provide comms support
+- `activity` — Ham-centric events: Field Day, POTA, QSO parties, contests
+- `meeting` — Hamfests, conventions, swap meets (informational)
+- `training` — Training sessions, Skywarn drills, ARES exercises
 
-**Adding Timed Events**:
-- For single-day events with specific times, add `startTime` and `endTime` fields
-- Format times in 24-hour notation: "08:00" for 8:00am, "16:00" for 4:00pm
-- The `time` field can be formatted for display (e.g., "8:00am-4:00pm")
-- Multi-day events will always appear as all-day events, regardless of time fields
-- Example timed event:
-  ```json
-  {
-    "id": 99,
-    "title": "ARES Training",
-    "date": "2026-03-14",
-    "time": "8:00am-4:00pm",
-    "startTime": "08:00",
-    "endTime": "16:00",
-    "type": "training",
-    "location": "Forsyth, GA",
-    "description": null,
-    "contact": "https://gaares.org/"
-  }
-  ```
+**Example — public-service event with full volunteer info**:
+```json
+{
+  "id": 40,
+  "title": "Example 10K Race",
+  "type": "public-service",
+  "startDate": "2026-09-05",
+  "endDate": null,
+  "startTime": "07:00",
+  "endTime": "12:00",
+  "eventLocation": "Atlanta, GA",
+  "eventDescription": "Ham operators provide medical communications along the course.",
+  "eventOrganizer": "Atlanta Track Club",
+  "eventUrl": "https://atlantatrackclub.org/example",
+  "hamCoordinator": "Atlanta ARES",
+  "hamCoordinatorUrl": "https://atlantaradioclub.org/atlanta-ares.html",
+  "volunteerSignUpUrl": "https://signup.example.com",
+  "notes": "1. Go to signup site\n2. Enter password \"HAM2026\"\n3. Select Communications slot"
+}
+```
+
+**Example — activity event**:
+```json
+{
+  "id": 41,
+  "title": "ARRL Field Day",
+  "type": "activity",
+  "startDate": "2027-06-26",
+  "endDate": "2027-06-27",
+  "startTime": null,
+  "endTime": null,
+  "eventLocation": "See website",
+  "eventDescription": "Annual operating event — set up portable stations and make contacts.",
+  "eventOrganizer": "ARRL",
+  "eventUrl": "http://www.arrl.org/field-day",
+  "hamCoordinator": null,
+  "hamCoordinatorUrl": null,
+  "volunteerSignUpUrl": null,
+  "notes": null
+}
+```
 
 ### Adding Clubs
 
@@ -708,11 +749,25 @@ When creating a new page, include this SEO template in the `<head>`:
 - `.today` - Today's date in calendar
 
 **Event Types**:
-- `.event-type-race` - Blue background
-- `.event-type-event` - Purple background
-- `.event-type-training` - Green background
+- `.event-type-public-service` - Blue background
+- `.event-type-activity` - Purple background
 - `.event-type-meeting` - Orange background
-- `.event-type-emergency` - Red background
+- `.event-type-training` - Green background
+
+---
+
+## Cache-Busting
+
+All HTML files reference `style.css`, `header.js`, `footer.js`, and `calendar.js` with a `?v=X.Y` query string (e.g., `?v=1.1`). This prevents browsers from serving stale cached versions after updates.
+
+**This is handled automatically.** A pre-commit git hook (`.githooks/pre-commit`) detects when any of those four asset files are staged and bumps the minor version across all HTML files before the commit lands.
+
+**Never manually edit the `?v=` strings** — the hook owns them.
+
+**After a fresh clone**, re-activate the hook with:
+```bash
+git config core.hooksPath .githooks
+```
 
 ---
 
@@ -903,24 +958,30 @@ domains:
 
 ```json
 {
-  "id": 26,
+  "id": 40,
   "title": "New Event Name",
-  "date": "2026-12-01",
-  "endDate": null,
-  "time": "10:00am-2:00pm",
   "type": "meeting",
-  "location": "Atlanta, GA",
-  "description": "Event details here",
-  "contact": "https://example.com"
+  "startDate": "2026-12-01",
+  "endDate": null,
+  "startTime": "10:00",
+  "endTime": "14:00",
+  "eventLocation": "Atlanta, GA",
+  "eventDescription": "Event details here.",
+  "eventOrganizer": "Hosting Club Name",
+  "eventUrl": "https://example.com",
+  "hamCoordinator": null,
+  "hamCoordinatorUrl": null,
+  "volunteerSignUpUrl": null,
+  "notes": null
 }
 ```
 
 **Steps**:
 1. Find highest ID in events array
 2. Increment by 1 for new event
-3. Add to events array
-4. Keep date format consistent
-5. Use correct event type
+3. Add to events array using the field order above
+4. Use correct event type (`public-service`, `activity`, `meeting`, `training`)
+5. Only populate `hamCoordinator`, `hamCoordinatorUrl`, `volunteerSignUpUrl` for `public-service` events
 6. Test calendar display
 
 ### Adding a Club

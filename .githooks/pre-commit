@@ -1,0 +1,43 @@
+#!/bin/bash
+# pre-commit hook: auto-bump cache-busting ?v= query string in all HTML files
+# whenever a key CSS or JS asset is staged for commit.
+#
+# Tracked at .githooks/pre-commit
+# To activate after a fresh clone, run:
+#   git config core.hooksPath .githooks
+
+ASSET_FILES=("css/style.css" "js/header.js" "js/footer.js" "js/calendar.js")
+CHANGED=false
+
+for f in "${ASSET_FILES[@]}"; do
+    if git diff --cached --name-only | grep -q "^${f}$"; then
+        CHANGED=true
+        break
+    fi
+done
+
+if [ "$CHANGED" = false ]; then
+    exit 0
+fi
+
+# Read current version from index.html
+CURRENT=$(grep -oh '?v=[0-9]*\.[0-9]*' index.html 2>/dev/null | head -1 | sed 's/?v=//')
+if [ -z "$CURRENT" ]; then
+    CURRENT="1.0"
+fi
+
+MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+MINOR=$(echo "$CURRENT" | cut -d. -f2)
+NEW_MINOR=$((MINOR + 1))
+NEW_VERSION="${MAJOR}.${NEW_MINOR}"
+
+echo "📡 Cache-busting: ?v=${CURRENT} → ?v=${NEW_VERSION}"
+
+# Update all HTML files and stage them
+find . -name "*.html" -not -path "./.git/*" | while read -r file; do
+    sed -i "s/?v=${CURRENT}/?v=${NEW_VERSION}/g" "$file"
+done
+
+find . -name "*.html" -not -path "./.git/*" | xargs git add
+
+exit 0
