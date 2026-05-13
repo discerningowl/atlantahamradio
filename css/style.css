@@ -905,12 +905,12 @@ nav a:hover {
     margin-bottom: 0;
 }
 
-.contact-box a {
+.contact-box a:not(.btn) {
     color: var(--link-color);
     text-decoration: none;
 }
 
-.contact-box a:hover {
+.contact-box a:not(.btn):hover {
     color: var(--link-hover);
     text-decoration: underline;
 }
