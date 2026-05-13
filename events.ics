@@ -27,7 +27,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:event-1@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20251101
 DTEND;VALUE=DATE:20251103
@@ -40,7 +40,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-2@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20251127T050000
 DTEND;TZID=America/New_York:20251127T110000
@@ -53,13 +53,14 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-3@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260103T053000
 DTEND;TZID=America/New_York:20260103T130000
 SUMMARY:The Polar Opposite Peachtree 2026
 LOCATION:Downtown Atlanta
-DESCRIPTION:Register through the provided link. Ham radio operators will be coordinated by Atlanta ARES.
+DESCRIPTION:Register through the provided link. Ham radio operators will be
+  coordinated by Atlanta ARES.
 URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=106071
 CATEGORIES:Public Service
 STATUS:CONFIRMED
@@ -67,13 +68,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-5@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260124
 DTEND;VALUE=DATE:20260126
 SUMMARY:Winter Field Day
 LOCATION:See website
-DESCRIPTION:Winter Field Day is an annual amateur radio event held on the last full weekend in January that challenges operators to set up portable stations in cold\, remote conditions to practice emergency communications.
+DESCRIPTION:Winter Field Day is an annual amateur radio event held on the l
+ ast full weekend in January that challenges operators to set up portable st
+ ations in cold\, remote conditions to practice emergency communications.
 URL:https://winterfieldday.org
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
@@ -81,20 +84,22 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-6@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260124T070000
 DTEND;TZID=America/New_York:20260124T130000
 SUMMARY:Classic City Marathon
 LOCATION:Athens\, GA
-DESCRIPTION:Athens Radio Club will be coordinating ham radio operators for this event. Bob Herrin - KE4JLL\, the club Public Service coordinator can provide you with more details and updates.
+DESCRIPTION:Athens Radio Club will be coordinating ham radio operators for 
+ this event. Bob Herrin - KE4JLL\, the club Public Service coordinator can p
+ rovide you with more details and updates.
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-7@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260221T083000
 DTEND;TZID=America/New_York:20260221T151500
@@ -107,13 +112,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-8@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260213
 DTEND;VALUE=DATE:20260216
 SUMMARY:Orlando Hamcation
 LOCATION:Orlando\, FL
-DESCRIPTION:Orlando HamCation is a three-day annual ham radio convention in Orlando\, Florida that combines vendor exhibits\, technical talks\, awards and social events for amateur radio enthusiasts.
+DESCRIPTION:Orlando HamCation is a three-day annual ham radio convention in
+  Orlando\, Florida that combines vendor exhibits\, technical talks\, awards
+  and social events for amateur radio enthusiasts.
 URL:https://www.hamcation.com/
 CATEGORIES:Meeting
 STATUS:CONFIRMED
@@ -121,7 +128,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-10@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260228
 DTEND;VALUE=DATE:20260301
@@ -134,13 +141,14 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-11@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260301
 DTEND;VALUE=DATE:20260302
 SUMMARY:Publix Atlanta Marathon
 LOCATION:Atlanta\, GA
-DESCRIPTION:Ham radio volunteers provide real-time health and welfare relays to public safety agencies along the March 1st course.
+DESCRIPTION:Ham radio volunteers provide real-time health and welfare relay
+ s to public safety agencies along the March 1st course.
 URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=107393
 CATEGORIES:Public Service
 STATUS:CONFIRMED
@@ -148,13 +156,14 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-12@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260314T080000
 DTEND;TZID=America/New_York:20260314T160000
 SUMMARY:GA ARES Annual Training (ARES100)
 LOCATION:Forsyth\, GA
-DESCRIPTION:Session covering the latest in emergency communications\, incident response\, and public service operations.
+DESCRIPTION:Session covering the latest in emergency communications\, incid
+ ent response\, and public service operations.
 URL:https://gaares.org/ga-ares-state-meeting-2026/
 CATEGORIES:Training
 STATUS:CONFIRMED
@@ -162,13 +171,16 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-13@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260418
 DTEND;VALUE=DATE:20260420
 SUMMARY:Georgia Parks on the Air
 LOCATION:See website
-DESCRIPTION:Georgia Parks on the Air is a weekend-long contest that mobilizes ham operators to activate (or hunt from) every Georgia state park — about 50 parks — in a single 36-hour window\, rewarding contacts made from those park sites.
+DESCRIPTION:Georgia Parks on the Air is a weekend-long contest that mobiliz
+ es ham operators to activate (or hunt from) every Georgia state park — ab
+ out 50 parks — in a single 36-hour window\, rewarding contacts made from 
+ those park sites.
 URL:https://gaparks.org/
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
@@ -176,13 +188,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-15@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260515
 DTEND;VALUE=DATE:20260518
 SUMMARY:Dayton Hamvention
 LOCATION:Dayton\, OH
-DESCRIPTION:Dayton Hamvention is one of the world's largest amateur radio conventions\, held each May in the Dayton\, Ohio area where thousands of hams gather for exhibits\, vendors\, workshops and community networking.
+DESCRIPTION:Dayton Hamvention is one of the world's largest amateur radio c
+ onventions\, held each May in the Dayton\, Ohio area where thousands of ham
+ s gather for exhibits\, vendors\, workshops and community networking.
 URL:https://hamvention.org/
 CATEGORIES:Meeting
 STATUS:CONFIRMED
@@ -190,7 +204,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-17@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260627
 DTEND;VALUE=DATE:20260629
@@ -203,13 +217,18 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-18@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260704T040000
 DTEND;TZID=America/New_York:20260704T110000
 SUMMARY:Northside Hospital Peachtree Road Race
 LOCATION:Atlanta\, GA
-DESCRIPTION:The world's largest 10K road race. Ham radio operators provide communications support for the medical branch. Positions include Water Stops\, pace cars\, shadows\, start and finish line assignments\, and Call Takers in the Multi-Agency Coordination Center (MACC). You do not need to be an ARES member to participate. Call Taker positions do not require an Amateur Radio license.
+DESCRIPTION:The world's largest 10K road race. Ham radio operators provide 
+ communications support for the medical branch. Positions include Water Stop
+ s\, pace cars\, shadows\, start and finish line assignments\, and Call Take
+ rs in the Multi-Agency Coordination Center (MACC). You do not need to be an
+  ARES member to participate. Call Taker positions do not require an Amateur
+  Radio license.
 URL:https://atlantatrackclub.volunteerlocal.com/volunteer/?id=110344
 CATEGORIES:Public Service
 STATUS:CONFIRMED
@@ -217,13 +236,16 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-19@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260822
 DTEND;VALUE=DATE:20260824
 SUMMARY:Huntsville Hamfest
 LOCATION:Huntsville\, AL
-DESCRIPTION:Huntsville Hamfest is a two-day ARRL-sanctioned gathering held each August at the Von Braun Center in Huntsville\, Alabama\, featuring a flea market\, vendor displays and family-friendly activities for amateur radio enthusiasts.
+DESCRIPTION:Huntsville Hamfest is a two-day ARRL-sanctioned gathering held 
+ each August at the Von Braun Center in Huntsville\, Alabama\, featuring a f
+ lea market\, vendor displays and family-friendly activities for amateur rad
+ io enthusiasts.
 URL:https://hamfest.org/
 CATEGORIES:Meeting
 STATUS:CONFIRMED
@@ -231,20 +253,23 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-20@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260912
 DTEND;VALUE=DATE:20260913
 SUMMARY:No One Walks Alone
 LOCATION:CJ Smith Park\, Newnan\, GA
-DESCRIPTION:Pathways Center and AnotherWay Foundation\, Inc. will host a community walk to honor loved ones that have lost their lives to suicide and to raise funds to support individuals seeking mental health treatment that are not able to afford care.
+DESCRIPTION:Pathways Center and AnotherWay Foundation\, Inc. will host a co
+ mmunity walk to honor loved ones that have lost their lives to suicide and 
+ to raise funds to support individuals seeking mental health treatment that 
+ are not able to afford care.
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-21@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260829
 DTEND;VALUE=DATE:20260830
@@ -257,7 +282,7 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-22@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260913
 DTEND;VALUE=DATE:20260914
@@ -270,20 +295,22 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-23@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20261004
 DTEND;VALUE=DATE:20261005
 SUMMARY:Ferst Lewis Grizzard and Catfish Bike Ride
 LOCATION:The Moreland Mill\, Moreland\, GA
-DESCRIPTION:Coweta Ferst Readers\, Inc.'s mission is to provide a free monthly age-appropriate book for every child under the age of five in Coweta County.
+DESCRIPTION:Coweta Ferst Readers\, Inc.'s mission is to provide a free mont
+ hly age-appropriate book for every child under the age of five in Coweta Co
+ unty.
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-24@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20261004
 DTEND;VALUE=DATE:20261005
@@ -296,13 +323,14 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-25@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20261025T060000
 DTEND;TZID=America/New_York:20261025T120000
 SUMMARY:PNC Atlanta 10 Mile and 5K
 LOCATION:Atlanta\, GA
-DESCRIPTION:The Southeast's largest and most iconic 10 mile race. Scenic course\, skyline views.
+DESCRIPTION:The Southeast's largest and most iconic 10 mile race. Scenic co
+ urse\, skyline views.
 URL:https://www.atlantatrackclub.org/2026-pnc-atlanta-10-miler-5k
 CATEGORIES:Public Service
 STATUS:CONFIRMED
@@ -310,26 +338,29 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-26@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260110T080000
 DTEND;TZID=America/New_York:20260110T120000
 SUMMARY:Snowflake 10k
 LOCATION:Winterville\, GA
-DESCRIPTION:The race is sponsored by the Winterville Civitan Club and supports the Firefly Trail\, and persons who have disabilities.
+DESCRIPTION:The race is sponsored by the Winterville Civitan Club and suppo
+ rts the Firefly Trail\, and persons who have disabilities.
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-27@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261101
 SUMMARY:Stone Mountain Hamfest
 LOCATION:Gwinnett County Fairgrounds\, Lawrenceville\, GA 30045
-DESCRIPTION:Annual amateur radio convention and flea market featuring vendors\, exhibits\, forums\, and prizes for ham radio enthusiasts\, electronics fans\, and tech hobbyists.
+DESCRIPTION:Annual amateur radio convention and flea market featuring vendo
+ rs\, exhibits\, forums\, and prizes for ham radio enthusiasts\, electronics
+  fans\, and tech hobbyists.
 URL:https://stonemountainhamfest.com/
 CATEGORIES:Meeting
 STATUS:CONFIRMED
@@ -337,13 +368,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-28@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260411T140000
 DTEND;TZID=America/New_York:20260411T235900
 SUMMARY:Georgia QSO Party
 LOCATION:See GA QSO Party website
-DESCRIPTION:Annual on-air amateur radio contest held the second full weekend in April\, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.
+DESCRIPTION:Annual on-air amateur radio contest held the second full weeken
+ d in April\, where participants contact stations in Georgia's 159 counties 
+ (and worldwide) on CW and SSB modes.
 URL:https://gaqsoparty.com/
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
@@ -351,13 +384,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-29@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260412T100000
 DTEND;TZID=America/New_York:20260412T195900
 SUMMARY:Georgia QSO Party
 LOCATION:See GA QSO Party website
-DESCRIPTION:Annual on-air amateur radio contest held the second full weekend in April\, where participants contact stations in Georgia's 159 counties (and worldwide) on CW and SSB modes.
+DESCRIPTION:Annual on-air amateur radio contest held the second full weeken
+ d in April\, where participants contact stations in Georgia's 159 counties 
+ (and worldwide) on CW and SSB modes.
 URL:https://gaqsoparty.com/
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
@@ -365,27 +400,31 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-30@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260321
 DTEND;VALUE=DATE:20260323
 SUMMARY:FCARC POTA Party
 LOCATION:Panola Mountain State Park\, Pavilion 1
-DESCRIPTION:Explore the POTA event\, practice emergency/portable radio setups\, and get hands-on experience. Bring your own equipment\; if you don't have a radio\, mine is available when not in use.
-URL:https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1%202026%20POTA%20Outing.pdf
+DESCRIPTION:Explore the POTA event\, practice emergency/portable radio setu
+ ps\, and get hands-on experience. Bring your own equipment\; if you don't h
+ ave a radio\, mine is available when not in use.
+URL:https://groups.io/g/fayetteares/attachment/4309/0/Fayette%20County%20Q1
+ %202026%20POTA%20Outing.pdf
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-31@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260220
 DTEND;VALUE=DATE:20260223
 SUMMARY:Winter POTA Event
 LOCATION:Watson Mill Bridge State Park US-2207
-DESCRIPTION:Setup on Friday and operate for all weekend making POTA contacts.
+DESCRIPTION:Setup on Friday and operate for all weekend making POTA contact
+ s.
 URL:https://www.qrz.com/db/W4G
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
@@ -393,13 +432,17 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-32@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260204T080000
 DTEND;TZID=America/New_York:20260204T120000
 SUMMARY:EXERCISE: Tornado Drill
 LOCATION:QTH
-DESCRIPTION:On Feb 4th the Peachtree City NWS will conduct its yearly tornado drill. If inclement weather is happening that day\, it will be either re-scheduled or possibly canceled. We will be linking in all the Georgia Skywarn Linked Repeaters at 8am and will start taking check-ins for the drill at 9am.
+DESCRIPTION:On Feb 4th the Peachtree City NWS will conduct its yearly torna
+ do drill. If inclement weather is happening that day\, it will be either re
+ -scheduled or possibly canceled. We will be linking in all the Georgia Skyw
+ arn Linked Repeaters at 8am and will start taking check-ins for the drill a
+ t 9am.
 URL:https://georgiaskywarn.com
 CATEGORIES:Training
 STATUS:CONFIRMED
@@ -407,13 +450,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-33@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20270130
 DTEND;VALUE=DATE:20270201
 SUMMARY:Winter Field Day
 LOCATION:See website
-DESCRIPTION:Winter Field Day is an annual amateur radio event held on the last full weekend in January that challenges operators to set up portable stations in cold\, remote conditions to practice emergency communications.
+DESCRIPTION:Winter Field Day is an annual amateur radio event held on the l
+ ast full weekend in January that challenges operators to set up portable st
+ ations in cold\, remote conditions to practice emergency communications.
 URL:https://winterfieldday.org
 CATEGORIES:Ham Activity
 STATUS:CONFIRMED
@@ -421,13 +466,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-34@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260628T180000
 DTEND;TZID=America/New_York:20260628T220000
 SUMMARY:Star Spangled Classic Fireworks
 LOCATION:Southeast Clarke Park\, Athens\, GA
-DESCRIPTION:Athens Radio Club provides communications supporting parking and traffic management for Athens-Clarke County's annual Independence Day fireworks celebration.
+DESCRIPTION:Athens Radio Club provides communications supporting parking an
+ d traffic management for Athens-Clarke County's annual Independence Day fir
+ eworks celebration.
 URL:https://www.accgov.com/1553/Star-Spangled-Classic
 CATEGORIES:Public Service
 STATUS:CONFIRMED
@@ -435,13 +482,15 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-35@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20260801
 DTEND;VALUE=DATE:20260802
 SUMMARY:Coach Mike's Run Through the Woods 5K
 LOCATION:Athens YMCA\, 915 Hawthorne Ave\, Athens\, GA 30605
-DESCRIPTION:Cross country 5K race in memory of Coach Mike Castronis. Athens Radio Club provides communications support. Course begins on the YMCA track with two loops through adjacent woods.
+DESCRIPTION:Cross country 5K race in memory of Coach Mike Castronis. Athens
+  Radio Club provides communications support. Course begins on the YMCA trac
+ k with two loops through adjacent woods.
 URL:https://runsignup.com/Race/GA/Athens/CoachMikesRunThroughTheWoodsXC5K
 CATEGORIES:Public Service
 STATUS:CONFIRMED
@@ -449,39 +498,47 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-36@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;VALUE=DATE:20261024
 DTEND;VALUE=DATE:20261025
 SUMMARY:Colbert Trunk or Treat
 LOCATION:Colbert City Park (Red Canna Park)\, Colbert\, GA
-DESCRIPTION:Athens Radio Club provides communications and parking support for community Halloween event.
+DESCRIPTION:Athens Radio Club provides communications and parking support f
+ or community Halloween event.
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-37@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20261126T050000
 DTEND;TZID=America/New_York:20261126T110000
 SUMMARY:Invesco QQQ Thanksgiving Day Half Marathon\, 5K\, Mile & Dash
 LOCATION:Atlanta\, GA
-URL:https://www.atlantatrackclub.org/2026-invesco-qqq-thanksgiving-day-half-marathon-5k-mile-dash
+URL:https://www.atlantatrackclub.org/2026-invesco-qqq-thanksgiving-day-half
+ -marathon-5k-mile-dash
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-38@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260411T090000
 DTEND;TZID=America/New_York:20260411T110000
 SUMMARY:Peachy Trunkfest & Swap
 LOCATION:Fayetteville\, GA
-DESCRIPTION:A casual\, vehicle-based tailgate swap meet hosted by the Fayette County Amateur Radio Club (KK4GQ). Buy\, sell\, and trade used amateur radio equipment — rigs\, antennas\, parts — directly from your trunk. FREE to attend and sell! Complimentary coffee and donuts while supplies last. Cash is highly recommended. Sellers should arrive 8:00am–8:45am. Talk-In: 145.210 (–) PL 131.8 Hz. Vehicle-based event only — no tents\, external tables\, amplified sound\, alcohol\, or open fires.
+DESCRIPTION:A casual\, vehicle-based tailgate swap meet hosted by the Fayet
+ te County Amateur Radio Club (KK4GQ). Buy\, sell\, and trade used amateur r
+ adio equipment — rigs\, antennas\, parts — directly from your trunk. FR
+ EE to attend and sell! Complimentary coffee and donuts while supplies last.
+  Cash is highly recommended. Sellers should arrive 8:00am–8:45am. Talk-In
+ : 145.210 (–) PL 131.8 Hz. Vehicle-based event only — no tents\, extern
+ al tables\, amplified sound\, alcohol\, or open fires.
 URL:https://kk4gq.org/peachy
 CATEGORIES:Meeting
 STATUS:CONFIRMED
@@ -489,14 +546,18 @@ TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 UID:event-39@atlantahamradio.org
-DTSTAMP:20260513T160601Z
+DTSTAMP:20260513T162935Z
 SEQUENCE:0
 DTSTART;TZID=America/New_York:20260525T070000
 DTEND;TZID=America/New_York:20260525T130000
 SUMMARY:Dacula Memorial Day Parade
 LOCATION:Hebron Baptist Church\, 202 Hebron Church Rd\, Dacula\, GA 30019
-DESCRIPTION:Ham radio operators help coordinate the Dacula Memorial Day Parade by lining up participants (vehicles\, floats\, marching bands\, groups\, tractors\, and horses) at Hebron Baptist Church so they depart in the correct order for announcement at the Announcing Stand.
-URL:https://docs.google.com/forms/d/e/1FAIpQLSc4c7i-daThdqO09g39q6qRj7ZZVJX4n6h_KV2x2O6-Z1nvyg/viewform
+DESCRIPTION:Ham radio operators help coordinate the Dacula Memorial Day Par
+ ade by lining up participants (vehicles\, floats\, marching bands\, groups\
+ , tractors\, and horses) at Hebron Baptist Church so they depart in the cor
+ rect order for announcement at the Announcing Stand.
+URL:https://docs.google.com/forms/d/e/1FAIpQLSc4c7i-daThdqO09g39q6qRj7ZZVJX
+ 4n6h_KV2x2O6-Z1nvyg/viewform
 CATEGORIES:Public Service
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT

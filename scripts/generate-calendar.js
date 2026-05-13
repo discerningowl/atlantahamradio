@@ -52,6 +52,25 @@ function escapeICSText(text) {
                 .replace(/\n/g, '\\n');
 }
 
+// RFC 5545 §3.1 line folding: lines must not exceed 75 octets.
+// Long lines are broken with CRLF + single space (continuation character).
+function foldLine(line) {
+    if (Buffer.byteLength(line, 'utf8') <= 75) return line;
+    let result = '';
+    let remaining = line;
+    while (Buffer.byteLength(remaining, 'utf8') > 75) {
+        // Split at 75 bytes, but be careful not to split a multi-byte character
+        let chunk = remaining;
+        while (Buffer.byteLength(chunk, 'utf8') > 75) {
+            chunk = chunk.substring(0, chunk.length - 1);
+        }
+        result += chunk + '\r\n ';
+        remaining = remaining.substring(chunk.length);
+    }
+    result += remaining;
+    return result;
+}
+
 // Generate UTC timestamp for DTSTAMP
 function getTimestamp() {
     const now = new Date();
@@ -96,7 +115,7 @@ function generateICS() {
         'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
         'END:STANDARD',
         'END:VTIMEZONE'
-    ].join('\r\n') + '\r\n';
+    ].map(foldLine).join('\r\n') + '\r\n';
 
     events.forEach(event => {
         const description = escapeICSText(event.eventDescription || '');
@@ -138,7 +157,7 @@ function generateICS() {
             'STATUS:CONFIRMED',
             'TRANSP:TRANSPARENT',
             'END:VEVENT'
-        ].filter(line => line).join('\r\n') + '\r\n';
+        ].filter(line => line).map(foldLine).join('\r\n') + '\r\n';
     });
 
     icsContent += 'END:VCALENDAR';

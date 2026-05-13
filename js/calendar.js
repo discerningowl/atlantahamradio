@@ -452,6 +452,25 @@ function escapeICSText(text) {
                   .replace(/\n/g, '\\n');
 }
 
+// RFC 5545 §3.1 line folding: lines must not exceed 75 octets.
+// Long lines are broken with CRLF + single space (continuation character).
+const _icsEncoder = new TextEncoder();
+function foldICSLine(line) {
+    if (_icsEncoder.encode(line).length <= 75) return line;
+    let result = '';
+    let remaining = line;
+    while (_icsEncoder.encode(remaining).length > 75) {
+        let chunk = remaining;
+        while (_icsEncoder.encode(chunk).length > 75) {
+            chunk = chunk.substring(0, chunk.length - 1);
+        }
+        result += chunk + '\r\n ';
+        remaining = remaining.substring(chunk.length);
+    }
+    result += remaining;
+    return result;
+}
+
 function generateICS(event) {
     const now = new Date();
     const timestamp = formatICSDate(now) + 'T' +
@@ -519,7 +538,7 @@ function generateICS(event) {
         'TRANSP:TRANSPARENT',
         'END:VEVENT',
         'END:VCALENDAR'
-    ].filter(line => line).join('\r\n');
+    ].filter(line => line).map(foldICSLine).join('\r\n');
 
     return icsContent;
 }
