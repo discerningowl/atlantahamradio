@@ -329,48 +329,48 @@ function showEventModal(eventId) {
     // Event organizer row (all types)
     if (event.eventOrganizer || event.eventUrl) {
         if (event.eventOrganizer && event.eventUrl) {
-            contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">${escapeHTML(event.eventOrganizer)}</a></p>`;
+            contactHTML += `<p><strong>Event Info:</strong> <a href="${escapeHTML(event.eventUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(event.eventOrganizer)}</a></p>`;
         } else if (event.eventOrganizer) {
-            contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Organized by:</strong> ${escapeHTML(event.eventOrganizer)}</p>`;
+            contactHTML += `<p><strong>Organized by:</strong> ${escapeHTML(event.eventOrganizer)}</p>`;
         } else {
-            contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Event Info:</strong> <a href="${escapeHTML(event.eventUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">${escapeHTML(event.eventUrl)}</a></p>`;
+            contactHTML += `<p><strong>Event Info:</strong> <a href="${escapeHTML(event.eventUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(event.eventUrl)}</a></p>`;
         }
     }
 
     // Public service: volunteer section
     if (event.type === 'public-service') {
-        contactHTML += `<p style="margin-top:1rem;margin-bottom:0.5rem;font-weight:600;border-top:1px solid #334155;padding-top:0.75rem;">Ham Radio Volunteers Needed</p>`;
+        contactHTML += `<p class="contact-box-section-header">Ham Radio Volunteers Needed</p>`;
 
         if (event.hamCoordinator) {
             const coordText = escapeHTML(event.hamCoordinator);
             const coordLink = event.hamCoordinatorUrl
-                ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">${coordText}</a>`
+                ? `<a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer">${coordText}</a>`
                 : `<strong>${coordText}</strong>`;
 
             if (event.volunteerSignUpUrl) {
-                contactHTML += `<p style="margin-bottom:0.5rem;"><strong>Ham Radio Contact:</strong> ${coordLink}</p>`;
+                contactHTML += `<p><strong>Ham Radio Contact:</strong> ${coordLink}</p>`;
             } else {
-                contactHTML += `<p style="margin-bottom:0.5rem;">To volunteer as a ham radio operator, contact ${coordLink}.</p>`;
+                contactHTML += `<p>To volunteer as a ham radio operator, contact ${coordLink}.</p>`;
             }
         } else if (event.hamCoordinatorUrl && !event.volunteerSignUpUrl) {
-            contactHTML += `<p style="margin-bottom:0.5rem;"><a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer" style="color:#3b82f6;text-decoration:none;">Contact the ham radio coordinator to volunteer</a></p>`;
+            contactHTML += `<p><a href="${escapeHTML(event.hamCoordinatorUrl)}" target="_blank" rel="noopener noreferrer">Contact the ham radio coordinator to volunteer</a></p>`;
         }
 
         if (event.volunteerSignUpUrl) {
-            contactHTML += `<p style="margin-bottom:0.5rem;"><a href="${escapeHTML(event.volunteerSignUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-block;text-decoration:none;">Sign Up to Volunteer</a></p>`;
+            contactHTML += `<div class="contact-box-action"><a href="${escapeHTML(event.volunteerSignUpUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Sign Up to Volunteer</a></div>`;
         }
 
         if (event.notes) {
-            contactHTML += `<p style="margin-top:0.75rem;margin-bottom:0.5rem;white-space:pre-line;"><strong>Sign-up Instructions:</strong><br>${escapeHTML(event.notes)}</p>`;
+            contactHTML += `<p class="modal-notes"><strong>Sign-up Instructions:</strong><br>${escapeHTML(event.notes)}</p>`;
         }
 
     } else if (event.notes) {
         // Activity / meeting / training: show notes with a neutral label
         const notesLabel = event.type === 'training' ? 'Participation Notes' : 'Notes';
-        contactHTML += `<p style="margin-top:${contactHTML ? '1rem' : '0'};margin-bottom:0.5rem;white-space:pre-line;"><strong>${notesLabel}:</strong><br>${escapeHTML(event.notes)}</p>`;
+        contactHTML += `<p class="modal-notes"><strong>${notesLabel}:</strong><br>${escapeHTML(event.notes)}</p>`;
     }
 
-    contactInfo.innerHTML = contactHTML;
+    contactInfo.innerHTML = contactHTML ? `<div class="contact-box">${contactHTML}</div>` : '';
 
     // Add to Calendar button
     const addToCalendarBtn = document.getElementById('addToCalendarBtn');
