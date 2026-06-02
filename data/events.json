@@ -594,6 +594,23 @@
       "hamCoordinatorUrl": "https://www.gars.org",
       "volunteerSignUpUrl": "https://docs.google.com/forms/d/e/1FAIpQLSc4c7i-daThdqO09g39q6qRj7ZZVJX4n6h_KV2x2O6-Z1nvyg/viewform",
       "notes": "Arrive at 7:00 AM to help set up the pop-up tent, portable repeater, and tripod markers with flags. Wear comfortable shoes and clothing. Bring and wear your yellow safety vest and GARS Mission Hat (free hats available for new volunteers). Program your HT to the portable repeater: 147.045 MHz (minus offset), PL 82.5. No HT? No problem — you can shadow someone who has one. Chick-fil-A breakfast biscuits and coffee will be provided."
+    },
+    {
+      "id": 40,
+      "title": "Chattahoochee Nature Center Possum Trot 10K",
+      "type": "public-service",
+      "startDate": "2026-06-20",
+      "endDate": null,
+      "startTime": "05:30",
+      "endTime": "10:00",
+      "eventLocation": "Chattahoochee Nature Center, 9135 Willeo Road, Roswell, GA",
+      "eventDescription": "The 48th Annual Possum Trot 10K is a Peachtree Road Race qualifier benefiting the Chattahoochee Nature Center's environmental education and wildlife rehabilitation programs. Last year drew more than 800 runners. Ham radio operators provide the only effective means of communicating field conditions back to race organizers and emergency personnel — stationed at the starting line, mile markers, turnarounds, and course waypoints. Operators watch for and report injured or in-distress runners, vehicles on the closed course, and other safety issues, and coordinate the start of mile-marker race timers.",
+      "eventOrganizer": "Chattahoochee Nature Center",
+      "eventUrl": "https://chattnaturecenter.org/special-events/possum-trot-10k-event/",
+      "hamCoordinator": "Mike K4ZEC & Janet KN4JNC Carroll",
+      "hamCoordinatorUrl": null,
+      "volunteerSignUpUrl": null,
+      "notes": "Race starts 7:00 AM. Roads and parking lot close at 6:00 AM — volunteers should arrive at CNC no later than 5:30 AM. Roads reopen 90 minutes after race start; finished by ~10:00 AM. Bring a 2m HT with a good battery (and a spare if you have one). Volunteers receive a limited-edition Possum Trot T-shirt.\n\nTo volunteer, contact Mike (K4ZEC) or Janet (KN4JNC) Carroll. Their email addresses are masked on Groups.io and not listed on QRZ — reach out via the Groups.io list where the announcement appeared, or through a local Atlanta-area club that has worked the Possum Trot in past years."
     }
   ]
 }
