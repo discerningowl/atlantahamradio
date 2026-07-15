@@ -1,4 +1,5 @@
 .DS_Store
+.claude/
 
 # Environment variables and secrets
 .env
