@@ -1124,6 +1124,20 @@ footer {
     color: var(--text-muted);
 }
 
+.footer-validated {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+.footer-validated svg {
+    color: var(--event-training);
+    flex-shrink: 0;
+}
+
 .event-type-public-service { background: var(--event-public-service); }
 .event-type-activity { background: var(--event-activity); }
 .event-type-training { background: var(--event-training); }
@@ -2241,6 +2255,27 @@ footer {
 .article-container table td:hover {
     background: var(--bg-tertiary);
     color: var(--accent-light);
+}
+
+/* Resource cards used inside article pages */
+
+.article-container .resource-grid {
+    margin: 1rem 0 1.5rem;
+}
+
+.article-container .resource-card h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.article-container .resource-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* Article callout boxes */

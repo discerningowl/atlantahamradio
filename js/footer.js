@@ -4,6 +4,21 @@ function loadFooter() {
     const isInSubdir = window.location.pathname.includes('/pages/');
     const pathPrefix = isInSubdir ? '../' : '';
 
+    // Per-page "validated" date, set via <meta name="page-validated" content="YYYY-MM-DD"> in each page's <head>
+    let validatedHTML = '';
+    const validatedMeta = document.querySelector('meta[name="page-validated"]');
+    if (validatedMeta && validatedMeta.content) {
+        const validatedDate = new Date(validatedMeta.content + 'T00:00:00');
+        if (!isNaN(validatedDate)) {
+            const formattedDate = validatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            validatedHTML = `
+                    <p class="footer-validated">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Page validated since ${formattedDate}
+                    </p>`;
+        }
+    }
+
     const footerHTML = `
         <footer>
             <div class="footer-content">
@@ -36,7 +51,7 @@ function loadFooter() {
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; ${new Date().getFullYear()} Atlanta Ham Radio &middot; All Rights Reserved &middot; Focused on public service and community involvement</p>
+                    <p>&copy; ${new Date().getFullYear()} Atlanta Ham Radio &middot; All Rights Reserved &middot; Focused on public service and community involvement</p>${validatedHTML}
                 </div>
             </div>
         </footer>
