@@ -16,8 +16,8 @@
               "name": "Facebook",
               "url": "https://www.facebook.com/groups/BCECA/"
             }
-      	  ]
-      	}
+          ]
+        }
       ]
     },
     {
@@ -33,8 +33,8 @@
               "url": "https://cherokee-hams.groups.io/g/main"
             }
           ]
-      	},
-      	{
+        },
+        {
           "name": "Cherokee County ARES",
           "location": "Cherokee County",
           "website": "http://www.cherokee-ares.org/",
@@ -44,7 +44,7 @@
               "url": "https://www.facebook.com/groups/Cherokee.ARES"
             }
           ]
-      	}
+        }
       ]
     },
     {
@@ -109,7 +109,7 @@
     {
       "name": "Coweta County",
       "clubs": [
-      {
+        {
           "name": "Newnan Regional Amateur Radio Club",
           "location": "Newnan, GA",
           "website": "https://newnanradio.org/",
@@ -182,7 +182,7 @@
             {
               "name": "Groups.io",
               "url": "https://groups.io/g/kk4gq"
-            }, 
+            },
             {
               "name": "Facebook",
               "url": "https://www.facebook.com/groups/KK4GQ"
@@ -401,6 +401,17 @@
               "url": "http://silvercometars.groups.io/"
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Spalding County",
+      "clubs": [
+        {
+          "name": "K4CXS - Spalding County Amateur Radio Club",
+          "location": "Griffin, GA",
+          "website": "https://www.k4cxs-scarc.org/",
+          "links": []
         }
       ]
     },
