@@ -179,7 +179,7 @@
       "startTime": null,
       "endTime": null,
       "eventLocation": "See website",
-      "eventDescription": "Georgia Parks on the Air is a weekend-long contest that mobilizes ham operators to activate (or hunt from) every Georgia state park — about 50 parks — in a single 36-hour window, rewarding contacts made from those park sites.",
+      "eventDescription": "Georgia Parks on the Air is a weekend-long contest that mobilizes ham operators to activate (or hunt from) every Georgia state park \u2014 about 50 parks \u2014 in a single 36-hour window, rewarding contacts made from those park sites.",
       "eventOrganizer": null,
       "eventUrl": "https://gaparks.org/",
       "hamCoordinator": null,
@@ -236,7 +236,7 @@
       "hamCoordinator": "Atlanta ARES",
       "hamCoordinatorUrl": "https://www.atlantaradioclub.org/atlanta-ares.html",
       "volunteerSignUpUrl": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=110344",
-      "notes": "1. Go to the sign-up website\n2. Enter password \"PRR26HAM\" and click Submit\n3. Select your preferred position (Water Stop, pace car, shadow, start/finish line, or MACC Call Taker)\n4. If signing up as a Call Taker, enter \"Call Taker\" in the FCC Call Sign field — no Amateur Radio license required for this role\n\nSign up early so organizers can plan volunteer coverage for the medical branch."
+      "notes": "1. Go to the sign-up website\n2. Enter password \"PRR26HAM\" and click Submit\n3. Select your preferred position (Water Stop, pace car, shadow, start/finish line, or MACC Call Taker)\n4. If signing up as a Call Taker, enter \"Call Taker\" in the FCC Call Sign field \u2014 no Amateur Radio license required for this role\n\nSign up early so organizers can plan volunteer coverage for the medical branch."
     },
     {
       "id": 19,
@@ -251,23 +251,6 @@
       "eventOrganizer": null,
       "eventUrl": "https://hamfest.org/",
       "hamCoordinator": null,
-      "hamCoordinatorUrl": null,
-      "volunteerSignUpUrl": null,
-      "notes": null
-    },
-    {
-      "id": 20,
-      "title": "No One Walks Alone",
-      "type": "public-service",
-      "startDate": "2026-09-12",
-      "endDate": null,
-      "startTime": null,
-      "endTime": null,
-      "eventLocation": "CJ Smith Park, Newnan, GA",
-      "eventDescription": "Pathways Center and AnotherWay Foundation, Inc. will host a community walk to honor loved ones that have lost their lives to suicide and to raise funds to support individuals seeking mental health treatment that are not able to afford care.",
-      "eventOrganizer": null,
-      "eventUrl": null,
-      "hamCoordinator": "Newnan Regional Amateur Radio Club",
       "hamCoordinatorUrl": null,
       "volunteerSignUpUrl": null,
       "notes": null
@@ -570,7 +553,7 @@
       "startTime": "09:00",
       "endTime": "11:00",
       "eventLocation": "Fayetteville, GA",
-      "eventDescription": "A casual, vehicle-based tailgate swap meet hosted by the Fayette County Amateur Radio Club (KK4GQ). Buy, sell, and trade used amateur radio equipment — rigs, antennas, parts — directly from your trunk. FREE to attend and sell! Complimentary coffee and donuts while supplies last. Cash is highly recommended. Sellers should arrive 8:00am–8:45am. Talk-In: 145.210 (–) PL 131.8 Hz. Vehicle-based event only — no tents, external tables, amplified sound, alcohol, or open fires.",
+      "eventDescription": "A casual, vehicle-based tailgate swap meet hosted by the Fayette County Amateur Radio Club (KK4GQ). Buy, sell, and trade used amateur radio equipment \u2014 rigs, antennas, parts \u2014 directly from your trunk. FREE to attend and sell! Complimentary coffee and donuts while supplies last. Cash is highly recommended. Sellers should arrive 8:00am\u20138:45am. Talk-In: 145.210 (\u2013) PL 131.8 Hz. Vehicle-based event only \u2014 no tents, external tables, amplified sound, alcohol, or open fires.",
       "eventOrganizer": "Fayette County Amateur Radio Club",
       "eventUrl": "https://kk4gq.org/peachy",
       "hamCoordinator": null,
@@ -593,7 +576,7 @@
       "hamCoordinator": "GARS",
       "hamCoordinatorUrl": "https://www.gars.org",
       "volunteerSignUpUrl": "https://docs.google.com/forms/d/e/1FAIpQLSc4c7i-daThdqO09g39q6qRj7ZZVJX4n6h_KV2x2O6-Z1nvyg/viewform",
-      "notes": "Arrive at 7:00 AM to help set up the pop-up tent, portable repeater, and tripod markers with flags. Wear comfortable shoes and clothing. Bring and wear your yellow safety vest and GARS Mission Hat (free hats available for new volunteers). Program your HT to the portable repeater: 147.045 MHz (minus offset), PL 82.5. No HT? No problem — you can shadow someone who has one. Chick-fil-A breakfast biscuits and coffee will be provided."
+      "notes": "Arrive at 7:00 AM to help set up the pop-up tent, portable repeater, and tripod markers with flags. Wear comfortable shoes and clothing. Bring and wear your yellow safety vest and GARS Mission Hat (free hats available for new volunteers). Program your HT to the portable repeater: 147.045 MHz (minus offset), PL 82.5. No HT? No problem \u2014 you can shadow someone who has one. Chick-fil-A breakfast biscuits and coffee will be provided."
     },
     {
       "id": 40,
@@ -604,13 +587,13 @@
       "startTime": "05:30",
       "endTime": "10:00",
       "eventLocation": "Chattahoochee Nature Center, 9135 Willeo Road, Roswell, GA",
-      "eventDescription": "The 48th Annual Possum Trot 10K is a Peachtree Road Race qualifier benefiting the Chattahoochee Nature Center's environmental education and wildlife rehabilitation programs. Last year drew more than 800 runners. Ham radio operators provide the only effective means of communicating field conditions back to race organizers and emergency personnel — stationed at the starting line, mile markers, turnarounds, and course waypoints. Operators watch for and report injured or in-distress runners, vehicles on the closed course, and other safety issues, and coordinate the start of mile-marker race timers.",
+      "eventDescription": "The 48th Annual Possum Trot 10K is a Peachtree Road Race qualifier benefiting the Chattahoochee Nature Center's environmental education and wildlife rehabilitation programs. Last year drew more than 800 runners. Ham radio operators provide the only effective means of communicating field conditions back to race organizers and emergency personnel \u2014 stationed at the starting line, mile markers, turnarounds, and course waypoints. Operators watch for and report injured or in-distress runners, vehicles on the closed course, and other safety issues, and coordinate the start of mile-marker race timers.",
       "eventOrganizer": "Chattahoochee Nature Center",
       "eventUrl": "https://chattnaturecenter.org/special-events/possum-trot-10k-event/",
       "hamCoordinator": "Mike K4ZEC & Janet KN4JNC Carroll",
       "hamCoordinatorUrl": null,
       "volunteerSignUpUrl": "https://arc.groups.io/g/main/message/14633?p=%2C%2C%2C20%2C0%2C0%2C0%3A%3A%2C%2C%2C0%2C0%2C0%2C119591891",
-      "notes": "Race starts 7:00 AM. Roads and parking lot close at 6:00 AM — volunteers should arrive at CNC no later than 5:30 AM. Roads reopen 90 minutes after race start; finished by ~10:00 AM. Bring a 2m HT with a good battery (and a spare if you have one). Volunteers receive a limited-edition Possum Trot T-shirt.\n\nTo volunteer, reply to the Groups.io thread (linked above) or contact Mike (K4ZEC) or Janet (KN4JNC) Carroll directly."
+      "notes": "Race starts 7:00 AM. Roads and parking lot close at 6:00 AM \u2014 volunteers should arrive at CNC no later than 5:30 AM. Roads reopen 90 minutes after race start; finished by ~10:00 AM. Bring a 2m HT with a good battery (and a spare if you have one). Volunteers receive a limited-edition Possum Trot T-shirt.\n\nTo volunteer, reply to the Groups.io thread (linked above) or contact Mike (K4ZEC) or Janet (KN4JNC) Carroll directly."
     }
   ]
 }
