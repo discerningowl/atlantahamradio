@@ -329,16 +329,16 @@
       "type": "public-service",
       "startDate": "2026-10-25",
       "endDate": null,
-      "startTime": "06:00",
-      "endTime": "12:00",
-      "eventLocation": "Atlanta, GA",
-      "eventDescription": "The Southeast's largest and most iconic 10 mile race. Scenic course, skyline views.",
+      "startTime": "05:00",
+      "endTime": "10:30",
+      "eventLocation": "Atlantic Station area, Atlanta, GA",
+      "eventDescription": "The Southeast's largest and most iconic 10 mile race. Course starts and ends in the Atlantic Station area and runs through the neighborhoods north and east of Atlantic Station.",
       "eventOrganizer": "Atlanta Track Club",
       "eventUrl": "https://www.atlantatrackclub.org/2026-pnc-atlanta-10-miler-5k",
       "hamCoordinator": "Atlanta ARES",
       "hamCoordinatorUrl": "https://www.atlantaradioclub.org/atlanta-ares.html",
-      "volunteerSignUpUrl": null,
-      "notes": null
+      "volunteerSignUpUrl": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=116079",
+      "notes": "Net times 0500-1030 (not all assignments start/end at the same time). Sign up using password \"ham2025\" to see the Ham Radio position (you can skip the \"Digital\" question). First draft of assignments and frequencies distributed about 10-14 days before the event; if you sign up, you will get an assignment."
     },
     {
       "id": 26,
