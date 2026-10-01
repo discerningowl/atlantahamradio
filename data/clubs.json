@@ -119,12 +119,6 @@
               "url": "https://app.memberday.com/"
             }
           ]
-        },
-        {
-          "name": "North Georgia Amateur Radio Association - Member Only Club - North Georgia Coverage",
-          "location": "Coweta County - Atl Metro",
-          "website": "https://nggmrs.org/pages/north-georgia-amateur-radio-association",
-          "links": []
         }
       ]
     },
@@ -301,7 +295,7 @@
       "name": "Gwinnett County",
       "clubs": [
         {
-          "name": "Gwinnette Amateur Radio Society",
+          "name": "Gwinnett Amateur Radio Society",
           "location": "Lawrenceville, GA",
           "website": "https://www.gars.org/gars/",
           "links": [
@@ -319,22 +313,6 @@
             {
               "name": "Groups.io",
               "url": "https://groups.io/g/GwinnettARES"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Henry County",
-      "clubs": [
-        {
-          "name": "Henry County Amateur Radio Society",
-          "location": "McDonough, GA",
-          "website": "https://www.henrycountyars.org/",
-          "links": [
-            {
-              "name": "Facebook",
-              "url": "https://www.facebook.com/groups/1599063946991982/"
             }
           ]
         }
@@ -372,6 +350,22 @@
       ]
     },
     {
+      "name": "Henry County",
+      "clubs": [
+        {
+          "name": "Henry County Amateur Radio Society",
+          "location": "McDonough, GA",
+          "website": "https://www.henrycountyars.org/",
+          "links": [
+            {
+              "name": "Facebook",
+              "url": "https://www.facebook.com/groups/1599063946991982/"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Paulding County",
       "clubs": [
         {
@@ -399,6 +393,28 @@
             {
               "name": "Groups.io",
               "url": "http://silvercometars.groups.io/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Regional & Special Interest",
+      "clubs": [
+        {
+          "name": "North Georgia Amateur Radio Association (Member Only Club)",
+          "location": "Coweta County - Atl Metro",
+          "website": "https://nggmrs.org/pages/north-georgia-amateur-radio-association",
+          "links": []
+        },
+        {
+          "name": "North Georgia QRP Club (NoGa QRP)",
+          "location": "Online (Zoom) - Atlanta metro & north Georgia",
+          "website": "http://www.nogaqrp.org/",
+          "links": [
+            {
+              "name": "Groups.io",
+              "url": "https://groups.io/g/NOGAQRP"
             }
           ]
         }
