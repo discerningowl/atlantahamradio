@@ -34,6 +34,48 @@
 
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../css/style.css?v=1.1">
+
+    <style>
+        /* County chips, expand/collapse all, two-column club grid */
+        .clubs-toolbar { max-width: 1280px; margin: 0 auto 1.25rem; padding: 0 1rem; }
+        .county-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .county-chip {
+            background: var(--bg-card); color: var(--text-secondary);
+            border: 1px solid var(--border-primary); border-radius: 9999px;
+            padding: 0.5rem 0.9rem; min-height: 44px; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .county-chip:hover { background: var(--bg-card-hover); }
+        .county-chip.active { background: var(--event-public-service); color: #fff; border-color: transparent; }
+        .county-chip .chip-n { font-size: 0.75rem; opacity: 0.8; }
+        .toolbar-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+        .toolbar-btn {
+            background: none; border: none; color: var(--accent-primary); font-weight: 600;
+            cursor: pointer; font-size: 0.9rem; padding: 0.5rem 0; min-height: 44px; font-family: inherit;
+        }
+        .toolbar-btn:hover { text-decoration: underline; }
+        .toolbar-count { color: var(--text-muted); font-size: 0.875rem; margin-left: auto; }
+
+        /* tighter groups + compact cards in two columns on wider screens */
+        .county-section { margin-bottom: 0.75rem; }
+        .county-header { border-radius: 0.75rem; border-bottom: 1px solid var(--border-primary); padding: 0.75rem 1.25rem; }
+        .county-header { background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-card)); }
+        .county-header:hover { background: color-mix(in srgb, var(--accent-primary) 16%, var(--bg-card)); }
+        .county-header:not(.collapsed) { border-radius: 0.75rem 0.75rem 0 0; }
+        .county-header h3 { font-size: 1.2rem; }
+        .clubs-list { display: grid; grid-template-columns: 1fr; }
+        .clubs-list.hidden { display: none; }
+        .club-card { padding: 1rem 1.25rem; }
+        .club-name { font-size: 1.05rem; margin-bottom: 0.35rem; }
+        .club-location { margin-bottom: 0.75rem; }
+        @media (min-width: 900px) {
+            .clubs-list { grid-template-columns: 1fr 1fr; }
+            .clubs-list > .club-card:nth-child(odd):not(:last-child) { border-right: 1px solid var(--border-primary); }
+            .clubs-list > .club-card:last-child { border-bottom: none; }
+            .clubs-list > .club-card:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+        }
+    </style>
 </head>
 <body>
     <script src="../js/header.js?v=1.1"></script>
@@ -60,14 +102,25 @@
         </div>
     </section>
 
+    <section class="clubs-toolbar">
+        <div class="county-chips" id="countyChips" role="group" aria-label="Filter by county"></div>
+        <div class="toolbar-actions">
+            <button class="toolbar-btn" onclick="setAll(true)">Expand all</button>
+            <button class="toolbar-btn" onclick="setAll(false)">Collapse all</button>
+            <span class="toolbar-count" id="toolbarCount" aria-live="polite"></span>
+        </div>
+    </section>
+
     <section class="clubs-container" id="clubsContainer">
         <!-- Clubs will be loaded here -->
     </section>
 
     <script>
         let clubsData = [];
+        let openGroups = new Set();   // groups the visitor has opened (default: all collapsed)
+        let activeChip = null;        // null = All
+        let searchTerm = '';
 
-        // HTML escaping function to prevent XSS attacks
         function escapeHTML(str) {
             if (!str) return '';
             const div = document.createElement('div');
@@ -75,152 +128,138 @@
             return div.innerHTML;
         }
 
+        const groupId = name => `county-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+        const chipLabel = name => name.replace(/ County$/, '');
+
         async function loadClubs() {
             try {
                 const response = await fetch('../data/clubs.json');
                 const data = await response.json();
                 clubsData = data.counties;
-                renderClubs();
+                renderChips();
+                render();
             } catch (error) {
                 console.error('Error loading clubs:', error);
-                document.getElementById('clubsContainer').innerHTML = `
-                    <div class="no-results">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <h3>Unable to load clubs data</h3>
-                        <p>Please make sure clubs.json is in the same directory as this file.</p>
-                    </div>
-                `;
+                document.getElementById('clubsContainer').innerHTML = '<div class="no-results"><h3>Unable to load clubs data</h3></div>';
             }
         }
 
-        function renderClubs(filteredData = null) {
-            const container = document.getElementById('clubsContainer');
-            const dataToRender = filteredData || clubsData;
+        function renderChips() {
+            const chips = [`<button class="county-chip ${activeChip === null ? 'active' : ''}" onclick="setChip(null)">All <span class="chip-n">${clubsData.reduce((n, c) => n + c.clubs.length, 0)}</span></button>`];
+            clubsData.forEach(c => {
+                chips.push(`<button class="county-chip ${activeChip === c.name ? 'active' : ''}" onclick="setChip(${escapeHTML(JSON.stringify(c.name)).replace(/"/g, '&quot;')})">${escapeHTML(chipLabel(c.name))} <span class="chip-n">${c.clubs.length}</span></button>`);
+            });
+            document.getElementById('countyChips').innerHTML = chips.join('');
+        }
 
-            if (dataToRender.length === 0) {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <h3>No clubs found</h3>
-                        <p>Try adjusting your search terms</p>
+        function visibleGroups() {
+            let groups = clubsData;
+            if (activeChip) groups = groups.filter(c => c.name === activeChip);
+            if (searchTerm) {
+                groups = groups.map(county => {
+                    const matchesName = county.name.toLowerCase().includes(searchTerm);
+                    const clubs = county.clubs.filter(club =>
+                        club.name.toLowerCase().includes(searchTerm) ||
+                        club.location.toLowerCase().includes(searchTerm));
+                    return (matchesName || clubs.length) ? { ...county, clubs: matchesName ? county.clubs : clubs } : null;
+                }).filter(Boolean);
+            }
+            return groups;
+        }
+
+        function clubCardHTML(club) {
+            return `
+                <div class="club-card">
+                    <div class="club-name">${escapeHTML(club.name)}</div>
+                    <div class="club-location">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        ${escapeHTML(club.location)}
                     </div>
-                `;
+                    <div class="club-links">
+                        <a href="${escapeHTML(club.website)}" target="_blank" rel="noopener noreferrer" class="club-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                            Website
+                        </a>
+                        ${club.links.map(link => `
+                            <a href="${escapeHTML(link.url)}" target="_blank" rel="noopener noreferrer" class="club-link secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                ${escapeHTML(link.name)}
+                            </a>`).join('')}
+                    </div>
+                </div>`;
+        }
+
+        function render() {
+            const container = document.getElementById('clubsContainer');
+            const groups = visibleGroups();
+            const total = groups.reduce((n, c) => n + c.clubs.length, 0);
+            document.getElementById('toolbarCount').textContent = `${total} club${total === 1 ? '' : 's'} in ${groups.length} group${groups.length === 1 ? '' : 's'}`;
+
+            if (groups.length === 0) {
+                container.innerHTML = '<div class="no-results"><h3>No clubs found</h3><p>Try adjusting your search terms</p></div>';
                 return;
             }
-
-            let html = '';
-            dataToRender.forEach(county => {
-                const clubCount = county.clubs.length;
-                const countyId = `county-${county.name.toLowerCase().replace(/\s+/g, '-')}`;
-
-                html += `
+            // Open when: searching, a single chip is selected, or the visitor opened it
+            const forceOpen = !!searchTerm || !!activeChip;
+            container.innerHTML = groups.map(county => {
+                const id = groupId(county.name);
+                const open = forceOpen || openGroups.has(county.name);
+                return `
                     <div class="county-section">
-                        <div class="county-header" onclick="toggleCounty('${countyId}')">
-                            <h3>
-                                ${escapeHTML(county.name)}
-                                ${clubCount > 0 ? `<span class="club-count">${clubCount}</span>` : ''}
-                            </h3>
+                        <div class="county-header ${open ? '' : 'collapsed'}" onclick="toggleGroup(${escapeHTML(JSON.stringify(county.name)).replace(/"/g, '&quot;')})" role="button" tabindex="0" aria-expanded="${open}">
+                            <h3>${escapeHTML(county.name)} <span class="club-count">${county.clubs.length}</span></h3>
                             <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                         </div>
-                        <div class="clubs-list" id="${countyId}">
-                `;
-
-                if (clubCount === 0) {
-                    html += `<div class="empty-county">No clubs listed yet. Know of a club in ${escapeHTML(county.name)} County? Contact KQ4JP to add it!</div>`;
-                } else {
-                    county.clubs.forEach(club => {
-                        html += `
-                            <div class="club-card">
-                                <div class="club-name">${escapeHTML(club.name)}</div>
-                                <div class="club-location">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                    ${escapeHTML(club.location)}
-                                </div>
-                                <div class="club-links">
-                                    <a href="${escapeHTML(club.website)}" target="_blank" rel="noopener noreferrer" class="club-link">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-                                        Website
-                                    </a>
-                                    ${club.links.map(link => `
-                                        <a href="${escapeHTML(link.url)}" target="_blank" rel="noopener noreferrer" class="club-link secondary">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                                            ${escapeHTML(link.name)}
-                                        </a>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-
-                html += `
+                        <div class="clubs-list ${open ? '' : 'hidden'}" id="${id}">
+                            ${county.clubs.length ? county.clubs.map(clubCardHTML).join('') : '<div class="empty-county">No clubs listed yet. Contact KQ4JP to add one!</div>'}
                         </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+                    </div>`;
+            }).join('');
         }
 
-        function toggleCounty(countyId) {
-            const clubsList = document.getElementById(countyId);
-            const header = clubsList.previousElementSibling;
-            
-            clubsList.classList.toggle('hidden');
-            header.classList.toggle('collapsed');
+        function toggleGroup(name) {
+            if (openGroups.has(name)) openGroups.delete(name); else openGroups.add(name);
+            const id = groupId(name);
+            const list = document.getElementById(id);
+            const header = list.previousElementSibling;
+            const open = openGroups.has(name) || !!searchTerm || !!activeChip;
+            list.classList.toggle('hidden', !open);
+            header.classList.toggle('collapsed', !open);
+            header.setAttribute('aria-expanded', open);
+        }
+
+        function setAll(open) {
+            openGroups = open ? new Set(clubsData.map(c => c.name)) : new Set();
+            activeChip = null;
+            document.getElementById('searchInput').value = '';
+            searchTerm = '';
+            document.getElementById('searchClearBtn').style.display = 'none';
+            renderChips();
+            render();
+        }
+
+        function setChip(name) {
+            activeChip = name;
+            document.getElementById('searchInput').value = '';
+            searchTerm = '';
+            document.getElementById('searchClearBtn').style.display = 'none';
+            renderChips();
+            render();
         }
 
         function filterClubs() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-
-            // Show/hide clear button
-            const clearBtn = document.getElementById('searchClearBtn');
-            if (clearBtn) {
-                clearBtn.style.display = searchTerm ? 'flex' : 'none';
-            }
-
-            if (searchTerm === '') {
-                renderClubs();
-                return;
-            }
-
-            const filtered = clubsData
-                .map(county => {
-                    const matchesCountyName = county.name.toLowerCase().includes(searchTerm);
-                    const filteredClubs = county.clubs.filter(club =>
-                        club.name.toLowerCase().includes(searchTerm) ||
-                        club.location.toLowerCase().includes(searchTerm)
-                    );
-
-                    if (matchesCountyName || filteredClubs.length > 0) {
-                        return {
-                            ...county,
-                            clubs: matchesCountyName ? county.clubs : filteredClubs
-                        };
-                    }
-                    return null;
-                })
-                .filter(county => county !== null);
-
-            renderClubs(filtered);
+            searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            document.getElementById('searchClearBtn').style.display = searchTerm ? 'flex' : 'none';
+            if (searchTerm && activeChip) { activeChip = null; renderChips(); }
+            render();
         }
 
         function clearSearch() {
             document.getElementById('searchInput').value = '';
-
-            // Hide clear button
-            const clearBtn = document.getElementById('searchClearBtn');
-            if (clearBtn) {
-                clearBtn.style.display = 'none';
-            }
-
             filterClubs();
         }
 
-        // Initialize
-        window.addEventListener('DOMContentLoaded', () => {
-            loadClubs();
-        });
+        window.addEventListener('DOMContentLoaded', loadClubs);
     </script>
     <script src="../js/footer.js?v=1.1"></script>
 </body>
