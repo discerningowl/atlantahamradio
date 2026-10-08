@@ -527,6 +527,22 @@ nav a:hover {
     text-align: center;
 }
 
+.month-nav .today-btn {
+    background: var(--btn-secondary);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+.month-nav .today-btn:hover:not(:disabled) {
+    background: var(--btn-secondary-hover);
+}
+
+.month-nav .today-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
 .view-buttons {
     display: flex;
     gap: 0.5rem;
@@ -1349,6 +1365,12 @@ footer {
 
     .month-nav {
         justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .month-nav .today-btn {
+        order: 4;
+        min-height: 44px;
     }
 
     .month-nav h3 {

@@ -136,6 +136,12 @@ function changeMonth(direction) {
     renderCalendar();
 }
 
+function goToToday() {
+    const today = new Date();
+    currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+    renderCalendar();
+}
+
 function getEventsForDay(day) {
     const checkDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
 
@@ -157,6 +163,13 @@ function getEventsForDay(day) {
 function renderCalendar() {
     document.getElementById('monthYear').textContent =
         `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+
+    const todayBtn = document.getElementById('todayBtn');
+    if (todayBtn) {
+        const now = new Date();
+        todayBtn.disabled = currentDate.getMonth() === now.getMonth() &&
+            currentDate.getFullYear() === now.getFullYear();
+    }
 
     renderFilters();
 

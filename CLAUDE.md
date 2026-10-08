@@ -1141,6 +1141,7 @@ domains:
 - `setView('month'|'list')` - Toggles between month and list views
 - `setFilter(type)` - Filters events by type
 - `changeMonth(delta)` - Navigates between months
+- `goToToday()` - Jumps back to the current month ("Today" button; disabled when already on it)
 - `openSubscribeModal()` - Opens calendar subscription modal
 - `closeSubscribeModal()` - Closes subscription modal
 - `copySubscribeUrl()` - Copies calendar URL to clipboard with visual feedback
