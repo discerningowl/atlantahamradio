@@ -534,15 +534,15 @@
       "startDate": "2026-11-26",
       "endDate": null,
       "startTime": "05:00",
-      "endTime": "11:00",
-      "eventLocation": "Atlanta, GA",
-      "eventDescription": null,
+      "endTime": "12:00",
+      "eventLocation": "Georgia State Center Parc Stadium, Atlanta, GA",
+      "eventDescription": "Thanksgiving Day half marathon, 5K, mile and dash starting and finishing at the Georgia State Center Parc Stadium area (former Turner Field) with a course through Atlanta. Ham operators provide course communications. Net runs 05:00\u201312:00; not all assignments start and end at the same time.",
       "eventOrganizer": "Atlanta Track Club",
       "eventUrl": "https://www.atlantatrackclub.org/2026-invesco-qqq-thanksgiving-day-half-marathon-5k-mile-dash",
       "hamCoordinator": "Atlanta ARES",
       "hamCoordinatorUrl": "https://www.atlantaradioclub.org/atlanta-ares.html",
-      "volunteerSignUpUrl": null,
-      "notes": "Signup coming soon."
+      "volunteerSignUpUrl": "https://atlantatrackclub.volunteerlocal.com/volunteer/?id=117989",
+      "notes": "1. Go to the signup site\n2. Enter the password \"ham2026\" to see the Ham Radio position\n3. Select the Ham Radio slot (feel free to skip the \"Digital\" question)\n\nThe first draft of assignments and frequencies will be distributed about 10\u201314 days before the event. If you sign up, you'll get an assignment."
     },
     {
       "id": 38,
