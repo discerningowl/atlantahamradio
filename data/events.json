@@ -611,6 +611,23 @@
       "hamCoordinatorUrl": "https://www.atlantaradioclub.org/atlanta-ares.html",
       "volunteerSignUpUrl": null,
       "notes": "Ham radio volunteer details coming soon."
+    },
+    {
+      "id": 42,
+      "title": "HamJam 2026",
+      "type": "meeting",
+      "startDate": "2026-11-14",
+      "endDate": null,
+      "startTime": "08:00",
+      "endTime": "13:00",
+      "eventLocation": "Preston Ridge Community Center, 3655 Preston Ridge Road Suite 100, Alpharetta, GA 30005",
+      "eventDescription": "The 17th annual HamJam is an ARRL-affiliated fundraiser supporting youth involvement in amateur radio and STEM. 100% of net proceeds go to NFARL's YESA youth education and scholarship program. Presentations begin at 9:00 AM. 2026 speakers: Don Rotolo N2IRZ (Modern Packet Radio: A Network that Works), Martin Jue K5FLU (The Early Days of MFJ), and Preston Booth (Martin F. Jue: Life and Legacy).",
+      "eventOrganizer": "North Fulton Amateur Radio League (NFARL)",
+      "eventUrl": "https://hamjam.nfarl.org/",
+      "hamCoordinator": null,
+      "hamCoordinatorUrl": null,
+      "volunteerSignUpUrl": null,
+      "notes": "Admission is free and open to all, funded by raffle ticket sales. Raffle tickets: https://nfarl.org/mart/2026-hamjam-raffle-tickets/"
     }
   ]
 }
