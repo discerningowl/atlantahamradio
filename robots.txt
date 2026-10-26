@@ -1,13 +1,13 @@
 # Atlanta Ham Radio - robots.txt
 # https://atlantahamradio.org
-# Last updated: 2025-12-10
+# Last updated: 2026-10-25
 
 # Allow all search engines to crawl the site
 User-agent: *
 Allow: /
 
-# Disallow crawling of data files (JSON)
-Disallow: /data/
+# /data/ must stay crawlable: pages fetch JSON from it to render their content,
+# and Googlebot sees an empty page (soft 404) if it is blocked.
 
 # Disallow crawling of internal directories
 Disallow: /.do/
