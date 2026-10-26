@@ -504,7 +504,8 @@ All pages include:
 
 **robots.txt**:
 - Allows all search engines to crawl the site
-- Disallows crawling of `/data/`, `/.do/`, `/.github/`
+- Disallows crawling of `/.do/`, `/.github/`, `/scripts/`
+- Never disallow `/data/`: Googlebot needs the JSON to render clubs and events, or pages index as soft 404s
 - References sitemap.xml location
 
 ### SEO Best Practices
